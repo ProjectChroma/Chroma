@@ -17,7 +17,13 @@ public class Chroma extends BasicGame {
 	public Chroma() {
 		super("Chroma");
 		player = new Player();
-		pieces = new GamePiece[]{player, new Block(0, WINDOW_HEIGHT - 20, WINDOW_WIDTH, 20, Color.white)};
+		pieces = new GamePiece[]{player,
+				new Block(0, WINDOW_HEIGHT - 20, WINDOW_WIDTH, 20, Color.white),
+				new Block(600, 300, 100, 20, Color.white),
+				new Block(100, 500, 100, 20, Color.white),
+				new Block(50, 200, 100, 20, Color.white),
+				new Block(760, 200, 20, 600, Color.white)
+				};
 	}
 
 	@Override

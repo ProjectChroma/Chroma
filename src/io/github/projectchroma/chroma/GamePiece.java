@@ -3,6 +3,7 @@ package io.github.projectchroma.chroma;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Rectangle;
 
 public abstract class GamePiece {
 	protected float x, y, width, height;
@@ -20,6 +21,7 @@ public abstract class GamePiece {
 	public float getY(){return y;}
 	public float getWidth(){return width;}
 	public float getHeight(){return height;}
+	public Rectangle getBounds(){return new Rectangle(x, y, width, height);}
 	public String toString(){
 		return getClass().getCanonicalName() + "@(" + x + "," + y + ")[" + width + "x" + height + "]";
 	}
