@@ -5,6 +5,7 @@ import static io.github.projectchroma.chroma.util.RectangleUtils.fromDimensions;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 
@@ -19,7 +20,11 @@ public class Player extends GamePiece{
 	 * Acceleration caused by gravity
 	 */
 	private static final float gravity = 0.05F;
-	private float vX = 1.2F, vY = -5F, aX = 0, aY = gravity;
+	/**
+	 * Velocities during player-caused motion
+	 */
+	private static final float VX = 1.3F, VY = -3F;
+	private float vX = 0, vY = 0, aX = 0, aY = gravity;
 	/**
 	 * Rectangles used to detect collisions. Each item of this array represents
 	 * an edge of the player, excluding the corners.
@@ -31,13 +36,18 @@ public class Player extends GamePiece{
 		
 		float w = getWidth() - 2 * HITBOX, h = getHeight() - 2 * HITBOX;
 		collisionBoxes[0] = fromDimensions(getLeft() + HITBOX, getTop(), w, HITBOX);//Top
-		collisionBoxes[1] = fromDimensions(getRight(), getTop() + HITBOX, - HITBOX, h);//Right
-		collisionBoxes[2] = fromDimensions(getLeft() + HITBOX, getBottom(), w, - HITBOX);//Bottom
+		collisionBoxes[1] = fromDimensions(getRight(), getTop() + HITBOX, -HITBOX, h);//Right
+		collisionBoxes[2] = fromDimensions(getLeft() + HITBOX, getBottom(), w, -HITBOX);//Bottom
 		collisionBoxes[3] = fromDimensions(getLeft(), getTop() + HITBOX, HITBOX, h);//Left
 	}
 	
 	public void update(GameContainer container, int delta) throws SlickException{
 		float oldX = bounds.getX(), oldY = bounds.getY();
+		if(container.getInput().isKeyDown(Input.KEY_LEFT)) vX = -VX;
+		else if(container.getInput().isKeyDown(Input.KEY_RIGHT)) vX = VX;
+		else vX = 0;
+		if(container.getInput().isKeyPressed(Input.KEY_UP)) vY = VY;//keyPressed, not keyDown; only apply the velocity once
+		
 		boolean landed = false;
 		translate(vX, vY);
 		
@@ -73,7 +83,7 @@ public class Player extends GamePiece{
 		
 		vX += aX;
 		vY += aY;
-		if( ! landed) aY = gravity;
+		if(!landed) aY = gravity;
 	}
 	
 	public void render(GameContainer container, Graphics g) throws SlickException{
@@ -83,7 +93,7 @@ public class Player extends GamePiece{
 		if(Chroma.DEBUG_MODE){
 			g.setColor(Color.red);
 			g.fill(collisionBoxes[0]);
-
+			
 			g.setColor(Color.green);
 			g.fill(collisionBoxes[1]);
 			
