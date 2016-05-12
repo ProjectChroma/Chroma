@@ -1,79 +1,60 @@
 package io.github.projectchroma.chroma;
 
-import org.lwjgl.*;
-import org.lwjgl.glfw.*;
-import org.lwjgl.opengl.*;
+import org.newdawn.slick.AppGameContainer;
+import org.newdawn.slick.BasicGame;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Rectangle;
 
-import static org.lwjgl.glfw.Callbacks.*;
-import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.system.MemoryUtil.*;
+public class Chroma extends BasicGame {
+	public static final int WINDOW_WIDTH = 800, WINDOW_HEIGHT = 600;
+	private static final Chroma instance = new Chroma();
 
-public class Chroma {
-	private long window;//The window handle
-	private final int WINDOW_WIDTH = 800, WINDOW_HEIGHT = 600;
-
-	private Chroma() {
-		System.out.println("Starting Chroma");
+	public Chroma() {
+		super("Chroma");
 	}
 
-	public void run() {
-		System.out.println("LWJGL v" + Version.getVersion());
+	@Override
+	public void init(GameContainer container) throws SlickException {
 
-		try {
-			init();
-			loop();
-			
-			glfwFreeCallbacks(window);//Stop callbacks
-			glfwDestroyWindow(window);//Destroy the window
-		} finally {
-			glfwTerminate();//End GLFW
-			glfwSetErrorCallback(null).free();//Stop the error callback
-		}
 	}
 
-	private void init() {
-		//Print errors to the error stream
-		GLFWErrorCallback.createPrint(System.err).set();
+	@Override
+	public void update(GameContainer container, int delta) throws SlickException {
 		
-		//Initialize GLFW (window library); returns if it was successful or not
-		if (!glfwInit())
-			throw new IllegalStateException("Unable to initialize GLFW");//Create window
-		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);//Hide window
-		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);//Disallow resizing
-
-		//Create the window
-		window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Hello World!", NULL, NULL);
-		if (window == NULL)
-			throw new RuntimeException("Failed to create the GLFW window");//Setup a key callback. It will be called every time a key is pressed, repeated or released.
-		glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
-			if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
-				glfwSetWindowShouldClose(window, true);//We will detect this in our rendering loop
-		});
-		
-		GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());//Get the resolution of the primary monitor
-		glfwSetWindowPos(window, (vidmode.width() - WINDOW_WIDTH) / 2, (vidmode.height() - WINDOW_HEIGHT) / 2);//Center window on screen
-		glfwMakeContextCurrent(window);//Make the OpenGL context current
-		glfwSwapInterval(1);//Enable v-sync
-		glfwShowWindow(window);//Show window
 	}
 
-	private void loop() {
-		//Initialize default capabilities
-		GL.createCapabilities();//Set the clear color
-		glClearColor(0F, 0F, 0F, 1F);
-
-		while (!glfwWindowShouldClose(window)) {
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);//Clear the framebuffer
-			
-			
-			
-			glfwSwapBuffers(window);//swap the color buffers
-			glfwPollEvents();
-		}
+	@Override
+	public void render(GameContainer container, Graphics g) throws SlickException {
+		g.setColor(Color.green);
+		g.fill(new Rectangle(0, 0, 100, 100));//Draw a green 100x100 square in the top-left corner of the screen
+		g.setColor(Color.blue);
+		g.fill(new Rectangle(100, 0, 100, 100));
+		g.setColor(Color.red);
+		g.fill(new Rectangle(200, 0, 100, 100));
+		g.setColor(Color.yellow);
+		g.fill(new Rectangle(300, 0, 100, 100));
+		g.setColor(Color.cyan);
+		g.fill(new Rectangle(400, 0, 100, 100));
+		g.setColor(Color.magenta);
+		g.fill(new Rectangle(500, 0, 100, 100));
+		g.setColor(Color.gray);
+		g.fill(new Rectangle(600, 0, 100, 100));
+		g.setColor(Color.white);
+		g.fill(new Rectangle(700, 0, 100, 100));
 	}
 
 	public static void main(String[] args) {
-		new Chroma().run();
+		try {
+			AppGameContainer app = new AppGameContainer(instance);
+			app.setDisplayMode(WINDOW_WIDTH, WINDOW_HEIGHT, false);//Width, height, fullscreen
+			app.setShowFPS(false);//Hide FPS counter
+			app.start();
+			
+		} catch (SlickException ex) {
+			ex.printStackTrace();
+		}
 	}
 }
