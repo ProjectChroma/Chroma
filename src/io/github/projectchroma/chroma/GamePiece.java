@@ -1,5 +1,6 @@
 package io.github.projectchroma.chroma;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
@@ -8,14 +9,22 @@ import org.newdawn.slick.geom.Shape;
 
 public abstract class GamePiece{
 	protected Shape bounds;
-	protected GamePiece(float x, float y, float width, float height){
-		this(new Rectangle(x, y, width, height));
+	protected Color color;
+	protected GamePiece(float x, float y, float width, float height, Color c){
+		this(new Rectangle(x, y, width, height), c);
 	}
-	protected GamePiece(Shape bounds){
+	protected GamePiece(float x, float y, float width, float height){
+		this(new Rectangle(x, y, width, height), null);
+	}
+	protected GamePiece(Shape bounds, Color color){
 		this.bounds = bounds;
+		this.color = color;
 	}
 	public abstract void update(GameContainer container, int delta) throws SlickException;
-	public abstract void render(GameContainer container, Graphics g) throws SlickException;
+	public void render(GameContainer container, Graphics g) throws SlickException{
+		g.setColor(getColor());
+		g.fill(bounds);
+	}
 	// Getters
 	public float getLeft(){
 		return bounds.getMinX();
@@ -43,6 +52,9 @@ public abstract class GamePiece{
 	}
 	public Shape getBounds(){
 		return bounds;
+	}
+	public Color getColor(){
+		return color == null ? Chroma.instance().foreground() : color;
 	}
 	
 	// Utilities for moving around

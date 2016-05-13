@@ -53,7 +53,7 @@ public class Player extends GamePiece{
 		
 		
 		for(GamePiece piece : Chroma.instance().pieces()){
-			if(piece == this) continue;
+			if(piece == this || piece.getColor().equals(Chroma.instance().background())) continue;
 			if(collisionBoxes[0].intersects(piece.bounds)){//Collision above
 				if(vY <= 0) setTop(piece.getBottom());
 				if(vY < 0) vY = 0;//Stop moving up
@@ -94,8 +94,7 @@ public class Player extends GamePiece{
 	}
 	
 	public void render(GameContainer container, Graphics g) throws SlickException{
-		g.setColor(Color.white);
-		g.fill(bounds);
+		super.render(container, g);
 		
 		if(Chroma.DEBUG_MODE){
 			if(landed){

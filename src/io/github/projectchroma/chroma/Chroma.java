@@ -23,15 +23,21 @@ public class Chroma extends BasicGame{
 	
 	private Player player;
 	private GamePiece[] pieces;
+	private boolean mode = true;//True for light background, false for dark background
 	
 	public Chroma(){
 		super("Chroma");
 		player = new Player();
-		pieces = new GamePiece[]{player, new Block(0, WINDOW_HEIGHT - Block.WALL_WIDTH, WINDOW_WIDTH, Block.WALL_WIDTH, Color.white), //Floor
-				new Block(0, 0, Block.WALL_WIDTH, WINDOW_HEIGHT, Color.white), //Left wall
-				new Block(WINDOW_WIDTH - Block.WALL_WIDTH, 0, Block.WALL_WIDTH, WINDOW_HEIGHT, Color.white), //Right wall
-				//Platforms
-				new Block(600, 300, 100, 20, Color.white), new Block(100, 500, 100, 20, Color.white), new Block(50, 200, 100, 20, Color.white),};
+		pieces = new GamePiece[]{player,
+			new Block(0, WINDOW_HEIGHT - Block.WALL_WIDTH, WINDOW_WIDTH, Block.WALL_WIDTH),//Floor
+			new Block(0, 0, Block.WALL_WIDTH, WINDOW_HEIGHT),//Left wall
+			new Block(WINDOW_WIDTH - Block.WALL_WIDTH, 0, Block.WALL_WIDTH, WINDOW_HEIGHT),//Right wall
+			//Platforms
+			new Block(100, 500, 100, 20, Color.black),
+			new Block(300, 425, 100, 20, Color.white),
+			new Block(500, 350, 100, 20, Color.black),
+			new Block(700, 275, 100, 20, Color.white),
+		};
 	}
 	
 	@Override
@@ -39,20 +45,30 @@ public class Chroma extends BasicGame{
 	
 	@Override
 	public void update(GameContainer container, int delta) throws SlickException{
-		if(!container.isPaused())
-			for(GamePiece piece : pieces) piece.update(container, delta);
 		if(container.getInput().isKeyPressed(Input.KEY_P))
 			container.setPaused(!container.isPaused());
+		if(!container.isPaused()){
+			for(GamePiece piece : pieces) piece.update(container, delta);
+			if(container.getInput().isKeyPressed(Input.KEY_SPACE)) mode = !mode;
+		}
 	}
 	
 	@Override
 	public void render(GameContainer container, Graphics g) throws SlickException{
+		g.setColor(background());
+		g.fillRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);//Draw background
 		for(GamePiece piece : pieces){
-			piece.render(container, g);
+			if(!piece.getColor().equals(background())) piece.render(container, g);
 		}
 	}
 	public GamePiece[] pieces(){
 		return pieces;
+	}
+	public Color foreground(){
+		return mode ? Color.black : Color.white;
+	}
+	public Color background(){
+		return mode ? Color.white : Color.black;
 	}
 	
 	public static Chroma instance(){
