@@ -30,56 +30,63 @@ public class Player extends GamePiece{
 	 * an edge of the player, excluding the corners.
 	 */
 	private Rectangle[] collisionBoxes = new Rectangle[4];
+	/**
+	 * Whether the player has landed, and can jump again.
+	 */
+	private boolean landed = false;
 	
 	public Player(){
-		super(50, 400, 50, 50);
+		super(50, 100, 50, 50);
 		
 		float w = getWidth() - 2 * HITBOX, h = getHeight() - 2 * HITBOX;
-		collisionBoxes[0] = fromDimensions(getLeft() + HITBOX, getTop(), w, HITBOX);//Top
-		collisionBoxes[1] = fromDimensions(getRight(), getTop() + HITBOX, -HITBOX, h);//Right
-		collisionBoxes[2] = fromDimensions(getLeft() + HITBOX, getBottom(), w, -HITBOX);//Bottom
-		collisionBoxes[3] = fromDimensions(getLeft(), getTop() + HITBOX, HITBOX, h);//Left
+		collisionBoxes[0] = fromDimensions(getLeft() + HITBOX, getTop()-1, w, HITBOX);//Top
+		collisionBoxes[1] = fromDimensions(getRight()+1, getTop() + HITBOX, -HITBOX, h);//Right
+		collisionBoxes[2] = fromDimensions(getLeft() + HITBOX, getBottom()+1, w, -HITBOX);//Bottom
+		collisionBoxes[3] = fromDimensions(getLeft()-1, getTop() + HITBOX, HITBOX, h);//Left
 	}
 	
 	public void update(GameContainer container, int delta) throws SlickException{
 		float oldX = bounds.getX(), oldY = bounds.getY();
-		if(container.getInput().isKeyDown(Input.KEY_LEFT)) vX = -VX;
-		else if(container.getInput().isKeyDown(Input.KEY_RIGHT)) vX = VX;
-		else vX = 0;
-		if(container.getInput().isKeyPressed(Input.KEY_UP)) vY = VY;//keyPressed, not keyDown; only apply the velocity once
 		
-		boolean landed = false;
+		landed = false;
 		translate(vX, vY);
+		
 		
 		for(GamePiece piece : Chroma.instance().pieces()){
 			if(piece == this) continue;
-			if(collisionBoxes[0].intersects(piece.bounds) && vY < 0){//Collision above
-				setTop(piece.getBottom());
+			if(collisionBoxes[0].intersects(piece.bounds)){//Collision above
+				if(vY <= 0) setTop(piece.getBottom());
 				if(vY < 0) vY = 0;//Stop moving up
 				if(aY < 0) aY = 0;//Stop accelerating up
 			}
-			if(collisionBoxes[1].intersects(piece.bounds) && vX > 0){//Collision on right side
-				setRight(piece.getLeft());
+			if(collisionBoxes[1].intersects(piece.bounds)){//Collision on right side
+				if(vX >= 0) setRight(piece.getLeft());
 				if(vX > 0) vX = 0;//Stop moving right
 				if(aX > 0) aX = 0;//Stop accelerating right
 			}
-			if(collisionBoxes[2].intersects(piece.bounds) && vY > 0){//Collision below
+			if(collisionBoxes[2].intersects(piece.bounds)){//Collision below
 				landed = true;
-				setBottom(piece.getTop());
+				if(vY >= 0) setBottom(piece.getTop());
 				if(vY > 0) vY = 0;//Stop moving down
 				if(aY > 0) aY = 0;//Stop accelerating down
 			}
-			if(collisionBoxes[3].intersects(piece.bounds) && vX < 0){//Collision on left side
-				setLeft(piece.getRight());
+			if(collisionBoxes[3].intersects(piece.bounds)){//Collision on left side
+				if(vX <= 0) setLeft(piece.getRight());
 				if(vX < 0) vX = 0;//Stop moving left
 				if(aX < 0) aX = 0;//Stop accelerating left
 			}
 		}
 		
 		float dx = bounds.getX() - oldX, dy = bounds.getY() - oldY;
-		
 		for(Rectangle collisionBox : collisionBoxes)
 			collisionBox.setLocation(collisionBox.getX() + dx, collisionBox.getY() + dy);
+		
+		if(container.getInput().isKeyDown(Input.KEY_LEFT)) vX = -VX;
+		else if(container.getInput().isKeyDown(Input.KEY_RIGHT)) vX = VX;
+		else vX = 0;
+		if(container.getInput().isKeyPressed(Input.KEY_UP) && landed){
+			vY = VY;//keyPressed, not keyDown; only apply the velocity once
+		}
 		
 		vX += aX;
 		vY += aY;
@@ -91,6 +98,11 @@ public class Player extends GamePiece{
 		g.fill(bounds);
 		
 		if(Chroma.DEBUG_MODE){
+			if(landed){
+				g.setColor(Color.cyan);
+				g.fillRect(getLeft(), getBottom()-5, getWidth(), 5);
+			}
+			
 			g.setColor(Color.red);
 			g.fill(collisionBoxes[0]);
 			
@@ -102,6 +114,10 @@ public class Player extends GamePiece{
 			
 			g.setColor(Color.yellow);
 			g.fill(collisionBoxes[3]);
+			
+			g.setColor(Color.black);
+			g.drawString(vX + "", getLeft(), getTop());
+			g.drawString(vY + "", getLeft(), getTop() + g.getFont().getLineHeight());
 		}
 	}
 }
