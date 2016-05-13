@@ -8,6 +8,8 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
+import io.github.projectchroma.chroma.util.Colors;
+
 public class Chroma extends BasicGame{
 	/**
 	 * Set to true to enable debug mode, which:
@@ -33,10 +35,11 @@ public class Chroma extends BasicGame{
 			new Block(0, 0, Block.WALL_WIDTH, WINDOW_HEIGHT),//Left wall
 			new Block(WINDOW_WIDTH - Block.WALL_WIDTH, 0, Block.WALL_WIDTH, WINDOW_HEIGHT),//Right wall
 			//Platforms
-			new Block(100, 500, 100, 20, Color.black),
-			new Block(300, 425, 100, 20, Color.white),
-			new Block(500, 350, 100, 20, Color.black),
-			new Block(700, 275, 100, 20, Color.white),
+			new Block(50, 500, 100, 20, Colors.PRIMARY_1),
+			new Block(250, 425, 100, 20, Colors.PRIMARY_2),
+			new Block(450, 350, 100, 20, Colors.PRIMARY_1),
+			new Block(450, 500, 100, 20, Colors.HAZARD),
+			new Block(650, 275, 100, 20, Colors.GOAL),
 		};
 	}
 	
@@ -65,10 +68,10 @@ public class Chroma extends BasicGame{
 		return pieces;
 	}
 	public Color foreground(){
-		return mode ? Color.black : Color.white;
+		return mode ? Colors.PRIMARY_1 : Colors.PRIMARY_2;
 	}
 	public Color background(){
-		return mode ? Color.white : Color.black;
+		return mode ? Colors.PRIMARY_2 : Colors.PRIMARY_1;
 	}
 	
 	public static Chroma instance(){

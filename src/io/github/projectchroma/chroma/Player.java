@@ -9,6 +9,8 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 
+import io.github.projectchroma.chroma.util.Colors;
+
 public class Player extends GamePiece{
 	/**
 	 * Size of box used for collision detection. Collisions will be detected if
@@ -74,6 +76,14 @@ public class Player extends GamePiece{
 				if(vX <= 0) setLeft(piece.getRight());
 				if(vX < 0) vX = 0;//Stop moving left
 				if(aX < 0) aX = 0;//Stop accelerating left
+			}
+			
+			if(bounds.intersects(piece.bounds)){
+				if(piece.getColor().equals(Colors.GOAL)){
+					System.out.println("TODO win");
+				}else if(piece.getColor().equals(Colors.HAZARD)){
+					System.out.println("TODO lose");
+				}
 			}
 		}
 		
