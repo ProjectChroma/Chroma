@@ -25,7 +25,10 @@ public class Player extends GamePiece{
 	/**
 	 * Velocities during player-caused motion
 	 */
-	private static final float VX = 1.3F, VY = -3F;
+	private static final float VX = 1.3F, VX_HIGH = 2.3F, VX_LOW = 0.9F, VY = -3F;
+	/**
+	 * Kinematics values for player
+	 */
 	private float vX = 0, vY = 0, aX = 0, aY = gravity;
 	/**
 	 * Rectangles used to detect collisions. Each item of this array represents
@@ -38,7 +41,7 @@ public class Player extends GamePiece{
 	private boolean landed = false;
 	
 	public Player(){
-		super(50, 100, 50, 50);
+		super(100, 500, 50, 50);
 		
 		float w = getWidth() - 2 * HITBOX, h = getHeight() - 2 * HITBOX;
 		collisionBoxes[0] = fromDimensions(getLeft() + HITBOX, getTop()-1, w, HITBOX);//Top
@@ -51,8 +54,8 @@ public class Player extends GamePiece{
 		float oldX = bounds.getX(), oldY = bounds.getY();
 		
 		landed = false;
+		float speedX = VX;
 		translate(vX, vY);
-		
 		
 		for(GamePiece piece : Chroma.instance().pieces()){
 			if(piece == this || piece.getColor().equals(Chroma.instance().background())) continue;
@@ -83,6 +86,10 @@ public class Player extends GamePiece{
 					System.out.println("TODO win");
 				}else if(piece.getColor().equals(Colors.HAZARD)){
 					System.out.println("TODO lose");
+				}else if(piece.getColor().equals(Colors.SPEED_UP)){
+					speedX = VX_HIGH;
+				}else if(piece.getColor().equals(Colors.SPEED_DOWN)){
+					speedX = VX_LOW;
 				}
 			}
 		}
@@ -91,12 +98,11 @@ public class Player extends GamePiece{
 		for(Rectangle collisionBox : collisionBoxes)
 			collisionBox.setLocation(collisionBox.getX() + dx, collisionBox.getY() + dy);
 		
-		if(container.getInput().isKeyDown(Input.KEY_LEFT)) vX = -VX;
-		else if(container.getInput().isKeyDown(Input.KEY_RIGHT)) vX = VX;
+		if(container.getInput().isKeyDown(Input.KEY_LEFT)) vX = -speedX;
+		else if(container.getInput().isKeyDown(Input.KEY_RIGHT)) vX = speedX;
 		else vX = 0;
-		if(container.getInput().isKeyPressed(Input.KEY_UP) && landed){
-			vY = VY;//keyPressed, not keyDown; only apply the velocity once
-		}
+		
+		if(container.getInput().isKeyPressed(Input.KEY_UP) && landed) vY = VY;//keyPressed, not keyDown; only apply the velocity once
 		
 		vX += aX;
 		vY += aY;
