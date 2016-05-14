@@ -10,11 +10,11 @@ import org.newdawn.slick.state.transition.Transition;
 
 import io.github.projectchroma.chroma.util.Colors;
 
-public class LevelTransition implements Transition{
+public class LevelEndTransition implements Transition{
 	private static final int MAX_DELTA = 1000;//Delta is in ms, so wait for 1s
 	private int delta;
 	private Color c;
-	public LevelTransition(boolean win){
+	public LevelEndTransition(boolean win){
 		c = win ? Colors.gold : Colors.red;
 	}
 	@Override

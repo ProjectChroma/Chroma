@@ -1,7 +1,13 @@
 package io.github.projectchroma.chroma;
 
+import java.io.File;
+
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.GameState;
+
+import io.github.projectchroma.chroma.util.FileIO;
 
 public abstract class BaseGameState implements GameState{
 	protected final int id;
@@ -38,12 +44,24 @@ public abstract class BaseGameState implements GameState{
 	public void inputStarted(){}
 	
 	@Override
-	public void keyPressed(int key, char c){}
+	public void keyPressed(int key, char c){
+		if(key == Input.KEY_F2){
+			try{
+				Image target = new Image(Chroma.WINDOW_WIDTH, Chroma.WINDOW_HEIGHT);
+				Chroma.instance().getContainer().getGraphics().copyArea(target, 0, 0);
+				File file = FileIO.saveScreenshot(target);
+				System.out.println("Saved screenshot to " + file);
+			}catch(SlickException ex){
+				System.err.println("Error taking screenshot");
+				ex.printStackTrace();
+			}
+		}
+	}
 	@Override
 	public void keyReleased(int key, char c){}
+	
 	@Override
 	public void controllerLeftPressed(int controller){}
-	
 	@Override
 	public void controllerLeftReleased(int controller){}
 	@Override
