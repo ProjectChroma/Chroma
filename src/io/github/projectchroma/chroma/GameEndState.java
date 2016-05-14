@@ -24,7 +24,7 @@ public class GameEndState extends BaseGameState{
 		drawCentered("Check back as development continues for more levels!", 400, g);
 	}
 	private void drawCentered(String text, int y, Graphics g){
-		g.drawString(text, Chroma.WINDOW_WIDTH/2 - g.getFont().getWidth(text)/2, y);
+		g.drawString(text, Chroma.WINDOW_WIDTH / 2 - g.getFont().getWidth(text) / 2, y);
 	}
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException{}

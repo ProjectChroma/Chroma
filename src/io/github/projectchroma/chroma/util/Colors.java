@@ -10,10 +10,15 @@ public class Colors{
 	public static final Color orange = Color.orange;
 	public static final Color blue = Color.blue;
 	public static Color byName(String color) throws SlickException{
-		if(color == null) return null;
-		else if(color.charAt(0) == '#') return Color.decode(color);
-		else try{
-			return (Color)Colors.class.getDeclaredField(color).get(null);
-		}catch(NoSuchFieldException | IllegalAccessException ex){throw new SlickException("Error reading color " + color, ex);}
+		if(color == null)
+			return null;
+		else if(color.charAt(0) == '#')
+			return Color.decode(color);
+		else
+			try{
+				return (Color)Colors.class.getDeclaredField(color).get(null);
+			}catch(NoSuchFieldException | IllegalAccessException ex){
+				throw new SlickException("Error reading color " + color, ex);
+			}
 	}
 }

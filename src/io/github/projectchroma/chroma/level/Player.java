@@ -10,6 +10,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 
 import io.github.projectchroma.chroma.Chroma;
+import io.github.projectchroma.chroma.LevelTransition;
 import io.github.projectchroma.chroma.util.Colors;
 
 public class Player extends LevelElement{
@@ -40,6 +41,10 @@ public class Player extends LevelElement{
 	 * Whether the player has landed, and can jump again.
 	 */
 	private boolean landed = false;
+	/**
+	 * Color to render the player, regardless of scheme (null uses scheme color)
+	 */
+	private Color renderCol = null;
 	
 	public Player(){
 		super(0, 0, 50, 50);
@@ -81,9 +86,9 @@ public class Player extends LevelElement{
 			
 			if(bounds.intersects(element.getBounds())){
 				if(element.getColor().equals(Colors.gold)){
-					Chroma.instance().enterState(Chroma.instance().getCurrentStateID()+1);//Next level
+					Chroma.instance().enterState(Chroma.instance().getCurrentStateID() + 1, new LevelTransition(true), null);//Next level
 				}else if(element.getColor().equals(Colors.red)){
-					Chroma.instance().enterState(Chroma.instance().getCurrentStateID());//Restart
+					Chroma.instance().enterState(Chroma.instance().getCurrentStateID(), new LevelTransition(false), null);//Restart
 				}else if(element.getColor().equals(Colors.orange)){
 					speedX = VX_HIGH;
 				}else if(element.getColor().equals(Colors.blue)){
@@ -111,7 +116,8 @@ public class Player extends LevelElement{
 	}
 	
 	public void render(GameContainer container, Graphics g) throws SlickException{
-		super.render(container, g);
+		g.setColor(renderCol != null ? renderCol : getColor());
+		g.fill(bounds);
 		
 		if(Chroma.DEBUG_MODE){
 			if(landed){
@@ -146,11 +152,18 @@ public class Player extends LevelElement{
 		collisionBoxes[2] = fromDimensions(getLeft() + HITBOX, getBottom() + 1, w, -HITBOX);//Bottom
 		collisionBoxes[3] = fromDimensions(getLeft() - 1, getTop() + HITBOX, HITBOX, h);//Left
 	}
-
+	
 	public void resetKinematics(){
 		vX = 0;
 		vY = 0;
 		aX = 0;
 		aY = gravity;
+	}
+	
+	public void setRenderColor(Color c){
+		renderCol = c;
+	}
+	public void resetRenderColor(){
+		renderCol = null;
 	}
 }

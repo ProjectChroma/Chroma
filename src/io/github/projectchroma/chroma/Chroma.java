@@ -31,10 +31,10 @@ public class Chroma extends StateBasedGame{
 		super("Chroma");
 		player = new Player();
 	}
-
+	
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException{
-		for(int i=0; i<NUM_LEVELS; i++){
+		for(int i = 0; i < NUM_LEVELS; i++){
 			addState(new LevelState(i));
 		}
 		

@@ -39,7 +39,7 @@ public class LevelState extends BaseGameState{
 			else
 				elements[i++] = new Block(block.x, block.y, block.width, block.height, Colors.byName(block.color));
 		}
-	
+		
 	}
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException{
