@@ -1,0 +1,18 @@
+{
+	"name": "Elevator to Heaven",
+	"playerStart": {
+		"x": 100,
+		"y": 530
+	},
+	"blocks": [
+		{"x": 200, "y": 500, "width": 100, "height": 15, "color": "black"},
+		{"x": 200, "y": 425, "width": 100, "height": 15, "color": "white"},
+		{"x": 200, "y": 350, "width": 100, "height": 15, "color": "black"},
+		{"x": 200, "y": 275, "width": 100, "height": 15, "color": "white"},
+		{"x": 200, "y": 200, "width": 100, "height": 15, "color": "black"},
+		{"x": 200, "y": 125, "width": 100, "height": 15, "color": "white"},
+		
+		{"x": 180, "y": 35, "width": 140, "height": 25},
+		{"x": 200, "y": 50, "width": 100, "height": 15, "color": "gold"}
+	]
+}

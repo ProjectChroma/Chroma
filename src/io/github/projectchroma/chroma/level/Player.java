@@ -81,9 +81,9 @@ public class Player extends LevelElement{
 			
 			if(bounds.intersects(element.getBounds())){
 				if(element.getColor().equals(Colors.gold)){
-					System.out.println("TODO win");
+					Chroma.instance().enterState(Chroma.instance().getCurrentStateID()+1);//Next level
 				}else if(element.getColor().equals(Colors.red)){
-					System.out.println("TODO lose");
+					Chroma.instance().enterState(Chroma.instance().getCurrentStateID());//Restart
 				}else if(element.getColor().equals(Colors.orange)){
 					speedX = VX_HIGH;
 				}else if(element.getColor().equals(Colors.blue)){

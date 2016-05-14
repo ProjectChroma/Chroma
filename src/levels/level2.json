@@ -1,0 +1,11 @@
+{
+	"name": "Take Flight",
+	"playerStart": {
+		"x": 100,
+		"y": 500
+	},
+	"blocks": [
+		{"x": 530, "y": 505, "width": 140, "height": 25, "color": "black"},
+		{"x": 550, "y": 500, "width": 100, "height": 15, "color": "gold"}
+	]
+}

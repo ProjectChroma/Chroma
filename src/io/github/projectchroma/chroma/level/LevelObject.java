@@ -7,7 +7,7 @@ import com.google.gson.Gson;
 
 public class LevelObject{
 	private static Gson gson = new Gson();
-	public int id;
+	public String name;
 	public List<BlockObject> blocks;
 	public PointObject playerStart;
 	private LevelObject(){}

@@ -13,16 +13,17 @@ import io.github.projectchroma.chroma.util.Colors;
 
 public class LevelState extends BaseGameState{
 	private String path;
+	private String name;
 	private float playerX, playerY;
 	private LevelElement[] elements;
-	public LevelState(String path){
-		super(0);
-		this.path = path;
+	public LevelState(int id){
+		super(id);
+		this.path = "/levels/level" + id + ".json";
 	}
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException{
 		LevelObject level = LevelObject.read(path);
-		id = level.id;
+		name = level.name;
 		playerX = level.playerStart.x;
 		playerY = level.playerStart.y;
 		
@@ -38,11 +39,14 @@ public class LevelState extends BaseGameState{
 			else
 				elements[i++] = new Block(block.x, block.y, block.width, block.height, Colors.byName(block.color));
 		}
+	
 	}
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException{
 		g.setColor(Chroma.instance().background());
 		g.fillRect(0, 0, Chroma.WINDOW_WIDTH, Chroma.WINDOW_HEIGHT);//Draw background
+		g.setColor(Chroma.instance().foreground());
+		g.drawString(name, Block.WALL_WIDTH, 0);
 		for(LevelElement element : elements){
 			if(!element.getColor().equals(Chroma.instance().background())) element.render(container, g);
 		}
@@ -60,6 +64,7 @@ public class LevelState extends BaseGameState{
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException{
 		Chroma.instance().player().moveTo(playerX, playerY);
 		Chroma.instance().player().resetKinematics();
+		Chroma.instance().setScheme(true);
 	}
 	@Override
 	public void leave(GameContainer container, StateBasedGame game) throws SlickException{}

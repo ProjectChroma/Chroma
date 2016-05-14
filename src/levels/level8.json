@@ -1,0 +1,25 @@
+{
+	"name": "Life in the Fast Lane",
+	"playerStart": {
+		"x": 100,
+		"y": 530
+	},
+	"blocks": [
+		{"x": 200, "y": 580, "width": 585, "height": 5, "color": "white"},
+		{"x": 200, "y": 585, "width": 585, "height": 15, "color": "blue"},
+		
+		{"x": 15, "y": 495, "width": 685, "height": 15, "color": "orange"},
+		
+		{"x": 100, "y": 400, "width": 685, "height": 5, "color": "white"},
+		{"x": 100, "y": 405, "width": 685, "height": 15, "color": "blue"},
+		
+		{"x": 15, "y": 315, "width": 685, "height": 15, "color": "orange"},
+		
+		{"x": 100, "y": 220, "width": 685, "height": 5, "color": "white"},
+		{"x": 100, "y": 225, "width": 685, "height": 15, "color": "blue"},
+		
+		{"x": 15, "y": 135, "width": 685, "height": 15, "color": "orange"},
+		
+		{"x": 15, "y": 60, "width": 15, "height": 75, "color": "gold"}
+	]
+}

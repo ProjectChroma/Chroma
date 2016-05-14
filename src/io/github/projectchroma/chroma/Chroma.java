@@ -22,6 +22,7 @@ public class Chroma extends StateBasedGame{
 	public static final boolean DEBUG_MODE = false;
 	public static final int WINDOW_WIDTH = 800, WINDOW_HEIGHT = 600;
 	private static final Chroma instance = new Chroma();
+	private static final int NUM_LEVELS = 9;
 	
 	private Player player;
 	private boolean scheme = true;//True for light color scheme, false for dark color scheme
@@ -33,7 +34,13 @@ public class Chroma extends StateBasedGame{
 
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException{
-		addState(new LevelState("/levels/debug.json"));
+		for(int i=0; i<NUM_LEVELS; i++){
+			addState(new LevelState(i));
+		}
+		
+		addState(new GameEndState(NUM_LEVELS));//Add game end after all of the levels
+		
+		enterState(1);//Go to first level
 	}
 	
 	public Color foreground(){
@@ -44,6 +51,12 @@ public class Chroma extends StateBasedGame{
 	}
 	public void toggleScheme(){
 		scheme = !scheme;
+	}
+	public void setScheme(boolean light){
+		scheme = light;
+	}
+	public boolean getScheme(){
+		return scheme;
 	}
 	public Player player(){
 		return player;

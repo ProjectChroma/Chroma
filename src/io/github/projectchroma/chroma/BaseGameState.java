@@ -4,7 +4,7 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.state.GameState;
 
 public abstract class BaseGameState implements GameState{
-	protected int id;
+	protected final int id;
 	protected BaseGameState(int id){
 		this.id = id;
 	}
