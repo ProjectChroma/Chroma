@@ -61,7 +61,7 @@ public class Player extends LevelElement{
 		translate(vX, vY);
 		
 		for(LevelElement element : state.elements()){
-			if(element == this || element.getColor().equals(Chroma.instance().background())) continue;
+			if(element == this || !element.isTangible()) continue;
 			if(collisionBoxes[0].intersects(element.getBounds())){//Collision above
 				if(vY <= 0) setTop(element.getBottom());
 				if(vY < 0) vY = 0;//Stop moving up

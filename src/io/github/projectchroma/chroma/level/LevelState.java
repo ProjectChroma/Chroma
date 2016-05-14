@@ -9,6 +9,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import io.github.projectchroma.chroma.BaseGameState;
 import io.github.projectchroma.chroma.Chroma;
 import io.github.projectchroma.chroma.level.LevelObject.BlockObject;
+import io.github.projectchroma.chroma.level.LevelObject.HintObject;
 import io.github.projectchroma.chroma.util.Colors;
 
 public class LevelState extends BaseGameState{
@@ -27,17 +28,17 @@ public class LevelState extends BaseGameState{
 		playerX = level.playerStart.x;
 		playerY = level.playerStart.y;
 		
-		elements = new LevelElement[level.blocks.size() + 4];//The blocks, three barriers, and the player
+		elements = new LevelElement[level.blocks.size() + level.hints.size() + 4];//The blocks, the hints, three barriers, and the player
 		elements[0] = new Block(0, Chroma.WINDOW_HEIGHT - Block.WALL_WIDTH, Chroma.WINDOW_WIDTH, Block.WALL_WIDTH);//Floor
 		elements[1] = new Block(0, 0, Block.WALL_WIDTH, Chroma.WINDOW_HEIGHT);//Left wall
 		elements[2] = new Block(Chroma.WINDOW_WIDTH - Block.WALL_WIDTH, 0, Block.WALL_WIDTH, Chroma.WINDOW_HEIGHT);//Right wall
 		elements[3] = Chroma.instance().player();
 		int i = 4;
 		for(BlockObject block : level.blocks){
-			if(block.color == null)
-				elements[i++] = new Block(block.x, block.y, block.width, block.height);
-			else
-				elements[i++] = new Block(block.x, block.y, block.width, block.height, Colors.byName(block.color));
+			elements[i++] = new Block(block.x, block.y, block.width, block.height, Colors.byName(block.color));
+		}
+		for(HintObject hint : level.hints){
+			elements[i++] = new Hint(hint.text, Colors.byName(hint.color), hint.x, hint.y);
 		}
 		
 	}

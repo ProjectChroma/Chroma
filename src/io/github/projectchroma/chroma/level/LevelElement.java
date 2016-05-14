@@ -24,6 +24,7 @@ public abstract class LevelElement{
 	}
 	public abstract void update(GameContainer container, int delta) throws SlickException;
 	public void render(GameContainer container, Graphics g) throws SlickException{
+		if(bounds == null) return;
 		g.setColor(getColor());
 		g.fill(bounds);
 	}
@@ -54,6 +55,9 @@ public abstract class LevelElement{
 	}
 	public Shape getBounds(){
 		return bounds;
+	}
+	public boolean isTangible(){
+		return bounds != null && !getColor().equals(Chroma.instance().background());
 	}
 	public Color getColor(){
 		return color == null ? Chroma.instance().foreground() : color;
