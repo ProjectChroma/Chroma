@@ -1,4 +1,4 @@
-package io.github.projectchroma.chroma;
+package io.github.projectchroma.chroma.level;
 
 import static io.github.projectchroma.chroma.util.RectangleUtils.fromDimensions;
 
@@ -9,9 +9,10 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 
+import io.github.projectchroma.chroma.Chroma;
 import io.github.projectchroma.chroma.util.Colors;
 
-public class Player extends GamePiece{
+public class Player extends LevelElement{
 	/**
 	 * Size of box used for collision detection. Collisions will be detected if
 	 * the edge of the colliding object is within this far of the edge of the
@@ -41,54 +42,51 @@ public class Player extends GamePiece{
 	private boolean landed = false;
 	
 	public Player(){
-		super(100, 500, 50, 50);
-		
-		float w = getWidth() - 2 * HITBOX, h = getHeight() - 2 * HITBOX;
-		collisionBoxes[0] = fromDimensions(getLeft() + HITBOX, getTop()-1, w, HITBOX);//Top
-		collisionBoxes[1] = fromDimensions(getRight()+1, getTop() + HITBOX, -HITBOX, h);//Right
-		collisionBoxes[2] = fromDimensions(getLeft() + HITBOX, getBottom()+1, w, -HITBOX);//Bottom
-		collisionBoxes[3] = fromDimensions(getLeft()-1, getTop() + HITBOX, HITBOX, h);//Left
+		super(0, 0, 50, 50);
+		moveTo(0, 0);
+		resetKinematics();
 	}
 	
 	public void update(GameContainer container, int delta) throws SlickException{
+		LevelState state = (LevelState)Chroma.instance().getCurrentState();
 		float oldX = bounds.getX(), oldY = bounds.getY();
 		
 		landed = false;
 		float speedX = VX;
 		translate(vX, vY);
 		
-		for(GamePiece piece : Chroma.instance().pieces()){
-			if(piece == this || piece.getColor().equals(Chroma.instance().background())) continue;
-			if(collisionBoxes[0].intersects(piece.bounds)){//Collision above
-				if(vY <= 0) setTop(piece.getBottom());
+		for(LevelElement element : state.elements()){
+			if(element == this || element.getColor().equals(Chroma.instance().background())) continue;
+			if(collisionBoxes[0].intersects(element.getBounds())){//Collision above
+				if(vY <= 0) setTop(element.getBottom());
 				if(vY < 0) vY = 0;//Stop moving up
 				if(aY < 0) aY = 0;//Stop accelerating up
 			}
-			if(collisionBoxes[1].intersects(piece.bounds)){//Collision on right side
-				if(vX >= 0) setRight(piece.getLeft());
+			if(collisionBoxes[1].intersects(element.getBounds())){//Collision on right side
+				if(vX >= 0) setRight(element.getLeft());
 				if(vX > 0) vX = 0;//Stop moving right
 				if(aX > 0) aX = 0;//Stop accelerating right
 			}
-			if(collisionBoxes[2].intersects(piece.bounds)){//Collision below
+			if(collisionBoxes[2].intersects(element.getBounds())){//Collision below
 				landed = true;
-				if(vY >= 0) setBottom(piece.getTop());
+				if(vY >= 0) setBottom(element.getTop());
 				if(vY > 0) vY = 0;//Stop moving down
 				if(aY > 0) aY = 0;//Stop accelerating down
 			}
-			if(collisionBoxes[3].intersects(piece.bounds)){//Collision on left side
-				if(vX <= 0) setLeft(piece.getRight());
+			if(collisionBoxes[3].intersects(element.getBounds())){//Collision on left side
+				if(vX <= 0) setLeft(element.getRight());
 				if(vX < 0) vX = 0;//Stop moving left
 				if(aX < 0) aX = 0;//Stop accelerating left
 			}
 			
-			if(bounds.intersects(piece.bounds)){
-				if(piece.getColor().equals(Colors.GOAL)){
+			if(bounds.intersects(element.getBounds())){
+				if(element.getColor().equals(Colors.gold)){
 					System.out.println("TODO win");
-				}else if(piece.getColor().equals(Colors.HAZARD)){
+				}else if(element.getColor().equals(Colors.red)){
 					System.out.println("TODO lose");
-				}else if(piece.getColor().equals(Colors.SPEED_UP)){
+				}else if(element.getColor().equals(Colors.orange)){
 					speedX = VX_HIGH;
-				}else if(piece.getColor().equals(Colors.SPEED_DOWN)){
+				}else if(element.getColor().equals(Colors.blue)){
 					speedX = VX_LOW;
 				}
 			}
@@ -98,9 +96,12 @@ public class Player extends GamePiece{
 		for(Rectangle collisionBox : collisionBoxes)
 			collisionBox.setLocation(collisionBox.getX() + dx, collisionBox.getY() + dy);
 		
-		if(container.getInput().isKeyDown(Input.KEY_LEFT)) vX = -speedX;
-		else if(container.getInput().isKeyDown(Input.KEY_RIGHT)) vX = speedX;
-		else vX = 0;
+		if(container.getInput().isKeyDown(Input.KEY_LEFT))
+			vX = -speedX;
+		else if(container.getInput().isKeyDown(Input.KEY_RIGHT))
+			vX = speedX;
+		else
+			vX = 0;
 		
 		if(container.getInput().isKeyPressed(Input.KEY_UP) && landed) vY = VY;//keyPressed, not keyDown; only apply the velocity once
 		
@@ -115,7 +116,7 @@ public class Player extends GamePiece{
 		if(Chroma.DEBUG_MODE){
 			if(landed){
 				g.setColor(Color.cyan);
-				g.fillRect(getLeft(), getBottom()-5, getWidth(), 5);
+				g.fillRect(getLeft(), getBottom() - 5, getWidth(), 5);
 			}
 			
 			g.setColor(Color.red);
@@ -130,9 +131,26 @@ public class Player extends GamePiece{
 			g.setColor(Color.yellow);
 			g.fill(collisionBoxes[3]);
 			
-			g.setColor(Color.black);
-			g.drawString(vX + "", getLeft(), getTop());
-			g.drawString(vY + "", getLeft(), getTop() + g.getFont().getLineHeight());
+			g.setColor(Chroma.instance().background());
+			g.drawString(getLeft() + "", getLeft(), getTop());
+			g.drawString(getTop() + "", getLeft(), getTop() + g.getFont().getLineHeight());
 		}
+	}
+	public void moveTo(float x, float y){
+		setLeft(x);
+		setTop(y);
+		
+		float w = getWidth() - 2 * HITBOX, h = getHeight() - 2 * HITBOX;
+		collisionBoxes[0] = fromDimensions(getLeft() + HITBOX, getTop() - 1, w, HITBOX);//Top
+		collisionBoxes[1] = fromDimensions(getRight() + 1, getTop() + HITBOX, -HITBOX, h);//Right
+		collisionBoxes[2] = fromDimensions(getLeft() + HITBOX, getBottom() + 1, w, -HITBOX);//Bottom
+		collisionBoxes[3] = fromDimensions(getLeft() - 1, getTop() + HITBOX, HITBOX, h);//Left
+	}
+
+	public void resetKinematics(){
+		vX = 0;
+		vY = 0;
+		aX = 0;
+		aY = gravity;
 	}
 }

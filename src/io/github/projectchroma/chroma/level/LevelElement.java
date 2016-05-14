@@ -1,4 +1,4 @@
-package io.github.projectchroma.chroma;
+package io.github.projectchroma.chroma.level;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -7,16 +7,18 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 
-public abstract class GamePiece{
+import io.github.projectchroma.chroma.Chroma;
+
+public abstract class LevelElement{
 	protected Shape bounds;
 	protected Color color;
-	protected GamePiece(float x, float y, float width, float height, Color c){
+	protected LevelElement(float x, float y, float width, float height, Color c){
 		this(new Rectangle(x, y, width, height), c);
 	}
-	protected GamePiece(float x, float y, float width, float height){
+	protected LevelElement(float x, float y, float width, float height){
 		this(new Rectangle(x, y, width, height), null);
 	}
-	protected GamePiece(Shape bounds, Color color){
+	protected LevelElement(Shape bounds, Color color){
 		this.bounds = bounds;
 		this.color = color;
 	}
@@ -81,7 +83,6 @@ public abstract class GamePiece{
 	}
 	
 	public String toString(){
-		return getClass().getCanonicalName() + "@(" + getCenterX() + "," + getCenterY() + ")["
-				+ getWidth() + "x" + getHeight() + "]";
+		return getClass().getCanonicalName() + "@(" + getTop() + "," + getLeft() + ")[" + getWidth() + "x" + getHeight() + "]";
 	}
 }
