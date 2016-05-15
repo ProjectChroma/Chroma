@@ -9,3 +9,6 @@ lib/
 
 #Screenshots from game
 screenshots/
+
+#Random file storage
+misc/

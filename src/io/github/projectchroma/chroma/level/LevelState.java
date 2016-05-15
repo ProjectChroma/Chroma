@@ -1,5 +1,6 @@
 package io.github.projectchroma.chroma.level;
 
+import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -13,13 +14,15 @@ import io.github.projectchroma.chroma.level.LevelObject.HintObject;
 import io.github.projectchroma.chroma.util.Colors;
 
 public class LevelState extends BaseGameState{
+	private static Font nameFont;
 	private String path;
 	private String name;
 	private float playerX, playerY;
 	private LevelElement[] elements;
-	public LevelState(int id){
+	public LevelState(int id){this(id, "level" + id);}
+	public LevelState(int id, String filename){
 		super(id);
-		this.path = "/levels/level" + id + ".json";
+		this.path = "/levels/" + filename + ".json";
 	}
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException{
@@ -41,10 +44,12 @@ public class LevelState extends BaseGameState{
 			elements[i++] = new Hint(hint.text, Colors.byName(hint.color), hint.x, hint.y);
 		}
 		
+		if(nameFont == null) nameFont = Chroma.instance().createFont(30F);
 	}
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException{
 		g.setColor(Chroma.instance().background());
+		g.setFont(nameFont);
 		g.fillRect(0, 0, Chroma.WINDOW_WIDTH, Chroma.WINDOW_HEIGHT);//Draw background
 		g.setColor(Chroma.instance().foreground());
 		g.drawString(name, Block.WALL_WIDTH, 0);

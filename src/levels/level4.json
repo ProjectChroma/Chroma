@@ -6,7 +6,7 @@
 	},
 	"blocks": [
 		{"x": 300, "y": 585, "width": 100, "height": 15, "color": "red"},
-		{"x": 295, "y": 580, "width": 110, "height": 5, "color": "white"},
+		{"x": 294, "y": 579, "width": 112, "height": 6, "color": "white"},
 		
 		{"x": 530, "y": 505, "width": 140, "height": 25},
 		{"x": 550, "y": 500, "width": 100, "height": 15, "color": "gold"}

@@ -17,4 +17,16 @@ public class RectangleUtils{
 		}
 		return new Rectangle(left, top, width, height);
 	}
+	public static Rectangle fromCenter(float cx, float cy, float width, float height){
+		return fromDimensions(cx - width / 2, cy - height / 2, width, height);
+	}
+	public static Rectangle grow(Rectangle rect, float addition){
+		return grow(rect, addition, addition, addition, addition);
+	}
+	public static Rectangle grow(Rectangle rect, float x, float y){
+		return grow(rect, x, x, y, y);
+	}
+	public static Rectangle grow(Rectangle rect, float left, float right, float top, float bottom){
+		return fromVertices(rect.getMinX() - left, rect.getMinY() - top, rect.getMaxX() + right, rect.getMaxY() + bottom);
+	}
 }

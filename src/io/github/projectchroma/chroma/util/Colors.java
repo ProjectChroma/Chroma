@@ -21,4 +21,10 @@ public class Colors{
 				throw new SlickException("Error reading color " + color, ex);
 			}
 	}
+	public static java.awt.Color awtColor(Color color){
+		return new java.awt.Color(color.r, color.g, color.b, color.a);
+	}
+	public static Color[] values(){
+		return new Color[]{black, white, red, gold, orange, blue};
+	}
 }
