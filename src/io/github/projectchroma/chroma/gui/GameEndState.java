@@ -6,6 +6,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 import io.github.projectchroma.chroma.Chroma;
+import io.github.projectchroma.chroma.SwipeTransition;
 import io.github.projectchroma.chroma.util.Colors;
 
 public class GameEndState extends GUIState{
@@ -16,7 +17,7 @@ public class GameEndState extends GUIState{
 	public void init(GameContainer container, StateBasedGame game) throws SlickException{
 		add(new Button(buttonArea(center, 8), "Back to Menu", Colors.gold.darker()){
 			public void onclick(){
-				game.enterState(MainMenuState.ID);
+				game.enterState(MainMenuState.ID, null, new SwipeTransition(SwipeTransition.LEFT));
 			}
 		});
 	}

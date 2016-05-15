@@ -10,7 +10,8 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 
 import io.github.projectchroma.chroma.Chroma;
-import io.github.projectchroma.chroma.LevelEndTransition;
+import io.github.projectchroma.chroma.LevelExitTransition;
+import io.github.projectchroma.chroma.SwipeTransition;
 import io.github.projectchroma.chroma.util.Colors;
 
 public class Player extends LevelElement{
@@ -86,9 +87,9 @@ public class Player extends LevelElement{
 			
 			if(bounds.intersects(element.getBounds())){
 				if(element.getColor().equals(Colors.gold)){
-					Chroma.instance().enterState(Chroma.instance().getCurrentStateID() + 1, new LevelEndTransition(true), null);//Next level
+					Chroma.instance().enterState(Chroma.instance().getCurrentStateID() + 1, new LevelExitTransition(true), new SwipeTransition(SwipeTransition.RIGHT));//Next level
 				}else if(element.getColor().equals(Colors.red)){
-					Chroma.instance().enterState(Chroma.instance().getCurrentStateID(), new LevelEndTransition(false), null);//Restart
+					Chroma.instance().enterState(Chroma.instance().getCurrentStateID(), new LevelExitTransition(false), null);//Restart
 				}else if(element.getColor().equals(Colors.orange)){
 					speedX = VX_HIGH;
 				}else if(element.getColor().equals(Colors.blue)){

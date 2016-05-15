@@ -30,8 +30,7 @@ public class Chroma extends StateBasedGame{
 	 * </ul>
 	 */
 	public static final boolean DEBUG_MODE = false;
-	public static final int WINDOW_WIDTH = 800, WINDOW_HEIGHT = 600;
-	private static final int NUM_LEVELS = 9;
+	public static final int WINDOW_WIDTH = 800, WINDOW_HEIGHT = 600, NUM_LEVELS = 9, FPS = 100;
 	private static Chroma instance;
 	
 	private Font javaFont;
@@ -100,7 +99,7 @@ public class Chroma extends StateBasedGame{
 			instance = new Chroma();
 			AppGameContainer app = new AppGameContainer(instance);
 			app.setDisplayMode(WINDOW_WIDTH, WINDOW_HEIGHT, false);//Width, height, fullscreen
-			app.setTargetFrameRate(DEBUG_MODE ? 25 : 100);//Defaults to as many as possible, which is ~3000 on a medium-good PC
+			app.setTargetFrameRate(DEBUG_MODE ? 25 : FPS);
 			app.setShowFPS(DEBUG_MODE);//Hide FPS counter
 			app.setIcons(new String[]{"assets/icon32.png", "assets/icon24.png", "assets/icon16.png"});
 			app.start();
