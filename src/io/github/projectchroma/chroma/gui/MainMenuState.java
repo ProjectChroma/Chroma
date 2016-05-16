@@ -6,6 +6,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 import io.github.projectchroma.chroma.Chroma;
+import io.github.projectchroma.chroma.Resources;
 import io.github.projectchroma.chroma.SwipeTransition;
 import io.github.projectchroma.chroma.util.Colors;
 
@@ -16,7 +17,7 @@ public class MainMenuState extends GUIState{
 	}
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException{
-		RenderedImage logo = new RenderedImage(getImage("logo.png"), 0, 100, 100, 100);
+		RenderedImage logo = new RenderedImage(Resources.loadImage("logo.png"), 0, 100, 100, 100);
 		RenderedText title = new RenderedText("Chroma", Chroma.instance().createFont(50F), 100, 100, Color.black);
 		float totalWidth = logo.getWidth() + MARGIN + title.getWidth();
 		logo.setLeft(CENTER - totalWidth/2);

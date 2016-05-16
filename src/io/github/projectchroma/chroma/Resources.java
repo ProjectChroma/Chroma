@@ -5,6 +5,7 @@ import java.awt.FontFormatException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
@@ -12,7 +13,6 @@ import org.newdawn.slick.util.ResourceLoader;
 
 import com.google.gson.Gson;
 
-import io.github.projectchroma.chroma.gui.GUIState;
 import io.github.projectchroma.chroma.level.LevelObject;
 
 public class Resources {
@@ -24,7 +24,6 @@ public class Resources {
 	}
 	public static Font loadFont(String name) throws SlickException{
 		try{
-			Resources.class.getResourceAsStream(null);
 			return Font.createFont(Font.TRUETYPE_FONT, ResourceLoader.getResourceAsStream(getFontPath(name)));
 		}catch(IOException | FontFormatException ex){
 			throw new SlickException("Error loading font " + name, ex);
@@ -41,8 +40,11 @@ public class Resources {
 	}
 	public static Texture loadTexture(String name, String format) throws SlickException{
 		try{
-			return TextureLoader.getTexture(format, GUIState.class.getResourceAsStream(getTexturePath(name)));
+			return TextureLoader.getTexture(format, ResourceLoader.getResourceAsStream(getTexturePath(name)));
 		}catch(IOException ex){throw new SlickException("Error reading texture " + name + '@' + format, ex);}
+	}
+	public static Image loadImage(String name) throws SlickException{
+		return new Image(loadTexture(name));
 	}
 	public static String getLevelPath(int id){
 		return getLevelPath("level" + id + ".json");

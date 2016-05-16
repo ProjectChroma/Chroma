@@ -6,14 +6,12 @@ import java.util.List;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.StateBasedGame;
 
 import io.github.projectchroma.chroma.BaseGameState;
 import io.github.projectchroma.chroma.Chroma;
-import io.github.projectchroma.chroma.Resources;
 import io.github.projectchroma.chroma.util.RectangleUtils;
 
 public abstract class GUIState extends BaseGameState{
@@ -36,9 +34,6 @@ public abstract class GUIState extends BaseGameState{
 		else if(column == right) cx = RIGHT_CENTER;
 		else cx = CENTER;
 		return RectangleUtils.fromCenter(cx, cy, w, BUTTON_HEIGHT);
-	}
-	protected Image getImage(String name) throws SlickException{
-		return new Image(Resources.loadTexture(name));
 	}
 	protected void add(GUIElement element){
 		elements.add(element);
