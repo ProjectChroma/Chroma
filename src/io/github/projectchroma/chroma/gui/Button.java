@@ -24,6 +24,12 @@ public abstract class Button extends GUIElement{
 	public Button(Rectangle area, String text, Color bgHover) throws SlickException{
 		this(area, text, null, null, null, bgHover, null);
 	}
+	public Button(Rectangle area, String text, Font font, Color bgHover) throws SlickException{
+		this(area, text, font, null, null, bgHover, null);
+	}
+	public Button(Rectangle area, String text, Font font, Color bg, Color bgHover) throws SlickException{
+		this(area, text, font, bg, null, bgHover, null);
+	}
 	public Button(Rectangle area, String text, Font font, Color bg, Color border, Color bgHover, Color fg) throws SlickException{
 		this.area = area;
 		this.text = text;
@@ -50,4 +56,53 @@ public abstract class Button extends GUIElement{
 		if(oldMouseDown && !mouseDown) onclick();//Activate on release to switching to a screen and immediately pressing a button
 	}
 	public abstract void onclick() throws SlickException;
+	
+	public float getLeft(){
+		return area.getMinX();
+	}
+	public float getTop(){
+		return area.getMinY();
+	}
+	public float getCenterX(){
+		return area.getCenterX();
+	}
+	public float getCenterY(){
+		return area.getCenterY();
+	}
+	public float getRight(){
+		return area.getMaxX();
+	}
+	public float getBottom(){
+		return area.getMaxY();
+	}
+	public float getWidth(){
+		return area.getWidth();
+	}
+	public float getHeight(){
+		return area.getHeight();
+	}
+	public void setLeft(float x){
+		area.setX(x);
+	}
+	public void setTop(float y){
+		area.setY(y);
+	}
+	public void setCenterX(float x){
+		area.setCenterX(x);
+	}
+	public void setCenterY(float y){
+		area.setCenterY(y);
+	}
+	public void setRight(float x){
+		area.setX(x - area.getWidth());
+	}
+	public void setBottom(float y){
+		area.setY(y - area.getHeight());
+	}
+	public void setWidth(float width){
+		area.setWidth(width);
+	}
+	public void setHeight(float height){
+		area.setHeight(height);
+	}
 }

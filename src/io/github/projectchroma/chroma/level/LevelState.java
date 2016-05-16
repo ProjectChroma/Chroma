@@ -59,7 +59,7 @@ public class LevelState extends BaseGameState{
 	}
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException{
-		if(container.getInput().isKeyPressed(Input.KEY_P)) container.setPaused(!container.isPaused());
+		if(container.getInput().isKeyPressed(Input.KEY_P)) game.enterState(PausedState.ID, null, new PausedState.Enter());
 		if(!container.isPaused()){
 			for(LevelElement element : elements)
 				element.update(container, delta);
@@ -68,6 +68,9 @@ public class LevelState extends BaseGameState{
 	}
 	@Override
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException{
+		if(!(Chroma.instance().previousState() instanceof PausedState)) restart();
+	}
+	public void restart(){
 		Chroma.instance().player().moveTo(playerX, playerY);
 		Chroma.instance().player().resetKinematics();
 		Chroma.instance().setScheme(true);

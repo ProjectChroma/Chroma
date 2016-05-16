@@ -10,13 +10,16 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.font.effects.ColorEffect;
+import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.transition.Transition;
 import org.newdawn.slick.util.ResourceLoader;
 
 import io.github.projectchroma.chroma.gui.GameEndState;
 import io.github.projectchroma.chroma.gui.MainMenuState;
 import io.github.projectchroma.chroma.gui.SettingsMenuState;
 import io.github.projectchroma.chroma.level.LevelState;
+import io.github.projectchroma.chroma.level.PausedState;
 import io.github.projectchroma.chroma.level.Player;
 import io.github.projectchroma.chroma.util.Colors;
 
@@ -34,9 +37,9 @@ public class Chroma extends StateBasedGame{
 	private static Chroma instance;
 	
 	private Font javaFont;
-	
 	private Player player;
 	private boolean scheme = true;//True for light color scheme, false for dark color scheme
+	private GameState prevState = null;
 	
 	private Chroma() throws SlickException{
 		super("Chroma");
@@ -54,7 +57,13 @@ public class Chroma extends StateBasedGame{
 		addState(new SettingsMenuState());
 		for(int i = 1; i <= NUM_LEVELS; i++)
 			addState(new LevelState(i));
+		addState(PausedState.instance);
 		addState(new GameEndState(NUM_LEVELS + 1));//Add game end after all levels
+	}
+	@Override
+	public void enterState(int id, Transition leave, Transition enter){
+		prevState = getCurrentState();
+		super.enterState(id, leave, enter);
 	}
 	
 	public Color foreground(){
@@ -89,6 +98,9 @@ public class Chroma extends StateBasedGame{
 		
 		ret.loadGlyphs();
 		return ret;
+	}
+	public GameState previousState(){
+		return prevState;
 	}
 	
 	public static Chroma instance(){

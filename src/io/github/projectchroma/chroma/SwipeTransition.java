@@ -28,14 +28,14 @@ public class SwipeTransition implements Transition{
 		prev.render(container, game, g);
 		g.translate(Chroma.WINDOW_WIDTH * -direction, 0);
 		next.render(container, game, g);
-		g.resetTransform();
+		g.translate(-translation * direction, 0);
 		g.translate(0, Chroma.WINDOW_HEIGHT);//Hide the actual level by pushing it off the bottom of the screen
 		
 	}
 	
 	@Override
 	public void postRender(StateBasedGame game, GameContainer container, Graphics g) throws SlickException{
-		g.resetTransform();//Reset so that the level is now rendered
+		g.translate(0, -Chroma.WINDOW_HEIGHT);//Reset so that the level is now rendered
 	}
 	
 	@Override
