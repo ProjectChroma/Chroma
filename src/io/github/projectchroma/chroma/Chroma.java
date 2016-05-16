@@ -1,8 +1,6 @@
 package io.github.projectchroma.chroma;
 
 import java.awt.Font;
-import java.awt.FontFormatException;
-import java.io.IOException;
 
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.Color;
@@ -13,7 +11,6 @@ import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.Transition;
-import org.newdawn.slick.util.ResourceLoader;
 
 import io.github.projectchroma.chroma.gui.GameEndState;
 import io.github.projectchroma.chroma.gui.MainMenuState;
@@ -44,11 +41,7 @@ public class Chroma extends StateBasedGame{
 	private Chroma() throws SlickException{
 		super("Chroma");
 		player = new Player();
-		try{
-			javaFont = Font.createFont(Font.TRUETYPE_FONT, ResourceLoader.getResourceAsStream("assets/mysteron.ttf"));
-		}catch(FontFormatException | IOException ex){
-			throw new SlickException("Error loading font assets/plasmatic.ttf", ex);
-		}
+		javaFont = Resources.loadFont("mysteron.ttf");
 	}
 	
 	@Override

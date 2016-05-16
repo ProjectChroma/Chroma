@@ -9,24 +9,22 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import io.github.projectchroma.chroma.BaseGameState;
 import io.github.projectchroma.chroma.Chroma;
+import io.github.projectchroma.chroma.Resources;
 import io.github.projectchroma.chroma.level.LevelObject.BlockObject;
 import io.github.projectchroma.chroma.level.LevelObject.HintObject;
 import io.github.projectchroma.chroma.util.Colors;
 
 public class LevelState extends BaseGameState{
 	private static Font nameFont;
-	private String path;
 	private String name;
 	private float playerX, playerY;
 	private LevelElement[] elements;
-	public LevelState(int id){this(id, "level" + id);}
-	public LevelState(int id, String filename){
+	public LevelState(int id){
 		super(id);
-		this.path = "/levels/" + filename + ".json";
 	}
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException{
-		LevelObject level = LevelObject.read(path);
+		LevelObject level = Resources.loadLevel(id);
 		name = level.name;
 		playerX = level.playerStart.x;
 		playerY = level.playerStart.y;

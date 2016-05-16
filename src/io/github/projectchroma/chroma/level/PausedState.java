@@ -151,7 +151,6 @@ public class PausedState extends BaseGameState{
 		public void init(GameState firstState, GameState secondState){
 			instance.area.setCenterY(instance.yEnd);
 			newState = secondState;
-			System.out.println(newState.getClass().getSimpleName());
 		}
 	}
 }

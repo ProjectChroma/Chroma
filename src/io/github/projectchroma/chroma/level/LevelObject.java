@@ -1,13 +1,9 @@
 package io.github.projectchroma.chroma.level;
 
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gson.Gson;
-
 public class LevelObject{
-	private static Gson gson = new Gson();
 	public String name;
 	public List<BlockObject> blocks;
 	public PointObject playerStart;
@@ -25,8 +21,5 @@ public class LevelObject{
 		public float x, y;
 		public String text;
 		public String color;
-	}
-	public static LevelObject read(String path){
-		return gson.fromJson(new InputStreamReader(LevelObject.class.getResourceAsStream(path)), LevelObject.class);
 	}
 }

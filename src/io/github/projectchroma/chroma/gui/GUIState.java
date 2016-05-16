@@ -1,6 +1,5 @@
 package io.github.projectchroma.chroma.gui;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,12 +9,11 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.opengl.Texture;
-import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.state.StateBasedGame;
 
 import io.github.projectchroma.chroma.BaseGameState;
 import io.github.projectchroma.chroma.Chroma;
+import io.github.projectchroma.chroma.Resources;
 import io.github.projectchroma.chroma.util.RectangleUtils;
 
 public abstract class GUIState extends BaseGameState{
@@ -39,16 +37,8 @@ public abstract class GUIState extends BaseGameState{
 		else cx = CENTER;
 		return RectangleUtils.fromCenter(cx, cy, w, BUTTON_HEIGHT);
 	}
-	protected Texture getTexture(String name) throws SlickException{
-		String format;
-		if(name.contains(".")) format = name.substring(name.lastIndexOf('.')+1).toUpperCase();
-		else format = "PNG";
-		try{
-			return TextureLoader.getTexture(format, GUIState.class.getResourceAsStream("/assets/" + name));
-		}catch(IOException ex){throw new SlickException("Error reading texture " + name + '@' + format, ex);}
-	}
 	protected Image getImage(String name) throws SlickException{
-		return new Image(getTexture(name));
+		return new Image(Resources.loadTexture(name));
 	}
 	protected void add(GUIElement element){
 		elements.add(element);
