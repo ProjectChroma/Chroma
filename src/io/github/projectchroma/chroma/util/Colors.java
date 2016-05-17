@@ -7,7 +7,7 @@ public class Colors{
 	public static final Color black = Color.black, white = Color.white;
 	public static final Color red = Color.red;
 	public static final Color gold = Color.yellow.darker(0.2F);
-	public static final Color orange = Color.orange;
+	public static final Color orange = Color.orange.darker(0.3F);
 	public static final Color blue = Color.blue;
 	public static Color byName(String color) throws SlickException{
 		if(color == null)

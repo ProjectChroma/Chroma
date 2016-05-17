@@ -1,27 +1,31 @@
 {
-	"name": "Access Tunnel",
+	"name": "Life in the Fast Lane",
 	"playerStart": {
 		"x": 100,
-		"y": 300
+		"y": 530
 	},
 	"blocks": [
-		{"x": 15, "y": 585, "width": 770, "height": 15, "color": "red"},
-		{"x": 15, "y": 400, "width": 200, "height": 15},
-		{"x": 215, "y": 400, "width": 75, "height": 15, "color": "black"},
-		{"x": 290, "y": 400, "width": 220, "height": 15},
-		{"x": 390, "y": 150, "width": 20, "height": 250},
-		{"x": 510, "y": 400, "width": 75, "height": 15, "color": "white"},
-		{"x": 585, "y": 400, "width": 200, "height": 15},
-		{"x": 670, "y": 400, "width": 100, "height": 15, "color": "gold"},
+		{"x": 200, "y": 580, "width": 585, "height": 5, "color": "white"},
+		{"x": 200, "y": 585, "width": 585, "height": 15, "color": "blue"},
 		
-		{"x": 200, "y": 415, "width": 15, "height": 90, "color": "white"},
-		{"x": 215, "y": 490, "width": 370, "height": 15, "color": "white"},
-		{"x": 585, "y": 415, "width": 15, "height": 90, "color": "white"}
+		{"x": 15, "y": 495, "width": 685, "height": 15, "color": "orange"},
+		
+		{"x": 100, "y": 400, "width": 685, "height": 5, "color": "white"},
+		{"x": 100, "y": 405, "width": 685, "height": 15, "color": "blue"},
+		
+		{"x": 15, "y": 315, "width": 685, "height": 15, "color": "orange"},
+		
+		{"x": 100, "y": 220, "width": 685, "height": 5, "color": "white"},
+		{"x": 100, "y": 225, "width": 685, "height": 15, "color": "blue"},
+		
+		{"x": 15, "y": 135, "width": 685, "height": 15, "color": "orange"},
+		
+		{"x": 15, "y": 60, "width": 15, "height": 75, "color": "gold"}
 	],
 	"hints": [
-		{"x": 50, "y": 300, "text": "Some blocks won't budge\nwhen you change schemes"},
-		{"x": 200, "y": 375, "color": "black", "text": "Some will disappear"},
-		{"x": 230, "y": 510, "color": "white", "text": "Some will appear out of nowhere"},
-		{"x": 425, "y": 375, "color": "white", "text": "Time this jump (and switch) carefully"}
+		{"x": 250, "y": 530, "text": "Blue slows you down"},
+		{"x": 65, "y":  445, "text": "Orange speeds you up"},
+		{"x": 200, "y": 175, "color": "black", "text": "Switching schemes might be advantageous"},
+		{"x": 200, "y": 175, "color": "white", "text": "Switching schemes will be helpful in unexpected places"}
 	]
 }

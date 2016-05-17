@@ -24,11 +24,11 @@ public class Player extends LevelElement{
 	/**
 	 * Acceleration caused by gravity
 	 */
-	private static final float gravity = 0.05F;
+	private static final float gravity = 0.07F;
 	/**
 	 * Velocities during player-caused motion
 	 */
-	private static final float VX = 1.3F, VX_HIGH = 2.3F, VX_LOW = 0.9F, VY = -3F;
+	private static final float VX = 2F, VX_HIGH = 3.2F, VX_LOW = 0.9F, VY = -3.5F;
 	/**
 	 * Kinematics values for player
 	 */
