@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
@@ -17,7 +18,7 @@ import io.github.projectchroma.chroma.level.LevelObject;
 
 public class Resources {
 	private static final Gson gson = new Gson();
-	public static final String ASSET_PATH = "assets/", TEXTURE_PATH = ASSET_PATH + "textures/", FONT_PATH = ASSET_PATH + "fonts/",
+	public static final String ASSET_PATH = "assets/", TEXTURE_PATH = ASSET_PATH + "textures/", FONT_PATH = ASSET_PATH + "fonts/", SOUND_PATH = ASSET_PATH + "sounds/",
 			LEVEL_PATH = "levels/";
 	public static String getFontPath(String name){
 		return FONT_PATH + name;
@@ -46,6 +47,13 @@ public class Resources {
 	public static Image loadImage(String name) throws SlickException{
 		return new Image(loadTexture(name));
 	}
+	public static String getSoundPath(String name){
+		return SOUND_PATH + name;
+	}
+	public static Music loadMusic(String name) throws SlickException{
+		return new Music(ResourceLoader.getResourceAsStream(getSoundPath(name)), getSoundPath(name));
+	}
+	
 	public static String getLevelPath(int id){
 		return getLevelPath("level" + id + ".json");
 	}

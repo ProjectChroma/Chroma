@@ -2,10 +2,13 @@ package io.github.projectchroma.chroma;
 
 import java.io.File;
 
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.GameState;
+import org.newdawn.slick.state.StateBasedGame;
 
 import io.github.projectchroma.chroma.util.FileIO;
 
@@ -18,6 +21,28 @@ public abstract class BaseGameState implements GameState{
 	public int getID(){
 		return id;
 	}
+	
+	protected Music getMusic(){
+		return Sounds.getMenuMusic();
+	}
+	
+	@Override
+	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException{
+		if(getMusic() != null){
+			if(!getMusic().equals(Sounds.getCurrentMusic())){
+				if(Sounds.getCurrentMusic() != null) Sounds.getCurrentMusic().stop();
+				getMusic().play();
+			}
+		}else{
+			if(Sounds.getCurrentMusic() != null)
+				Sounds.getCurrentMusic().stop();
+		}
+	}
+	
+	@Override
+	public void enter(GameContainer container, StateBasedGame game) throws SlickException{}
+	@Override
+	public void leave(GameContainer container, StateBasedGame game) throws SlickException{}
 	
 	@Override
 	public void mouseWheelMoved(int change){}

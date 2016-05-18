@@ -5,6 +5,7 @@ import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.GameState;
@@ -13,6 +14,7 @@ import org.newdawn.slick.state.transition.Transition;
 
 import io.github.projectchroma.chroma.BaseGameState;
 import io.github.projectchroma.chroma.Chroma;
+import io.github.projectchroma.chroma.Sounds;
 import io.github.projectchroma.chroma.SwipeTransition;
 import io.github.projectchroma.chroma.gui.Button;
 import io.github.projectchroma.chroma.gui.MainMenuState;
@@ -86,17 +88,12 @@ public class PausedState extends BaseGameState{
 	
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException{
+		super.update(container, game, delta);
 		if(container.getInput().isKeyPressed(Input.KEY_P)) game.enterState(level.getID(), new Leave(), null);
 		resume.update(container, game, delta);
 		restart.update(container, game, delta);
 		exit.update(container, game, delta);
 	}
-	
-	@Override
-	public void enter(GameContainer container, StateBasedGame game) throws SlickException{}
-	
-	@Override
-	public void leave(GameContainer container, StateBasedGame game) throws SlickException{}
 	
 	public static class Enter implements Transition{
 		private static final float LENGTH = 500;//ms
@@ -131,6 +128,7 @@ public class PausedState extends BaseGameState{
 		}
 		@Override
 		public void update(StateBasedGame game, GameContainer container, int delta) throws SlickException{
+			
 			instance.area.setY(instance.area.getY() - rate);
 		}
 		@Override
@@ -152,5 +150,9 @@ public class PausedState extends BaseGameState{
 			instance.area.setCenterY(instance.yEnd);
 			newState = secondState;
 		}
+	}
+	@Override
+	protected Music getMusic(){
+		return Sounds.getLevelMusic();
 	}
 }

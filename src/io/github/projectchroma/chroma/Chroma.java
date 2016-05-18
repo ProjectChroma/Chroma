@@ -102,6 +102,7 @@ public class Chroma extends StateBasedGame{
 	public static void main(String[] args){
 		try{
 			instance = new Chroma();
+			Sounds.init();
 			AppGameContainer app = new AppGameContainer(instance);
 			app.setDisplayMode(WINDOW_WIDTH, WINDOW_HEIGHT, false);//Width, height, fullscreen
 			app.setTargetFrameRate(DEBUG_MODE ? 25 : FPS);

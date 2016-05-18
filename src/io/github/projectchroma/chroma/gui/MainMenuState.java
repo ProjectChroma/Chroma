@@ -41,12 +41,4 @@ public class MainMenuState extends GUIState{
 			}
 		});
 	}
-	@Override
-	public void enter(GameContainer container, StateBasedGame game) throws SlickException{
-		
-	}
-	@Override
-	public void leave(GameContainer container, StateBasedGame game) throws SlickException{
-		
-	}
 }

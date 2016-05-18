@@ -2,10 +2,12 @@ package io.github.projectchroma.chroma.gui;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 import io.github.projectchroma.chroma.Chroma;
+import io.github.projectchroma.chroma.Sounds;
 import io.github.projectchroma.chroma.SwipeTransition;
 import io.github.projectchroma.chroma.util.Colors;
 
@@ -33,7 +35,7 @@ public class GameEndState extends GUIState{
 		g.drawString(text, Chroma.WINDOW_WIDTH / 2 - g.getFont().getWidth(text) / 2, y);
 	}
 	@Override
-	public void enter(GameContainer container, StateBasedGame game) throws SlickException{}
-	@Override
-	public void leave(GameContainer container, StateBasedGame game) throws SlickException{}
+	protected Music getMusic(){
+		return Sounds.getLevelMusic();
+	}
 }
