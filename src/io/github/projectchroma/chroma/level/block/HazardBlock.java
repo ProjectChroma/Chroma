@@ -16,8 +16,8 @@ public class HazardBlock extends Block{
 	public static final String COLOR_NAME = "red";
 	public static final Color COLOR = Color.red;
 	private static Sound deathSound;
-	public HazardBlock(float x, float y, float width, float height){
-		super(x, y, width, height, COLOR);
+	public HazardBlock(float x, float y, float width, float height, Color scheme){
+		super(x, y, width, height, COLOR, scheme);
 	}
 	@Override
 	public void init(GameContainer container) throws SlickException{

@@ -10,22 +10,23 @@ import org.newdawn.slick.geom.Shape;
 import io.github.projectchroma.chroma.Chroma;
 
 public abstract class LevelElement{
-	protected Shape bounds;
-	protected Color color;
-	protected LevelElement(float x, float y, float width, float height, Color c){
-		this(new Rectangle(x, y, width, height), c);
-	}
+	protected Rectangle bounds;
+	protected Color color, scheme;
 	protected LevelElement(float x, float y, float width, float height){
-		this(new Rectangle(x, y, width, height), null);
+		this(x, y, width, height, null);
 	}
-	protected LevelElement(Shape bounds, Color color){
-		this.bounds = bounds;
+	protected LevelElement(float x, float y, float width, float height, Color color){
+		this(x, y, width, height, color, null);
+	}
+	protected LevelElement(float x, float y, float width, float height, Color color, Color scheme){
+		this.bounds = new Rectangle(x, y, width, height);
 		this.color = color;
+		this.scheme = scheme;
 	}
 	public void init(GameContainer container) throws SlickException{}
 	public abstract void update(GameContainer container, int delta) throws SlickException;
 	public void render(GameContainer container, Graphics g) throws SlickException{
-		if(bounds == null) return;
+		if(!doRender()) return;
 		g.setColor(getColor());
 		g.fill(bounds);
 	}
@@ -58,7 +59,11 @@ public abstract class LevelElement{
 		return bounds;
 	}
 	public boolean isTangible(){
-		return bounds != null && !getColor().equals(Chroma.instance().background());
+		if(getColor().equals(Chroma.instance().background())) return false;
+		else return doRender();
+	}
+	protected boolean doRender(){
+		return scheme == null || scheme.equals(Chroma.instance().background());
 	}
 	public Color getColor(){
 		return color == null ? Chroma.instance().foreground() : color;

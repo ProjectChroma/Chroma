@@ -12,7 +12,7 @@ public class LevelObject{
 	
 	public static class BlockObject{
 		public float x, y, width, height;
-		public String color;
+		public String color, scheme;
 	}
 	public static class PointObject{
 		public float x, y;

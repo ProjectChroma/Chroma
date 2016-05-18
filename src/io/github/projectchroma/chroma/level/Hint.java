@@ -16,12 +16,14 @@ public class Hint extends LevelElement{
 		this(text, null, x, y);
 	}
 	public Hint(String text, Color color, float x, float y) throws SlickException{
-		super(null, color);
+		super(x, y, 0, 0, color);
 		this.text = text;
 		this.x = x;
 		this.y = y;
 		this.font = Chroma.instance().createFont(18);
 	}
+	@Override
+	public boolean isTangible(){return false;}
 	@Override public void update(GameContainer container, int delta) throws SlickException{}
 	@Override
 	public void render(GameContainer container, Graphics g){

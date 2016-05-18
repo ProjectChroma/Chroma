@@ -12,8 +12,8 @@ import io.github.projectchroma.chroma.level.Player;
 public abstract class Block extends LevelElement{
 	public static final float WALL_WIDTH = 15;
 	
-	protected Block(float x, float y, float width, float height, Color color){
-		super(x, y, width, height, color);
+	protected Block(float x, float y, float width, float height, Color color, Color scheme){
+		super(x, y, width, height, color, scheme);
 	}
 	public void update(GameContainer container, int delta) throws SlickException{
 		update(container, (LevelState)Chroma.instance().getCurrentState(), Chroma.instance().player());

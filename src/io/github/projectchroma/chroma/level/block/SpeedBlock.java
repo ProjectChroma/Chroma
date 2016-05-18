@@ -11,8 +11,8 @@ public class SpeedBlock extends Block{
 	public static final String COLOR_NAME = "orange";
 	public static final Color COLOR = Color.orange.darker(0.3F);
 	private static final float SPEED_MULTIPLIER = 1.5F;
-	public SpeedBlock(float x, float y, float width, float height){
-		super(x, y, width, height, COLOR);
+	public SpeedBlock(float x, float y, float width, float height, Color scheme){
+		super(x, y, width, height, COLOR, scheme);
 	}
 	@Override
 	protected void onContact(GameContainer container, LevelState level, Player player) throws SlickException{

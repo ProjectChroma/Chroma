@@ -28,7 +28,7 @@ public class MainMenuState extends GUIState{
 		
 		add(new Button(buttonArea(center, 5), "Play", GoalBlock.COLOR.darker()){
 			public void onclick(){
-				game.enterState(11, null, new SwipeTransition(SwipeTransition.RIGHT));//Enter level 1
+				game.enterState(9, null, new SwipeTransition(SwipeTransition.RIGHT));//Enter level 1
 			}
 		});
 		add(new Button(buttonArea(center, 6), "Settings", SlowBlock.COLOR.darker()){

@@ -3,6 +3,7 @@ package io.github.projectchroma.chroma.level.block;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.SlickException;
 
 public class Blocks{
@@ -19,10 +20,10 @@ public class Blocks{
 	public static void register(String colorName, Class<? extends Block> blockClass){
 		classByColor.put(colorName, blockClass);
 	}
-	public static Block createBlock(String color, float x, float y, float width, float height) throws SlickException{
+	public static Block createBlock(String color, float x, float y, float width, float height, Color scheme) throws SlickException{
 		if(classByColor.containsKey(color)){
 			try{
-				return classByColor.get(color).getConstructor(Float.TYPE, Float.TYPE, Float.TYPE, Float.TYPE).newInstance(x, y, width, height);
+				return classByColor.get(color).getConstructor(Float.TYPE, Float.TYPE, Float.TYPE, Float.TYPE, Color.class).newInstance(x, y, width, height, scheme);
 			}catch(ReflectiveOperationException ex){
 				throw new SlickException("Error creating block of color " + color, ex);
 			}

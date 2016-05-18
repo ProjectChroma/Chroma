@@ -11,8 +11,8 @@ public class SlowBlock extends Block{
 	public static final String COLOR_NAME = "blue";
 	public static final Color COLOR = Color.blue;
 	private static final float SPEED_MULTIPLIER = 0.6F;
-	public SlowBlock(float x, float y, float width, float height){
-		super(x, y, width, height, COLOR);
+	public SlowBlock(float x, float y, float width, float height, Color scheme){
+		super(x, y, width, height, COLOR, scheme);
 	}
 	@Override
 	protected void onContact(GameContainer container, LevelState level, Player player) throws SlickException{
