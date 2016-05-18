@@ -9,7 +9,8 @@ import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.Transition;
 
-import io.github.projectchroma.chroma.util.Colors;
+import io.github.projectchroma.chroma.level.block.GoalBlock;
+import io.github.projectchroma.chroma.level.block.HazardBlock;
 
 public class LevelExitTransition implements Transition{
 	private static final int LENGTH_VICTORY = 500, LENGTH_DEATH = 1300;//ms
@@ -18,7 +19,7 @@ public class LevelExitTransition implements Transition{
 	private Sound sound;
 	public LevelExitTransition(boolean win, Sound sound){
 		length = win ? LENGTH_VICTORY : LENGTH_DEATH;
-		c = win ? Colors.gold : Colors.red;
+		c = win ? GoalBlock.COLOR : HazardBlock.COLOR;
 		this.sound = sound;
 	}
 	@Override

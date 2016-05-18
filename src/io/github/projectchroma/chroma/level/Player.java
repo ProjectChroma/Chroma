@@ -11,10 +11,8 @@ import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Rectangle;
 
 import io.github.projectchroma.chroma.Chroma;
-import io.github.projectchroma.chroma.LevelExitTransition;
 import io.github.projectchroma.chroma.Resources;
-import io.github.projectchroma.chroma.SwipeTransition;
-import io.github.projectchroma.chroma.util.Colors;
+import io.github.projectchroma.chroma.level.block.Block;
 
 public class Player extends LevelElement{
 	/**
@@ -30,11 +28,11 @@ public class Player extends LevelElement{
 	/**
 	 * Velocities during player-caused motion
 	 */
-	private static final float VX = 2F, VX_HIGH = 3.2F, VX_LOW = 0.9F, VY = -3.5F;
+	private static final float VX = 2F, VY = -3.5F;
 	/**
 	 * Kinematics values for player
 	 */
-	private float vX = 0, vY = 0, aX = 0, aY = gravity;
+	public float vX = 0, vY = 0, aX = 0, aY = gravity;
 	/**
 	 * Rectangles used to detect collisions. Each item of this array represents
 	 * an edge of the player, excluding the corners.
@@ -71,8 +69,6 @@ public class Player extends LevelElement{
 		float oldX = bounds.getX(), oldY = bounds.getY();
 		
 		landed = false;
-		float speedX = VX;
-		translate(vX, vY);
 		
 		for(LevelElement element : state.elements()){
 			if(element == this || !element.isTangible()) continue;
@@ -97,28 +93,21 @@ public class Player extends LevelElement{
 				if(vX < 0) vX = 0;//Stop moving left
 				if(aX < 0) aX = 0;//Stop accelerating left
 			}
-			
-			if(bounds.intersects(element.getBounds())){
-				if(element.getColor().equals(Colors.gold)){
-					Chroma.instance().enterState(Chroma.instance().getCurrentStateID() + 1, new LevelExitTransition(true, win), new SwipeTransition(SwipeTransition.RIGHT));//Next level
-				}else if(element.getColor().equals(Colors.red)){
-					Chroma.instance().enterState(Chroma.instance().getCurrentStateID(), new LevelExitTransition(false, death), null);//Restart
-				}else if(element.getColor().equals(Colors.orange)){
-					speedX = VX_HIGH;
-				}else if(element.getColor().equals(Colors.blue)){
-					speedX = VX_LOW;
-				}
+			if(element instanceof Block && bounds.intersects(element.bounds)){
+				((Block)element).onContact(container);
 			}
 		}
+		
+		translate(vX, vY);
 		
 		float dx = bounds.getX() - oldX, dy = bounds.getY() - oldY;
 		for(Rectangle collisionBox : collisionBoxes)
 			collisionBox.setLocation(collisionBox.getX() + dx, collisionBox.getY() + dy);
 		
 		if(container.getInput().isKeyDown(Input.KEY_LEFT))
-			vX = -speedX;
+			vX = -VX;
 		else if(container.getInput().isKeyDown(Input.KEY_RIGHT))
-			vX = speedX;
+			vX = VX;
 		else
 			vX = 0;
 		

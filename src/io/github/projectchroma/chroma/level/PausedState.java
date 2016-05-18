@@ -18,7 +18,9 @@ import io.github.projectchroma.chroma.Sounds;
 import io.github.projectchroma.chroma.SwipeTransition;
 import io.github.projectchroma.chroma.gui.Button;
 import io.github.projectchroma.chroma.gui.MainMenuState;
-import io.github.projectchroma.chroma.util.Colors;
+import io.github.projectchroma.chroma.level.block.SlowBlock;
+import io.github.projectchroma.chroma.level.block.GoalBlock;
+import io.github.projectchroma.chroma.level.block.HazardBlock;
 import io.github.projectchroma.chroma.util.RectangleUtils;
 
 public class PausedState extends BaseGameState{
@@ -43,19 +45,19 @@ public class PausedState extends BaseGameState{
 		titleFont = Chroma.instance().createFont(45);
 		textFont = Chroma.instance().createFont(24);
 		float buttonWidth = area.getWidth() - 40;
-		resume = new Button(new Rectangle(0, 0, (buttonWidth - 10) / 2, 50), "Resume", textFont, Colors.gold.darker()){
+		resume = new Button(new Rectangle(0, 0, (buttonWidth - 10) / 2, 50), "Resume", textFont, GoalBlock.COLOR.darker()){
 			public void onclick(){
 				game.enterState(level.getID(), new Leave(), null);
 			}
 		};
 		resume.setRight(area.getCenterX() - 5);
-		restart = new Button(new Rectangle(0, 0, (buttonWidth - 10) / 2, 50), "Restart", textFont, Colors.blue.darker()){
+		restart = new Button(new Rectangle(0, 0, (buttonWidth - 10) / 2, 50), "Restart", textFont, SlowBlock.COLOR.darker()){
 			public void onclick(){
 				game.enterState(level.getID(), new Leave(true), new SwipeTransition(SwipeTransition.RIGHT));
 			}
 		};
 		restart.setLeft(area.getCenterX() + 5);
-		exit = new Button(new Rectangle(0, 0, buttonWidth, 50), "Exit to Main Menu", textFont, Colors.red.darker()){
+		exit = new Button(new Rectangle(0, 0, buttonWidth, 50), "Exit to Main Menu", textFont, HazardBlock.COLOR.darker()){
 			public void onclick(){
 				game.enterState(MainMenuState.ID, null, new SwipeTransition(SwipeTransition.LEFT));
 			}

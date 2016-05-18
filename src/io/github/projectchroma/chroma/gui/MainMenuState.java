@@ -8,7 +8,8 @@ import org.newdawn.slick.state.StateBasedGame;
 import io.github.projectchroma.chroma.Chroma;
 import io.github.projectchroma.chroma.Resources;
 import io.github.projectchroma.chroma.SwipeTransition;
-import io.github.projectchroma.chroma.util.Colors;
+import io.github.projectchroma.chroma.level.block.SlowBlock;
+import io.github.projectchroma.chroma.level.block.GoalBlock;
 
 public class MainMenuState extends GUIState{
 	public static final int ID = 0;
@@ -25,12 +26,12 @@ public class MainMenuState extends GUIState{
 		add(logo);
 		add(title);
 		
-		add(new Button(buttonArea(center, 5), "Play", Colors.gold.darker()){
+		add(new Button(buttonArea(center, 5), "Play", GoalBlock.COLOR.darker()){
 			public void onclick(){
 				game.enterState(1, null, new SwipeTransition(SwipeTransition.RIGHT));//Enter level 1
 			}
 		});
-		add(new Button(buttonArea(center, 6), "Settings", Colors.blue.darker()){
+		add(new Button(buttonArea(center, 6), "Settings", SlowBlock.COLOR.darker()){
 			public void onclick(){
 				game.enterState(SettingsMenuState.ID, null, new SwipeTransition(SwipeTransition.LEFT));
 			}

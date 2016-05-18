@@ -18,6 +18,8 @@ import io.github.projectchroma.chroma.gui.SettingsMenuState;
 import io.github.projectchroma.chroma.level.LevelState;
 import io.github.projectchroma.chroma.level.PausedState;
 import io.github.projectchroma.chroma.level.Player;
+import io.github.projectchroma.chroma.level.block.BlackBlock;
+import io.github.projectchroma.chroma.level.block.WhiteBlock;
 import io.github.projectchroma.chroma.util.Colors;
 
 public class Chroma extends StateBasedGame{
@@ -60,10 +62,10 @@ public class Chroma extends StateBasedGame{
 	}
 	
 	public Color foreground(){
-		return scheme ? Colors.black : Colors.white;
+		return scheme ? BlackBlock.COLOR : WhiteBlock.COLOR;
 	}
 	public Color background(){
-		return scheme ? Colors.white : Colors.black;
+		return scheme ? WhiteBlock.COLOR : BlackBlock.COLOR;
 	}
 	public void toggleScheme(){
 		scheme = !scheme;
@@ -86,8 +88,8 @@ public class Chroma extends StateBasedGame{
 		UnicodeFont ret = new UnicodeFont(f);
 		ret.addAsciiGlyphs();
 		
-		ret.getEffects().add(new ColorEffect(Colors.awtColor(Colors.black)));
-		ret.getEffects().add(new ColorEffect(Colors.awtColor(Colors.white)));
+		ret.getEffects().add(new ColorEffect(Colors.awtColor(BlackBlock.COLOR)));
+		ret.getEffects().add(new ColorEffect(Colors.awtColor(WhiteBlock.COLOR)));
 		
 		ret.loadGlyphs();
 		return ret;

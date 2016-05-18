@@ -15,6 +15,8 @@ import io.github.projectchroma.chroma.Resources;
 import io.github.projectchroma.chroma.Sounds;
 import io.github.projectchroma.chroma.level.LevelObject.BlockObject;
 import io.github.projectchroma.chroma.level.LevelObject.HintObject;
+import io.github.projectchroma.chroma.level.block.Block;
+import io.github.projectchroma.chroma.level.block.Blocks;
 import io.github.projectchroma.chroma.util.Colors;
 
 public class LevelState extends BaseGameState{
@@ -37,12 +39,12 @@ public class LevelState extends BaseGameState{
 		playerY = level.playerStart.y;
 		
 		elements = new LevelElement[level.blocks.size() + level.hints.size() + 4];//The blocks, the hints, three barriers, and the player
-		elements[0] = new Block(0, Chroma.WINDOW_HEIGHT - Block.WALL_WIDTH, Chroma.WINDOW_WIDTH, Block.WALL_WIDTH);//Floor
-		elements[1] = new Block(0, 0, Block.WALL_WIDTH, Chroma.WINDOW_HEIGHT);//Left wall
-		elements[2] = new Block(Chroma.WINDOW_WIDTH - Block.WALL_WIDTH, 0, Block.WALL_WIDTH, Chroma.WINDOW_HEIGHT);//Right wall
+		elements[0] = Blocks.createBlock(null, 0, Chroma.WINDOW_HEIGHT - Block.WALL_WIDTH, Chroma.WINDOW_WIDTH, Block.WALL_WIDTH);//Floor
+		elements[1] = Blocks.createBlock(null, 0, 0, Block.WALL_WIDTH, Chroma.WINDOW_HEIGHT);//Left wall
+		elements[2] = Blocks.createBlock(null, Chroma.WINDOW_WIDTH - Block.WALL_WIDTH, 0, Block.WALL_WIDTH, Chroma.WINDOW_HEIGHT);//Right wall
 		elements[3] = Chroma.instance().player();
 		int i = 4;
-		for(BlockObject block : level.blocks) elements[i++] = new Block(block.x, block.y, block.width, block.height, Colors.byName(block.color));
+		for(BlockObject block : level.blocks) elements[i++] = Blocks.createBlock(block.color, block.x, block.y, block.width, block.height);
 		for(HintObject hint : level.hints) elements[i++] = new Hint(hint.text, Colors.byName(hint.color), hint.x, hint.y);
 		
 		for(LevelElement element : elements) element.init(container);

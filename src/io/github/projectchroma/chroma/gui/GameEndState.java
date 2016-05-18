@@ -9,7 +9,8 @@ import org.newdawn.slick.state.StateBasedGame;
 import io.github.projectchroma.chroma.Chroma;
 import io.github.projectchroma.chroma.Sounds;
 import io.github.projectchroma.chroma.SwipeTransition;
-import io.github.projectchroma.chroma.util.Colors;
+import io.github.projectchroma.chroma.level.block.BlackBlock;
+import io.github.projectchroma.chroma.level.block.GoalBlock;
 
 public class GameEndState extends GUIState{
 	public GameEndState(int id){
@@ -17,7 +18,7 @@ public class GameEndState extends GUIState{
 	}
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException{
-		add(new Button(buttonArea(center, 8), "Back to Menu", Colors.gold.darker()){
+		add(new Button(buttonArea(center, 8), "Back to Menu", GoalBlock.COLOR.darker()){
 			public void onclick(){
 				game.enterState(MainMenuState.ID, null, new SwipeTransition(SwipeTransition.LEFT));
 			}
@@ -26,7 +27,7 @@ public class GameEndState extends GUIState{
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException{
 		super.render(container, game, g);
-		g.setColor(Colors.black);
+		g.setColor(BlackBlock.COLOR);
 		drawCentered("Congratulations!", 200, g);
 		drawCentered("You have completed Chroma!", 300, g);
 		drawCentered("Check back as development continues for more levels!", 400, g);

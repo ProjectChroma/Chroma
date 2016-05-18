@@ -2,7 +2,6 @@ package io.github.projectchroma.chroma;
 
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.Sound;
 
 public class Sounds{
 	private static Music menuMusic, levelMusic;
