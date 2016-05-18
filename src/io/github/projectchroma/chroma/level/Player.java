@@ -7,10 +7,12 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Rectangle;
 
 import io.github.projectchroma.chroma.Chroma;
 import io.github.projectchroma.chroma.LevelExitTransition;
+import io.github.projectchroma.chroma.Resources;
 import io.github.projectchroma.chroma.SwipeTransition;
 import io.github.projectchroma.chroma.util.Colors;
 
@@ -46,11 +48,22 @@ public class Player extends LevelElement{
 	 * Color to render the player, regardless of scheme (null uses scheme color)
 	 */
 	private Color renderCol = null;
+	/**
+	 * Sound effects
+	 */
+	private static Sound jump, win, death;
 	
 	public Player(){
 		super(0, 0, 50, 50);
 		moveTo(0, 0);
 		resetKinematics();
+	}
+	
+	@Override
+	public void init(GameContainer container) throws SlickException{
+		if(jump == null) jump = Resources.loadSound("jump.aif");
+		if(win == null) win = Resources.loadSound("win.aif");
+		if(death == null) death = Resources.loadSound("death.aif");
 	}
 	
 	public void update(GameContainer container, int delta) throws SlickException{
@@ -87,9 +100,9 @@ public class Player extends LevelElement{
 			
 			if(bounds.intersects(element.getBounds())){
 				if(element.getColor().equals(Colors.gold)){
-					Chroma.instance().enterState(Chroma.instance().getCurrentStateID() + 1, new LevelExitTransition(true), new SwipeTransition(SwipeTransition.RIGHT));//Next level
+					Chroma.instance().enterState(Chroma.instance().getCurrentStateID() + 1, new LevelExitTransition(true, win), new SwipeTransition(SwipeTransition.RIGHT));//Next level
 				}else if(element.getColor().equals(Colors.red)){
-					Chroma.instance().enterState(Chroma.instance().getCurrentStateID(), new LevelExitTransition(false), null);//Restart
+					Chroma.instance().enterState(Chroma.instance().getCurrentStateID(), new LevelExitTransition(false, death), null);//Restart
 				}else if(element.getColor().equals(Colors.orange)){
 					speedX = VX_HIGH;
 				}else if(element.getColor().equals(Colors.blue)){
@@ -109,7 +122,10 @@ public class Player extends LevelElement{
 		else
 			vX = 0;
 		
-		if(container.getInput().isKeyPressed(Input.KEY_UP) && landed) vY = VY;//keyPressed, not keyDown; only apply the velocity once
+		if(container.getInput().isKeyPressed(Input.KEY_UP) && landed){//keyPressed, not keyDown; only apply the velocity once
+			vY = VY;
+			jump.play();
+		}
 		
 		vX += aX;
 		vY += aY;

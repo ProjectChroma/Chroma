@@ -22,6 +22,7 @@ public abstract class LevelElement{
 		this.bounds = bounds;
 		this.color = color;
 	}
+	public void init(GameContainer container) throws SlickException{}
 	public abstract void update(GameContainer container, int delta) throws SlickException;
 	public void render(GameContainer container, Graphics g) throws SlickException{
 		if(bounds == null) return;

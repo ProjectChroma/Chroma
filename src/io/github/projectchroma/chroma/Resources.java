@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.ResourceLoader;
@@ -65,5 +66,8 @@ public class Resources {
 	}
 	public static LevelObject loadLevel(String name){
 		return gson.fromJson(new InputStreamReader(ResourceLoader.getResourceAsStream(getLevelPath(name))), LevelObject.class);
+	}
+	public static Sound loadSound(String name) throws SlickException{
+		return new Sound(getSoundPath(name));
 	}
 }
