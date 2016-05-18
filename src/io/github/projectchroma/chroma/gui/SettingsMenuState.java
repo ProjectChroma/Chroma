@@ -13,7 +13,7 @@ public class SettingsMenuState extends GUIState{
 		super(ID);
 	}
 	@Override
-	public void init(GameContainer container, StateBasedGame game) throws SlickException{
+	public void init(GameContainer container, final StateBasedGame game) throws SlickException{
 		add(new Button(buttonArea(center, 8), "Back", Color.red.darker()){
 			public void onclick(){
 				game.enterState(MainMenuState.ID, null, new SwipeTransition(SwipeTransition.RIGHT));

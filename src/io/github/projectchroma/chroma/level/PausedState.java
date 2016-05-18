@@ -41,7 +41,7 @@ public class PausedState extends BaseGameState{
 		area.setCenterY(yStart);
 	}
 	@Override
-	public void init(GameContainer container, StateBasedGame game) throws SlickException{
+	public void init(GameContainer container, final StateBasedGame game) throws SlickException{
 		titleFont = Chroma.instance().createFont(45);
 		textFont = Chroma.instance().createFont(24);
 		float buttonWidth = area.getWidth() - 40;

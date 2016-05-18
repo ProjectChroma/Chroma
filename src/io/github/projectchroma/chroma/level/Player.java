@@ -111,7 +111,7 @@ public class Player extends LevelElement{
 		else
 			vX = 0;
 		
-		if(container.getInput().isKeyPressed(Input.KEY_UP) && landed){//keyPressed, not keyDown; only apply the velocity once
+		if(container.getInput().isKeyPressed(Input.KEY_SPACE) && landed){//keyPressed, not keyDown; only apply the velocity once
 			vY = VY;
 			jump.play();
 		}

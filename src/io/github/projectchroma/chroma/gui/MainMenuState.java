@@ -17,7 +17,7 @@ public class MainMenuState extends GUIState{
 		super(ID);
 	}
 	@Override
-	public void init(GameContainer container, StateBasedGame game) throws SlickException{
+	public void init(final GameContainer container, final StateBasedGame game) throws SlickException{
 		RenderedImage logo = new RenderedImage(Resources.loadImage("logo.png"), 0, 100, 100, 100);
 		RenderedText title = new RenderedText("Chroma", Chroma.instance().createFont(50F), 100, 100, Color.black);
 		float totalWidth = logo.getWidth() + MARGIN + title.getWidth();
@@ -28,7 +28,7 @@ public class MainMenuState extends GUIState{
 		
 		add(new Button(buttonArea(center, 5), "Play", GoalBlock.COLOR.darker()){
 			public void onclick(){
-				game.enterState(1, null, new SwipeTransition(SwipeTransition.RIGHT));//Enter level 1
+				game.enterState(11, null, new SwipeTransition(SwipeTransition.RIGHT));//Enter level 1
 			}
 		});
 		add(new Button(buttonArea(center, 6), "Settings", SlowBlock.COLOR.darker()){
