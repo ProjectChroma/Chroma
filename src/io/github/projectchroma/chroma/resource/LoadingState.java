@@ -13,7 +13,10 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import io.github.projectchroma.chroma.BaseGameState;
 import io.github.projectchroma.chroma.Chroma;
+<<<<<<< HEAD
 import io.github.projectchroma.chroma.gui.MainMenuState;
+=======
+>>>>>>> 08cb1707b9aaebdba9dd7fc1fe9cf7224a61d6a6
 import io.github.projectchroma.chroma.util.RectangleUtils;
 
 public class LoadingState extends BaseGameState{
@@ -28,12 +31,18 @@ public class LoadingState extends BaseGameState{
 		loadingBar.setCenterY(Chroma.WINDOW_HEIGHT/2);
 	}
 	@Override
+<<<<<<< HEAD
 	public void loadResources(GameContainer container, StateBasedGame game) throws SlickException{}
 	@Override
 	public void initialize(GameContainer container, StateBasedGame game) throws SlickException{}
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException{
 		g.setBackground(Color.white);
+=======
+	public void init(GameContainer container, StateBasedGame game) throws SlickException{}
+	@Override
+	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException{
+>>>>>>> 08cb1707b9aaebdba9dd7fc1fe9cf7224a61d6a6
 		g.setColor(Color.gray);
 		g.fill(loadingBar);
 		Rectangle progress = RectangleUtils.grow(loadingBar, -BORDER);//Shrink by border amount
@@ -45,6 +54,7 @@ public class LoadingState extends BaseGameState{
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException{
 		currentResource = LoadingList.get().getNext();
+<<<<<<< HEAD
 		if(currentResource == null){
 			game.enterState(MainMenuState.ID);
 		}else{
@@ -64,6 +74,12 @@ public class LoadingState extends BaseGameState{
 	public void leave(GameContainer container, StateBasedGame game) throws SlickException{
 		for(BaseGameState state : Chroma.instance().getStates()){
 			state.initialize(container, game);
+=======
+		try{
+			currentResource.load();
+		}catch(IOException ex){
+			throw new SlickException("Error loading resource " + currentResource.getDescription(), ex);
+>>>>>>> 08cb1707b9aaebdba9dd7fc1fe9cf7224a61d6a6
 		}
 	}
 }
