@@ -15,6 +15,7 @@ import io.github.projectchroma.chroma.SwipeTransition;
 import io.github.projectchroma.chroma.level.LevelElement;
 import io.github.projectchroma.chroma.level.LevelState;
 import io.github.projectchroma.chroma.level.block.Block;
+import io.github.projectchroma.chroma.settings.Progress;
 
 public class LevelSelectState extends GUIState{
 	private static final float GRID_WIDTH = 700, GRID_TOP = 100, ICON_SIZE = 100, NUM_COLUMNS = 6;
@@ -47,7 +48,8 @@ public class LevelSelectState extends GUIState{
 		});
 	}
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException{
-		Chroma.instance().setScheme(true);
+		Progress.read();
+		Chroma.instance().setScheme(true);//Set to light scheme (as shown when you first enter a level)
 	}
 	
 	public static LevelSelectState instance(){
@@ -72,7 +74,15 @@ public class LevelSelectState extends GUIState{
 		@Override
 		public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException{
 			g.translate(x, y);//(0, 0) is now the top-left corner of this icon
-			if(!mouseOver){
+			if(Progress.isLevelLocked(levelID)){
+				g.setColor(new Color(0.5F, 0.5F, 0.5F, 1F));
+				g.fillRect(0, 0, ICON_SIZE, ICON_SIZE);
+			}else if(mouseOver){
+				//If the mouse is over this icon and it's not locked, don't render any background color
+			}else if(Progress.isLevelComplete(levelID)){
+				g.setColor(new Color(0.5F, 1F, 0.5F, 0.5F));
+				g.fillRect(0, 0, ICON_SIZE, ICON_SIZE);
+			}else{
 				g.setColor(new Color(0.5F, 0.5F, 0.5F, 0.2F));
 				g.fillRect(0, 0, ICON_SIZE, ICON_SIZE);
 			}
@@ -87,7 +97,7 @@ public class LevelSelectState extends GUIState{
 					mouseX = container.getInput().getMouseX(), mouseY = container.getInput().getMouseY();
 			if(minX <= mouseX && mouseX <= maxX && minY <= mouseY && mouseY <= maxY){//Mouse is over this element 
 				mouseOver = true;
-				if(container.getInput().isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)){
+				if(!Progress.isLevelLocked(levelID) && container.getInput().isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)){
 					game.enterState(levelID, null, new SwipeTransition(SwipeTransition.RIGHT));
 				}
 			}else mouseOver = false;
