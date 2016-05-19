@@ -9,7 +9,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.StateBasedGame;
 
-import io.github.projectchroma.chroma.Chroma;
+import io.github.projectchroma.chroma.resource.Resources;
 import io.github.projectchroma.chroma.util.RectangleUtils;
 
 public abstract class Button extends GUIElement{
@@ -33,7 +33,7 @@ public abstract class Button extends GUIElement{
 	public Button(Rectangle area, String text, Font font, Color bg, Color border, Color bgHover, Color fg) throws SlickException{
 		this.area = area;
 		this.text = text;
-		this.font = font != null ? font : Chroma.instance().createFont(24);
+		this.font = font != null ? font : Resources.loadFont("mysteron.ttf", 24);
 		this.bg = bg != null ? bg : Color.gray;
 		this.border = border != null ? border : this.bg.darker();
 		this.bgHover = bgHover != null ? bgHover : this.bg.brighter(0.5F);

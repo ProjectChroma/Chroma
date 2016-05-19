@@ -6,7 +6,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
-import io.github.projectchroma.chroma.Chroma;
+import io.github.projectchroma.chroma.resource.Resources;
 
 public class Hint extends LevelElement{
 	private String text;
@@ -20,7 +20,7 @@ public class Hint extends LevelElement{
 		this.text = text;
 		this.x = x;
 		this.y = y;
-		this.font = Chroma.instance().createFont(18);
+		this.font = Resources.loadFont("mysteron.ttf", 18);
 	}
 	@Override
 	public boolean isTangible(){return false;}

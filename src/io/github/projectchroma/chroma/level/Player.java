@@ -7,12 +7,12 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.openal.Audio;
 
 import io.github.projectchroma.chroma.Chroma;
-import io.github.projectchroma.chroma.Resources;
 import io.github.projectchroma.chroma.level.block.Block;
+import io.github.projectchroma.chroma.resource.Resources;
 
 public class Player extends LevelElement{
 	/**
@@ -49,7 +49,7 @@ public class Player extends LevelElement{
 	/**
 	 * Sound effects
 	 */
-	private static Sound jump, win, death;
+	private static Audio jump;
 	
 	public Player(){
 		super(0, 0, 50, 50);
@@ -60,8 +60,6 @@ public class Player extends LevelElement{
 	@Override
 	public void init(GameContainer container) throws SlickException{
 		if(jump == null) jump = Resources.loadSound("jump.aif");
-		if(win == null) win = Resources.loadSound("win.aif");
-		if(death == null) death = Resources.loadSound("death.aif");
 	}
 	
 	public void update(GameContainer container, int delta) throws SlickException{
@@ -113,7 +111,7 @@ public class Player extends LevelElement{
 		
 		if(container.getInput().isKeyPressed(Input.KEY_SPACE) && landed){//keyPressed, not keyDown; only apply the velocity once
 			vY = VY;
-			jump.play();
+			jump.playAsSoundEffect(0, 0, false);
 		}
 		
 		vX += aX;

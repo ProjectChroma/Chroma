@@ -5,20 +5,20 @@ import java.io.FileNotFoundException;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.Sound;
+import org.newdawn.slick.openal.Audio;
 
 import io.github.projectchroma.chroma.Chroma;
 import io.github.projectchroma.chroma.LevelExitTransition;
-import io.github.projectchroma.chroma.Resources;
 import io.github.projectchroma.chroma.SwipeTransition;
 import io.github.projectchroma.chroma.level.LevelState;
 import io.github.projectchroma.chroma.level.Player;
+import io.github.projectchroma.chroma.resource.Resources;
 import io.github.projectchroma.chroma.settings.Progress;
 
 public class GoalBlock extends Block{
 	public static final String COLOR_NAME = "gold";
 	public static final Color COLOR = Color.yellow.darker(0.2F);
-	private static Sound winSound;
+	private static Audio winSound;
 	public GoalBlock(float x, float y, float width, float height, Color scheme){
 		super(x, y, width, height, COLOR, scheme);
 	}

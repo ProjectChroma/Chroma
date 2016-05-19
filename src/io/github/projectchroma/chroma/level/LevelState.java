@@ -4,36 +4,39 @@ import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
-import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.Sound;
+import org.newdawn.slick.openal.Audio;
 import org.newdawn.slick.state.StateBasedGame;
 
 import io.github.projectchroma.chroma.BaseGameState;
 import io.github.projectchroma.chroma.Chroma;
-import io.github.projectchroma.chroma.Resources;
-import io.github.projectchroma.chroma.Sounds;
+import io.github.projectchroma.chroma.GameMusic;
 import io.github.projectchroma.chroma.level.LevelObject.BlockObject;
 import io.github.projectchroma.chroma.level.LevelObject.HintObject;
 import io.github.projectchroma.chroma.level.block.Block;
 import io.github.projectchroma.chroma.level.block.Blocks;
+import io.github.projectchroma.chroma.resource.DeferredLevel;
+import io.github.projectchroma.chroma.resource.Resources;
 import io.github.projectchroma.chroma.util.Colors;
 
 public class LevelState extends BaseGameState{
 	private static Font nameFont;
-	private static Sound soundSwitch;
+	private static Audio soundSwitch;
+	
+	private DeferredLevel level;
 	private String name;
 	private float playerX, playerY;
 	private LevelElement[] elements;
 	public LevelState(int id){
 		super(id);
+		level = Resources.loadLevel(id);
 	}
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException{
-		if(nameFont == null) nameFont = Chroma.instance().createFont(30F);
+		if(nameFont == null) nameFont = Resources.loadFont("mysteron.ttf", 30);
 		if(soundSwitch == null) soundSwitch = Resources.loadSound("switch.aif");
 		
-		LevelObject level = Resources.loadLevel(id);
+		LevelObject level = this.level.getLevel();
 		name = level.name;
 		playerX = level.playerStart.x;
 		playerY = level.playerStart.y;
@@ -62,13 +65,12 @@ public class LevelState extends BaseGameState{
 	}
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException{
-		super.update(container, game, delta);
 		if(container.getInput().isKeyPressed(Input.KEY_P)) game.enterState(PausedState.ID, null, new PausedState.Enter());
 		if(!container.isPaused()){
 			for(LevelElement element : elements)
 				element.update(container, delta);
 			if(container.getInput().isKeyPressed(Input.KEY_UP)){
-				soundSwitch.play();
+				soundSwitch.playAsSoundEffect(0, 0, false);
 				Chroma.instance().toggleScheme();
 			}
 		}
@@ -84,8 +86,8 @@ public class LevelState extends BaseGameState{
 		Chroma.instance().setScheme(true);
 	}
 	@Override
-	protected Music getMusic(){
-		return Sounds.getLevelMusic();
+	protected Audio getMusic(){
+		return GameMusic.getLevelMusic();
 	}
 	
 	public LevelElement[] elements(){

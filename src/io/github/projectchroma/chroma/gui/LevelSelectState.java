@@ -15,6 +15,7 @@ import io.github.projectchroma.chroma.SwipeTransition;
 import io.github.projectchroma.chroma.level.LevelElement;
 import io.github.projectchroma.chroma.level.LevelState;
 import io.github.projectchroma.chroma.level.block.Block;
+import io.github.projectchroma.chroma.resource.Resources;
 import io.github.projectchroma.chroma.settings.Progress;
 
 public class LevelSelectState extends GUIState{
@@ -29,7 +30,7 @@ public class LevelSelectState extends GUIState{
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException{
 		int row = 0, column = 0;
-		add(new RenderedText("Level Select", Chroma.instance().createFont(50), Chroma.WINDOW_WIDTH/2, 40, Color.black));
+		add(new RenderedText("Level Select", Resources.loadFont("mysteron.ttf", 50), Chroma.WINDOW_WIDTH/2, 40, Color.black));
 		for(int i = 1; i <= Chroma.NUM_LEVELS; i++){//For each level
 			LevelState level = (LevelState)Chroma.instance().getState(i);
 			add(new LevelIcon(column * (ICON_SIZE + ICON_MARGINS) + SIDE_MARGINS, row * (ICON_SIZE + ICON_MARGINS) + GRID_TOP, level));

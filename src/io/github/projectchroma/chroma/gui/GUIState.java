@@ -45,7 +45,6 @@ public abstract class GUIState extends BaseGameState{
 	}
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException{
-		super.update(container, game, delta);
 		for(GUIElement element : elements) element.update(container, game, delta);
 	}
 }
