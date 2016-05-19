@@ -1,16 +1,18 @@
 package io.github.projectchroma.chroma;
 
-import java.awt.Font;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.UnicodeFont;
-import org.newdawn.slick.font.effects.ColorEffect;
+import org.newdawn.slick.loading.LoadingList;
 import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.Transition;
+
+import com.google.gson.Gson;
 
 import io.github.projectchroma.chroma.gui.GameEndState;
 import io.github.projectchroma.chroma.gui.LevelSelectState;
@@ -21,7 +23,8 @@ import io.github.projectchroma.chroma.level.PausedState;
 import io.github.projectchroma.chroma.level.Player;
 import io.github.projectchroma.chroma.level.block.BlackBlock;
 import io.github.projectchroma.chroma.level.block.WhiteBlock;
-import io.github.projectchroma.chroma.util.Colors;
+import io.github.projectchroma.chroma.resource.LoadingState;
+import io.github.projectchroma.chroma.resource.Resources;
 
 public class Chroma extends StateBasedGame{
 	/**
@@ -34,28 +37,34 @@ public class Chroma extends StateBasedGame{
 	 */
 	public static final boolean DEBUG_MODE = false;
 	public static final int WINDOW_WIDTH = 800, WINDOW_HEIGHT = 600, NUM_LEVELS = 11, FPS = 100;
+	public static final Gson GSON = new Gson();
 	private static Chroma instance;
 	
-	private Font javaFont;
 	private Player player;
 	private boolean scheme = true;//True for light color scheme, false for dark color scheme
 	private GameState prevState = null;
+	private List<BaseGameState> states = new ArrayList<>();
 	
 	private Chroma() throws SlickException{
 		super("Chroma");
 		player = new Player();
-		javaFont = Resources.loadFont("mysteron.ttf");
 	}
 	
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException{
+		addState(new LoadingState());
 		addState(new MainMenuState());
-		addState(new LevelSelectState(NUM_LEVELS + 2));
 		addState(new SettingsMenuState());
 		for(int i = 1; i <= NUM_LEVELS; i++)
 			addState(new LevelState(i));
 		addState(PausedState.instance);
+		addState(new LevelSelectState(NUM_LEVELS + 2));
 		addState(new GameEndState(NUM_LEVELS + 1));//Add game end after all levels
+	}
+	@Override
+	public void addState(GameState state){
+		super.addState(state);
+		states.add((BaseGameState)state);
 	}
 	@Override
 	public void enterState(int id, Transition leave, Transition enter){
@@ -81,23 +90,11 @@ public class Chroma extends StateBasedGame{
 	public Player player(){
 		return player;
 	}
-	public UnicodeFont createFont(float size) throws SlickException{
-		return createFont(size, Font.PLAIN);
-	}
-	@SuppressWarnings("unchecked")
-	public UnicodeFont createFont(float size, int modifiers) throws SlickException{
-		Font f = javaFont.deriveFont(modifiers, size);
-		UnicodeFont ret = new UnicodeFont(f);
-		ret.addAsciiGlyphs();
-		
-		ret.getEffects().add(new ColorEffect(Colors.awtColor(BlackBlock.COLOR)));
-		ret.getEffects().add(new ColorEffect(Colors.awtColor(WhiteBlock.COLOR)));
-		
-		ret.loadGlyphs();
-		return ret;
-	}
 	public GameState previousState(){
 		return prevState;
+	}
+	public List<BaseGameState> getStates(){
+		return states;
 	}
 	
 	public static Chroma instance(){
@@ -105,8 +102,9 @@ public class Chroma extends StateBasedGame{
 	}
 	public static void main(String[] args){
 		try{
+			LoadingList.setDeferredLoading(true);
 			instance = new Chroma();
-			Sounds.init();
+			GameMusic.init();
 			AppGameContainer app = new AppGameContainer(instance);
 			app.setDisplayMode(WINDOW_WIDTH, WINDOW_HEIGHT, false);//Width, height, fullscreen
 			app.setTargetFrameRate(DEBUG_MODE ? 25 : FPS);

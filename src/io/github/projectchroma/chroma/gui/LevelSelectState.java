@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.newdawn.slick.Color;
+import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -15,6 +16,7 @@ import io.github.projectchroma.chroma.SwipeTransition;
 import io.github.projectchroma.chroma.level.LevelElement;
 import io.github.projectchroma.chroma.level.LevelState;
 import io.github.projectchroma.chroma.level.block.Block;
+import io.github.projectchroma.chroma.resource.Resources;
 import io.github.projectchroma.chroma.settings.Progress;
 
 public class LevelSelectState extends GUIState{
@@ -22,14 +24,21 @@ public class LevelSelectState extends GUIState{
 	private static final float SIDE_MARGINS = (Chroma.WINDOW_WIDTH - GRID_WIDTH) / 2,
 			ICON_MARGINS = (GRID_WIDTH - (NUM_COLUMNS * ICON_SIZE)) / (NUM_COLUMNS - 1);//Width of grid minus the width taken up by the icons, divided by the number of margins
 	private static LevelSelectState instance;
+	
+	private Font titleFont, buttonFont;
 	public LevelSelectState(int id){
 		super(id);
 		if(instance == null) instance = this;
 	}
 	@Override
-	public void init(GameContainer container, StateBasedGame game) throws SlickException{
+	public void loadResources(GameContainer container, StateBasedGame game) throws SlickException{
+		titleFont = Resources.loadFont("mysteron.ttf", 50);
+		buttonFont = Resources.loadFont("mysteron.ttf", 24);
+	}
+	@Override
+	public void initialize(GameContainer container, StateBasedGame game) throws SlickException{
 		int row = 0, column = 0;
-		add(new RenderedText("Level Select", Chroma.instance().createFont(50), Chroma.WINDOW_WIDTH/2, 40, Color.black));
+		add(new RenderedText("Level Select", titleFont, Chroma.WINDOW_WIDTH/2, 40, Color.black));
 		for(int i = 1; i <= Chroma.NUM_LEVELS; i++){//For each level
 			LevelState level = (LevelState)Chroma.instance().getState(i);
 			add(new LevelIcon(column * (ICON_SIZE + ICON_MARGINS) + SIDE_MARGINS, row * (ICON_SIZE + ICON_MARGINS) + GRID_TOP, level));
@@ -41,7 +50,7 @@ public class LevelSelectState extends GUIState{
 			}
 			
 		}
-		add(new Button(buttonArea(center, 8), "Back", Color.red.darker()){
+		add(new Button(buttonArea(center, 8), "Back", buttonFont, Color.red.darker()){
 			public void onclick(){
 				game.enterState(MainMenuState.ID, null, new SwipeTransition(SwipeTransition.LEFT));
 			}

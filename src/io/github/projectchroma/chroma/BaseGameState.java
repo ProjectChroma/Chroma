@@ -5,8 +5,8 @@ import java.io.File;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
-import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.openal.Audio;
 import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -22,25 +22,29 @@ public abstract class BaseGameState implements GameState{
 		return id;
 	}
 	
-	protected Music getMusic(){
-		return Sounds.getMenuMusic();
+	protected Audio getMusic(){
+		return GameMusic.getMenuMusic();
 	}
 	
 	@Override
-	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException{
+	public final void init(GameContainer container, StateBasedGame game) throws SlickException{
+		loadResources(container, game);
+	}
+	protected abstract void loadResources(GameContainer container, StateBasedGame game) throws SlickException;
+	public abstract void initialize(GameContainer container, StateBasedGame game) throws SlickException;
+ 	
+	@Override
+	public void enter(GameContainer container, StateBasedGame game) throws SlickException{
 		if(getMusic() != null){
-			if(!getMusic().equals(Sounds.getCurrentMusic())){
-				if(Sounds.getCurrentMusic() != null) Sounds.getCurrentMusic().stop();
-				getMusic().play();
+			if(!getMusic().equals(GameMusic.getCurrentMusic())){
+				if(GameMusic.getCurrentMusic() != null) GameMusic.getCurrentMusic().stop();
+				getMusic().playAsMusic(1F, 1F, true);
 			}
 		}else{
-			if(Sounds.getCurrentMusic() != null)
-				Sounds.getCurrentMusic().stop();
+			if(GameMusic.getCurrentMusic() != null)
+				GameMusic.getCurrentMusic().stop();
 		}
 	}
-	
-	@Override
-	public void enter(GameContainer container, StateBasedGame game) throws SlickException{}
 	@Override
 	public void leave(GameContainer container, StateBasedGame game) throws SlickException{}
 	

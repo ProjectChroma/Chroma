@@ -4,7 +4,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.Sound;
+import org.newdawn.slick.openal.Audio;
 import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.Transition;
@@ -16,8 +16,8 @@ public class LevelExitTransition implements Transition{
 	private static final int LENGTH_VICTORY = 500, LENGTH_DEATH = 1300;//ms
 	private int delta, length;
 	private Color c;
-	private Sound sound;
-	public LevelExitTransition(boolean win, Sound sound){
+	private Audio sound;
+	public LevelExitTransition(boolean win, Audio sound){
 		length = win ? LENGTH_VICTORY : LENGTH_DEATH;
 		c = win ? GoalBlock.COLOR : HazardBlock.COLOR;
 		this.sound = sound;
@@ -42,6 +42,6 @@ public class LevelExitTransition implements Transition{
 	public void init(GameState firstState, GameState secondState){
 		delta = 0;
 		Chroma.instance().player().setRenderColor(c);
-		if(sound != null) sound.play();
+		if(sound != null) sound.playAsSoundEffect(0, 0, false);
 	}
 }
