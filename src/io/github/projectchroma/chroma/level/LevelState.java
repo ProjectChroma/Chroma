@@ -29,6 +29,7 @@ public class LevelState extends BaseGameState{
 	private LevelElement[] elements;
 	public LevelState(int id){
 		super(id);
+		level = Resources.loadLevel(id);
 	}
 	@Override
 	public void loadResources(GameContainer container, StateBasedGame game) throws SlickException{
