@@ -59,11 +59,11 @@ public abstract class LevelElement{
 		return bounds;
 	}
 	public boolean isTangible(){
-		if(getColor().equals(Chroma.instance().background())) return false;
-		else return doRender();
+		return doRender();
 	}
 	protected boolean doRender(){
-		return scheme == null || scheme.equals(Chroma.instance().background());
+		return !getColor().equals(Chroma.instance().background()) &&//Color is not the same as the current background color, and
+				(scheme == null || scheme.equals(Chroma.instance().background()));//the element belongs in the current scheme
 	}
 	public Color getColor(){
 		return color == null ? Chroma.instance().foreground() : color;

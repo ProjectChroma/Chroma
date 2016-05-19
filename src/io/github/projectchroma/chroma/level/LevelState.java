@@ -89,6 +89,9 @@ public class LevelState extends BaseGameState{
 	}
 	
 	public LevelElement[] elements(){
-		return elements;
+		return elements.clone();//Defensive copy
+	}
+	public String name(){
+		return name;
 	}
 }

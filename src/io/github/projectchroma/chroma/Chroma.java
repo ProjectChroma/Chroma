@@ -13,6 +13,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.Transition;
 
 import io.github.projectchroma.chroma.gui.GameEndState;
+import io.github.projectchroma.chroma.gui.LevelSelectState;
 import io.github.projectchroma.chroma.gui.MainMenuState;
 import io.github.projectchroma.chroma.gui.SettingsMenuState;
 import io.github.projectchroma.chroma.level.LevelState;
@@ -49,6 +50,7 @@ public class Chroma extends StateBasedGame{
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException{
 		addState(new MainMenuState());
+		addState(new LevelSelectState(NUM_LEVELS + 2));
 		addState(new SettingsMenuState());
 		for(int i = 1; i <= NUM_LEVELS; i++)
 			addState(new LevelState(i));
