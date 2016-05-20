@@ -73,10 +73,6 @@ public class DeferredFont implements DeferredResource, Font{
 	
 	@Override
 	public String getDescription(){
-<<<<<<< HEAD
 		return baseFont.getDescription() + "@" + size + ":" + modifiers;
-=======
-		return baseFont.getDescription();
->>>>>>> 08cb1707b9aaebdba9dd7fc1fe9cf7224a61d6a6
 	}
 }
