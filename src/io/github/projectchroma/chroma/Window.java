@@ -8,7 +8,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 
 public class Window{
-	public static final int WINDOW_WIDTH = 800, WINDOW_HEIGHT = 600, FPS = 1;
+	public static final int WINDOW_WIDTH = 800, WINDOW_HEIGHT = 600, FPS = 100;
 	private Chroma chroma;
 	private JFrame window;
 	private Input input;
@@ -28,10 +28,10 @@ public class Window{
 		updateTimer = new Timer();
 		updateTask = new TimerTask(){
 			public void run(){
-				System.out.print('-');
 				if(chroma.getCurrentState() != null){
-					chroma.getCurrentState().update(chroma);
+					chroma.getCurrentState().update(Window.this, chroma);
 					window.getContentPane().repaint();
+					input.clearPresses();
 				}
 			}
 		};
@@ -42,17 +42,24 @@ public class Window{
 	protected void stopTicking(){
 		updateTask.cancel();
 	}
+	public Input getInput(){
+		return input;
+	}
+	public void exit(){
+		System.exit(0);
+	}
 	private class GameStateWrapper extends JComponent{
 		private static final long serialVersionUID = 1L;
 		private GameStateWrapper(){
 			addKeyListener(input.getListener());
 			addMouseListener(input.getListener());
 			addMouseWheelListener(input.getListener());
+			addMouseMotionListener(input.getListener());
 		}
 		@Override
 		public void paintComponent(Graphics g){
 			if(chroma.getCurrentState() != null){
-				chroma.getCurrentState().render(chroma, g);
+				chroma.getCurrentState().render(Window.this, chroma, g);
 			}
 		}
 	}

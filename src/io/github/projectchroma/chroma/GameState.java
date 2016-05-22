@@ -11,8 +11,9 @@ public abstract class GameState{
 		return id;
 	}
 	
-	public abstract void update(Chroma chroma);
-	public abstract void render(Chroma chroma, Graphics g);
-	public abstract void enter(Chroma chroma);
-	public abstract void leave(Chroma chroma);
+	public abstract void initialize(Window window, Chroma chroma);
+	public abstract void update(Window window, Chroma chroma);
+	public abstract void render(Window window, Chroma chroma, Graphics g);
+	public void enter(Window window, Chroma chroma){}
+	public void leave(Window window, Chroma chroma){}
 }
