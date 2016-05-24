@@ -17,11 +17,8 @@ public abstract class Button extends GUIElement{
 	private Font font;
 	private Color bg, border, bgHover, fg;
 	private boolean mouseOver = false, mouseDown = false;
-	public Button(Rectangle area, String text){
-		this(area, text, null, null, null, null, null);
-	}
-	public Button(Rectangle area, String text, Color bgHover){
-		this(area, text, null, null, null, bgHover, null);
+	public Button(Rectangle area, String text, Font font){
+		this(area, text, font, null, null, null, null);
 	}
 	public Button(Rectangle area, String text, Font font, Color bgHover){
 		this(area, text, font, null, null, bgHover, null);
@@ -46,13 +43,12 @@ public abstract class Button extends GUIElement{
 		
 		g.setFont(font);
 		g.setColor(fg);
-		g.drawString(text, getCenterX() - GraphicsUtils.width(g, text)/2, getCenterY() - GraphicsUtils.height(g)/2);
+		g.drawString(text, getCenterX() - GraphicsUtils.width(g, text)/2, getCenterY() + GraphicsUtils.height(g)/4);
 	}
 	public void update(Window window, Chroma chroma){
 		mouseOver = area.contains(window.getInput().getMouseX(), window.getInput().getMouseY());
 		boolean oldMouseDown = mouseDown;
 		mouseDown = mouseOver && window.getInput().isMousePressed(MouseEvent.BUTTON1);
-		System.out.println(text + ": " + mouseDown);
 		if(oldMouseDown && !mouseDown) onclick();//Activate on release to switching to a screen and immediately pressing a button
 	}
 	public abstract void onclick();
