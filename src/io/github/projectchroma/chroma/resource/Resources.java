@@ -15,6 +15,9 @@ public class Resources{
 	public static FontResource getFont(String name, float size, int modifiers){
 		return loadResource(new FontResource(name, size, modifiers));
 	}
+	public static ImageResource getImage(String name){
+		return loadResource(new ImageResource(name));
+	}
 	private static <T extends Resource<?>> T loadResource(T resource){
 		resources.add(resource);
 		numResources++;

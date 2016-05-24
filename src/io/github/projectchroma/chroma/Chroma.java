@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.github.projectchroma.chroma.gui.LevelSelectState;
 import io.github.projectchroma.chroma.gui.MainMenuState;
+import io.github.projectchroma.chroma.gui.SettingsMenuState;
 import io.github.projectchroma.chroma.resource.Resources;
 
 public class Chroma{
@@ -16,6 +18,8 @@ public class Chroma{
 	private Map<Integer, GameState> states = new HashMap<>();
 	private Chroma(){
 		addState(new MainMenuState());
+		addState(new LevelSelectState());
+		addState(new SettingsMenuState());
 	}
 	private void addState(GameState state){
 		states.put(state.getID(), state);
