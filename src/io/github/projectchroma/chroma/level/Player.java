@@ -64,14 +64,14 @@ public class Player extends LevelElement{
 		if(death == null) death = Resources.loadSound("death.aif");
 	}
 	
-	public void update(GameContainer container, int delta) throws SlickException{
+	public void update(GameContainer container, LevelState level, int delta) throws SlickException{
 		LevelState state = (LevelState)Chroma.instance().getCurrentState();
 		float oldX = bounds.getX(), oldY = bounds.getY();
 		
 		landed = false;
 		
 		for(LevelElement element : state.elements()){
-			if(element == this || !element.isTangible()) continue;
+			if(element == this || !element.isTangible(level)) continue;
 			if(collisionBoxes[0].intersects(element.getBounds())){//Collision above
 				if(vY <= 0) setTop(element.getBottom());
 				if(vY < 0) vY = 0;//Stop moving up
@@ -94,7 +94,7 @@ public class Player extends LevelElement{
 				if(aX < 0) aX = 0;//Stop accelerating left
 			}
 			if(element instanceof Block && bounds.intersects(element.bounds)){
-				((Block)element).onContact(container);
+				((Block)element).onContact(container, level);
 			}
 		}
 		
@@ -121,8 +121,8 @@ public class Player extends LevelElement{
 		if(!landed) aY = gravity;
 	}
 	
-	public void render(GameContainer container, Graphics g) throws SlickException{
-		g.setColor(renderCol != null ? renderCol : getColor());
+	public void render(GameContainer container, LevelState level, Graphics g) throws SlickException{
+		g.setColor(renderCol != null ? renderCol : getColor(level));
 		g.fill(bounds);
 		
 		if(Chroma.DEBUG_MODE){
@@ -143,7 +143,7 @@ public class Player extends LevelElement{
 			g.setColor(Color.yellow);
 			g.fill(collisionBoxes[3]);
 			
-			g.setColor(Chroma.instance().background());
+			g.setColor(Color.magenta);
 			g.drawString(getLeft() + "", getLeft(), getTop());
 			g.drawString(getTop() + "", getLeft(), getTop() + g.getFont().getLineHeight());
 		}

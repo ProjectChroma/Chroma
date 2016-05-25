@@ -3,7 +3,6 @@ package io.github.projectchroma.chroma;
 import java.awt.Font;
 
 import org.newdawn.slick.AppGameContainer;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.UnicodeFont;
@@ -33,12 +32,11 @@ public class Chroma extends StateBasedGame{
 	 * </ul>
 	 */
 	public static final boolean DEBUG_MODE = false;
-	public static final int WINDOW_WIDTH = 800, WINDOW_HEIGHT = 600, NUM_LEVELS = 12, FPS = 100;
+	public static final int WINDOW_WIDTH = 800, WINDOW_HEIGHT = 600, NUM_LEVELS = 13, FPS = 100;
 	private static Chroma instance;
 	
 	private Font javaFont;
 	private Player player;
-	private boolean scheme = true;//True for light color scheme, false for dark color scheme
 	private GameState prevState = null;
 	
 	private Chroma() throws SlickException{
@@ -61,22 +59,6 @@ public class Chroma extends StateBasedGame{
 	public void enterState(int id, Transition leave, Transition enter){
 		prevState = getCurrentState();
 		super.enterState(id, leave, enter);
-	}
-	
-	public Color foreground(){
-		return scheme ? BlackBlock.COLOR : WhiteBlock.COLOR;
-	}
-	public Color background(){
-		return scheme ? WhiteBlock.COLOR : BlackBlock.COLOR;
-	}
-	public void toggleScheme(){
-		scheme = !scheme;
-	}
-	public void setScheme(boolean light){
-		scheme = light;
-	}
-	public boolean getScheme(){
-		return scheme;
 	}
 	public Player player(){
 		return player;

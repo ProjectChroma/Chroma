@@ -7,8 +7,6 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 
-import io.github.projectchroma.chroma.Chroma;
-
 public abstract class LevelElement{
 	protected Rectangle bounds;
 	protected Color color, scheme;
@@ -24,10 +22,10 @@ public abstract class LevelElement{
 		this.scheme = scheme;
 	}
 	public void init(GameContainer container) throws SlickException{}
-	public abstract void update(GameContainer container, int delta) throws SlickException;
-	public void render(GameContainer container, Graphics g) throws SlickException{
-		if(!doRender()) return;
-		g.setColor(getColor());
+	public abstract void update(GameContainer container, LevelState level, int delta) throws SlickException;
+	public void render(GameContainer container, LevelState level, Graphics g) throws SlickException{
+		if(!doRender(level)) return;
+		g.setColor(getColor(level));
 		g.fill(bounds);
 	}
 	// Getters
@@ -58,15 +56,15 @@ public abstract class LevelElement{
 	public Shape getBounds(){
 		return bounds;
 	}
-	public boolean isTangible(){
-		return doRender();
+	public boolean isTangible(LevelState level){
+		return doRender(level);
 	}
-	protected boolean doRender(){
-		return !getColor().equals(Chroma.instance().background()) &&//Color is not the same as the current background color, and
-				(scheme == null || scheme.equals(Chroma.instance().background()));//the element belongs in the current scheme
+	protected boolean doRender(LevelState level){
+		return !getColor(level).equals(level.background()) &&//Color is not the same as the current background color, and
+				(scheme == null || scheme.equals(level.background()));//the element belongs in the current scheme
 	}
-	public Color getColor(){
-		return color == null ? Chroma.instance().foreground() : color;
+	public Color getColor(LevelState level){
+		return color == null ? level.foreground() : color;
 	}
 	
 	// Utilities for moving around

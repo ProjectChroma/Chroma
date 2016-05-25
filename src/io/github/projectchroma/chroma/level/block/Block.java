@@ -15,12 +15,12 @@ public abstract class Block extends LevelElement{
 	protected Block(float x, float y, float width, float height, Color color, Color scheme){
 		super(x, y, width, height, color, scheme);
 	}
-	public void update(GameContainer container, int delta) throws SlickException{
-		update(container, (LevelState)Chroma.instance().getCurrentState(), Chroma.instance().player());
+	public void update(GameContainer container, LevelState level, int delta) throws SlickException{
+		update(container, level, Chroma.instance().player());
 	}
 	protected void update(GameContainer container, LevelState level, Player player) throws SlickException{}
-	public void onContact(GameContainer container) throws SlickException{
-		onContact(container, (LevelState)Chroma.instance().getCurrentState(), Chroma.instance().player());
+	public void onContact(GameContainer container, LevelState level) throws SlickException{
+		onContact(container, level, Chroma.instance().player());
 	}
 	protected void onContact(GameContainer container, LevelState level, Player player) throws SlickException{}
 	@Override

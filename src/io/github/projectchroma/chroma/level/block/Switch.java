@@ -5,7 +5,6 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 
-import io.github.projectchroma.chroma.Chroma;
 import io.github.projectchroma.chroma.Resources;
 import io.github.projectchroma.chroma.level.LevelState;
 import io.github.projectchroma.chroma.level.Player;
@@ -23,6 +22,6 @@ public class Switch extends Block{
 	}
 	@Override
 	protected void onContact(GameContainer container, LevelState level, Player player){
-		Chroma.instance().toggleScheme();
+		level.cycleScheme();
 	}
 }

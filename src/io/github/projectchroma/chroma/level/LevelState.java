@@ -1,5 +1,6 @@
 package io.github.projectchroma.chroma.level;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -25,6 +26,8 @@ public class LevelState extends BaseGameState{
 	private String name;
 	private float playerX, playerY;
 	private LevelElement[] elements;
+	private Color[] schemes;
+	private int scheme = 0;
 	public LevelState(int id){
 		super(id);
 	}
@@ -44,20 +47,28 @@ public class LevelState extends BaseGameState{
 		elements[2] = Blocks.createBlock(null, Chroma.WINDOW_WIDTH - Block.WALL_WIDTH, 0, Block.WALL_WIDTH, Chroma.WINDOW_HEIGHT, null);//Right wall
 		elements[3] = Chroma.instance().player();
 		int i = 4;
-		for(BlockObject block : level.blocks) elements[i++] = Blocks.createBlock(block.color, block.x, block.y, block.width, block.height, Colors.byName(block.scheme));
-		for(HintObject hint : level.hints) elements[i++] = new Hint(hint.text, Colors.byName(hint.color), hint.x, hint.y);
+		for(BlockObject block : level.blocks)
+			elements[i++] = Blocks.createBlock(block.color, block.x, block.y, block.width, block.height, Colors.byName(block.scheme));
+		for(HintObject hint : level.hints)
+			elements[i++] = new Hint(hint.text, hint.x, hint.y, Colors.byName(hint.color), Colors.byName(hint.scheme));
 		
-		for(LevelElement element : elements) element.init(container);
+		schemes = new Color[level.schemes.size()];
+		for(int j = 0; j < schemes.length; ++j){
+			schemes[j] = Colors.byName(level.schemes.get(j));
+		}
+		
+		for(LevelElement element : elements)
+			element.init(container);
 	}
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException{
-		g.setColor(Chroma.instance().background());
+		g.setColor(background());
 		g.setFont(nameFont);
 		g.fillRect(0, 0, Chroma.WINDOW_WIDTH, Chroma.WINDOW_HEIGHT);//Draw background
-		g.setColor(Chroma.instance().foreground());
+		g.setColor(foreground());
 		g.drawString(name, Block.WALL_WIDTH, 0);
 		for(LevelElement element : elements){
-			if(!element.getColor().equals(Chroma.instance().background())) element.render(container, g);
+			if(!element.getColor(this).equals(background())) element.render(container, this, g);
 		}
 	}
 	@Override
@@ -66,10 +77,10 @@ public class LevelState extends BaseGameState{
 		if(container.getInput().isKeyPressed(Input.KEY_P)) game.enterState(PausedState.ID, null, new PausedState.Enter());
 		if(!container.isPaused()){
 			for(LevelElement element : elements)
-				element.update(container, delta);
+				element.update(container, this, delta);
 			if(container.getInput().isKeyPressed(Input.KEY_UP)){
 				soundSwitch.play();
-				Chroma.instance().toggleScheme();
+				cycleScheme();
 			}
 		}
 	}
@@ -81,17 +92,34 @@ public class LevelState extends BaseGameState{
 	public void restart(){
 		Chroma.instance().player().moveTo(playerX, playerY);
 		Chroma.instance().player().resetKinematics();
-		Chroma.instance().setScheme(true);
+		setScheme(0);
 	}
 	@Override
 	protected Music getMusic(){
 		return Sounds.getLevelMusic();
 	}
 	
+	public String name(){
+		return name;
+	}
 	public LevelElement[] elements(){
 		return elements.clone();//Defensive copy
 	}
-	public String name(){
-		return name;
+	public void setScheme(int scheme){
+		this.scheme = scheme % schemes.length;
+	}
+	public int getScheme(){
+		return scheme;
+	}
+	public void cycleScheme(){
+		setScheme(scheme + 1);
+	}
+	public Color background(){
+		return schemes[scheme];
+	}
+	public Color foreground(){
+		Color bg = background();
+		float avg = (bg.r + bg.g + bg.b) / 3;
+		return avg > 0.5 ? Color.black : Color.white;//If the average RGB value is greater than 0.5, this is a bright background, so use a dark foreground.
 	}
 }

@@ -13,22 +13,26 @@ public class Hint extends LevelElement{
 	private float x, y;
 	private Font font;
 	public Hint(String text, float x, float y) throws SlickException{
-		this(text, null, x, y);
+		this(text, x, y, null);
 	}
-	public Hint(String text, Color color, float x, float y) throws SlickException{
-		super(x, y, 0, 0, color);
+	public Hint(String text, float x, float y, Color color) throws SlickException{
+		this(text, x, y, color, null);
+	}
+	public Hint(String text, float x, float y, Color color, Color scheme) throws SlickException{
+		super(x, y, 0, 0, color, scheme);
 		this.text = text;
 		this.x = x;
 		this.y = y;
 		this.font = Chroma.instance().createFont(18);
 	}
 	@Override
-	public boolean isTangible(){return false;}
-	@Override public void update(GameContainer container, int delta) throws SlickException{}
+	public boolean isTangible(LevelState level){return false;}
+	@Override public void update(GameContainer container, LevelState level, int delta) throws SlickException{}
 	@Override
-	public void render(GameContainer container, Graphics g){
+	public void render(GameContainer container, LevelState level, Graphics g){
+		if(!doRender(level)) return;
 		g.setFont(font);
-		g.setColor(getColor());
+		g.setColor(getColor(level));
 		g.drawString(text, x, y);
 	}
 }

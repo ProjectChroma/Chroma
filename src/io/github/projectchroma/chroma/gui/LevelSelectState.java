@@ -49,7 +49,6 @@ public class LevelSelectState extends GUIState{
 	}
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException{
 		Progress.read();
-		Chroma.instance().setScheme(true);//Set to light scheme (as shown when you first enter a level)
 	}
 	
 	public static LevelSelectState instance(){
@@ -57,14 +56,15 @@ public class LevelSelectState extends GUIState{
 	}
 	
 	private static class LevelIcon extends GUIElement{
-		private int levelID;
+		private LevelState level;
 		private float x, y;
 		private Block[] blocks;
 		private boolean mouseOver = false;
 		public LevelIcon(float x, float y, LevelState level){
-			this.levelID = level.getID();
+			this.level = level;
 			this.x = x;
 			this.y = y;
+			level.setScheme(0);//Set scheme to the view you first see when entering the level
 			List<Block> blocks = new ArrayList<>();
 			for(LevelElement element : level.elements()){
 				if(element instanceof Block) blocks.add((Block)element);
@@ -74,12 +74,12 @@ public class LevelSelectState extends GUIState{
 		@Override
 		public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException{
 			g.translate(x, y);//(0, 0) is now the top-left corner of this icon
-			if(Progress.isLevelLocked(levelID)){
+			if(Progress.isLevelLocked(level.getID())){
 				g.setColor(new Color(0.5F, 0.5F, 0.5F, 1F));
 				g.fillRect(0, 0, ICON_SIZE, ICON_SIZE);
 			}else if(mouseOver){
 				//If the mouse is over this icon and it's not locked, don't render any background color
-			}else if(Progress.isLevelComplete(levelID)){
+			}else if(Progress.isLevelComplete(level.getID())){
 				g.setColor(new Color(0.5F, 1F, 0.5F, 0.5F));
 				g.fillRect(0, 0, ICON_SIZE, ICON_SIZE);
 			}else{
@@ -87,7 +87,7 @@ public class LevelSelectState extends GUIState{
 				g.fillRect(0, 0, ICON_SIZE, ICON_SIZE);
 			}
 			g.scale(ICON_SIZE / Chroma.WINDOW_WIDTH, ICON_SIZE / Chroma.WINDOW_HEIGHT);//(800, 600) is now (100, 100)
-			for(Block block : blocks) block.render(container, g);
+			for(Block block : blocks) block.render(container, level, g);
 			g.scale(Chroma.WINDOW_WIDTH / ICON_SIZE, Chroma.WINDOW_HEIGHT / ICON_SIZE);//Undo scale down
 			g.translate(-x, -y);//Undo translate
 		}
@@ -97,8 +97,8 @@ public class LevelSelectState extends GUIState{
 					mouseX = container.getInput().getMouseX(), mouseY = container.getInput().getMouseY();
 			if(minX <= mouseX && mouseX <= maxX && minY <= mouseY && mouseY <= maxY){//Mouse is over this element 
 				mouseOver = true;
-				if(!Progress.isLevelLocked(levelID) && container.getInput().isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)){
-					game.enterState(levelID, null, new SwipeTransition(SwipeTransition.RIGHT));
+				if(!Progress.isLevelLocked(level.getID()) && container.getInput().isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)){
+					game.enterState(level.getID(), null, new SwipeTransition(SwipeTransition.RIGHT));
 				}
 			}else mouseOver = false;
 		}

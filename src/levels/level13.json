@@ -1,0 +1,14 @@
+{
+	"name": "Maze",
+	"playerStart": {
+		"x": 30,
+		"y": 530
+	},
+	"blocks": [
+		{"x": 300, "y": 585, "width": 15, "height": 15, "color": "green", "scheme": "white"}
+	],
+	"hints": [
+		{"x": 100, "y": 450, "text": "Step on the green block to see the invsable maze walls", "color": "black"},
+		{"x": 15, "y": 550, "text": "Careful.. not only do the walls hurt you, they disapear...", "color": "white"}
+	]
+}
