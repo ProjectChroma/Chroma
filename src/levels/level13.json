@@ -1,5 +1,5 @@
 {
-	"name": "Maze",
+	"name": "A-Maze-ing Maze",
 	"player": {
 		"x": 30,
 		"y": 530,
@@ -8,8 +8,43 @@
 	"blocks": [
 		{"x": 100, "y": 585, "width": 15, "height": 15, "color": "pink"},
 		
-		{"x": 65, "y": 500, "width": 200, "height": 15, "color": "clear2"},
-		{"x": 65, "y": 500, "width": 200, "height": 15, "color": "white", "scheme": "black"}
+		{"x": 65, "y": 500, "width": 720, "height": 15, "color": "clear2"},
+		{"x": 65, "y": 500, "width": 720, "height": 15, "color": "white", "scheme": "black"},
+		
+		{"x": 500, "y": 370, "width": 100, "height": 15, "color": "clear2"},
+		{"x": 500, "y": 370, "width": 100, "height": 15, "color": "white", "scheme": "black"},
+		
+		{"x": 585, "y": 385, "width": 15, "height": 50, "color": "clear2"},
+		{"x": 585, "y": 385, "width": 15, "height": 50, "color": "white", "scheme": "black"},
+		
+		{"x": 180, "y": 305, "width": 320, "height": 15, "color": "clear2"},
+		{"x": 180, "y": 305, "width": 320, "height": 15, "color": "white", "scheme": "black"},
+		
+		{"x": 485, "y": 320, "width": 15, "height": 65, "color": "clear2"},
+		{"x": 485, "y": 320, "width": 15, "height": 65, "color": "white", "scheme": "black"},
+		
+		{"x": 15, "y": 435, "width": 685, "height": 15, "color": "clear2"},
+		{"x": 15, "y": 435, "width": 685, "height": 15, "color": "white", "scheme": "black"},
+		
+		{"x": 115, "y": 65, "width": 15, "height": 320, "color": "clear2"},
+		{"x": 115, "y": 65, "width": 15, "height": 320, "color": "white", "scheme": "black"},
+		
+		{"x": 15, "y": 385, "width": 50, "height": 50, "color": "clear2"},
+		{"x": 15, "y": 385, "width": 50, "height": 50, "color": "white", "scheme": "black"},
+		
+		{"x": 65, "y": 285, "width": 50, "height": 50, "color": "clear2"},
+		{"x": 65, "y": 285, "width": 50, "height": 50, "color": "white", "scheme": "black"},
+		
+		{"x": 15, "y": 185, "width": 50, "height": 50, "color": "clear2"},
+		{"x": 15, "y": 185, "width": 50, "height": 50, "color": "white", "scheme": "black"},
+		
+		{"x": 65, "y": 85, "width": 50, "height": 50, "color": "clear2"},
+		{"x": 65, "y": 85, "width": 50, "height": 50, "color": "white", "scheme": "black"},
+		
+		{"x": 115, "y": 50, "width": 670, "height": 15, "color": "clear2"},
+		{"x": 115, "y": 50, "width": 670, "height": 15, "color": "white", "scheme": "black"},
+		
+		{"x": 685, "y": 50, "width": 100, "height": 15, "color": "gold"}
 	],
 	"hints": [
 		{"x": 100, "y": 550, "text": "Step on the green block to see the invisible maze walls", "color": "black"},
