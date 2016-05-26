@@ -16,6 +16,7 @@ import io.github.projectchroma.chroma.resource.FontResource;
 import io.github.projectchroma.chroma.resource.LevelResource;
 import io.github.projectchroma.chroma.resource.Resources;
 import io.github.projectchroma.chroma.util.Colors;
+import io.github.projectchroma.chroma.util.GraphicsUtils;
 
 public class LevelState extends GameState{
 	private static FontResource nameFont;
@@ -31,10 +32,10 @@ public class LevelState extends GameState{
 	public LevelState(int id){
 		super(id);
 		level = Resources.getLevel(id);
+		if(nameFont == null) nameFont = Resources.getFont("mysteron", 24);
 	}
 	@Override
 	public void initialize(Window window, Chroma chroma){
-		if(nameFont == null) nameFont = Resources.getFont("mysteron.ttf", 30);
 //		if(soundSwitch == null) soundSwitch = Resources.loadSound("switch.aif");
 		LevelObject level = this.level.get();
 		name = level.name;
@@ -62,10 +63,10 @@ public class LevelState extends GameState{
 	@Override
 	public void render(Window window, Chroma chroma, Graphics g){
 		g.setColor(background());
-		g.setFont(nameFont.get());
 		g.fillRect(0, 0, Window.WINDOW_WIDTH, Window.WINDOW_HEIGHT);//Draw background
 		g.setColor(foreground());
-		g.drawString(name, Block.WALL_WIDTH, 0);
+		g.setFont(nameFont.get());
+		g.drawString(name, Block.WALL_WIDTH, GraphicsUtils.height(g));
 		for(LevelElement element : elements){
 			if(element.doRender(this)) element.render(window, chroma, this, g);
 		}

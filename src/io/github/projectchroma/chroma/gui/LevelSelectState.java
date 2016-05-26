@@ -113,7 +113,7 @@ public class LevelSelectState extends GUIState{
 					mouseX = window.getInput().getMouseX(), mouseY = window.getInput().getMouseY();
 			if(minX <= mouseX && mouseX <= maxX && minY <= mouseY && mouseY <= maxY){//Mouse is over this element 
 				mouseOver = true;
-				if(window.getInput().isMousePressed(MouseEvent.BUTTON1)){
+				if(window.getInput().isMouseDown(MouseEvent.BUTTON1)){
 //					chroma.enterState(level.getID(), null, new SwipeTransition(SwipeTransition.RIGHT));
 					chroma.enterState(level.getID());
 				}
