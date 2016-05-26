@@ -4,13 +4,17 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.gson.Gson;
+
 import io.github.projectchroma.chroma.gui.LevelSelectState;
 import io.github.projectchroma.chroma.gui.MainMenuState;
 import io.github.projectchroma.chroma.gui.SettingsMenuState;
+import io.github.projectchroma.chroma.level.LevelState;
 import io.github.projectchroma.chroma.resource.Resources;
 
 public class Chroma{
 	public static final int NUM_LEVELS = 11;
+	public static final Gson GSON = new Gson();
 	private static Chroma instance;
 	
 	private GameState state, prevState;
@@ -20,6 +24,8 @@ public class Chroma{
 		addState(new MainMenuState());
 		addState(new LevelSelectState());
 		addState(new SettingsMenuState());
+		for(int i=1; i<=NUM_LEVELS; ++i)
+			addState(new LevelState(i));
 	}
 	private void addState(GameState state){
 		states.put(state.getID(), state);
@@ -30,13 +36,24 @@ public class Chroma{
 			state.initialize(window, this);
 		}
 	}
+	public GameState getState(int id){
+		return states.get(id);
+	}
 	public GameState getCurrentState(){
 		return state;
 	}
+	public GameState getPreviousState(){
+		return prevState;
+	}
 	public void enterState(int id){
-		enterState(states.get(id));
+		try{
+			enterState(states.get(id));
+		}catch(IllegalArgumentException ex){
+			throw new IllegalArgumentException("No state registered with ID " + id);
+		}
 	}
 	public void enterState(GameState state){
+		if(state == null) throw new IllegalArgumentException("Cannot enter null state");
 		prevState = this.state;
 		prevState.leave(this.window, this);
 		this.state = state;
@@ -52,6 +69,12 @@ public class Chroma{
 		}
 		
 		instance.initialize();
-		instance.window.startTicking();
+//		instance.window.startTicking();
+		
+		while(true){
+			instance.getCurrentState().update(instance.window, instance);
+			instance.window.repaint();
+			instance.window.getInput().clearPresses();
+		}
 	}
 }

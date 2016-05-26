@@ -36,6 +36,9 @@ public class Window{
 			}
 		};
 	}
+	protected void repaint(){
+		window.getContentPane().repaint();
+	}
 	protected void startTicking(){
 		updateTimer.scheduleAtFixedRate(updateTask, 0, (long)(1000F / FPS));
 	}

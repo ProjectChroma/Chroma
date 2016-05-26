@@ -2,13 +2,13 @@ package io.github.projectchroma.chroma.gui;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
 import io.github.projectchroma.chroma.Chroma;
 import io.github.projectchroma.chroma.GameState;
 import io.github.projectchroma.chroma.Window;
+import io.github.projectchroma.chroma.util.BoundingBox;
 import io.github.projectchroma.chroma.util.RectangleUtils;
 
 public abstract class GUIState extends GameState{
@@ -25,7 +25,7 @@ public abstract class GUIState extends GameState{
 		this.bg = bg;
 		for(GUIElement element : elements) add(element);
 	}
-	protected Rectangle buttonArea(Boolean column, int gridy){
+	protected BoundingBox buttonArea(Boolean column, int gridy){
 		int cx, cy = GRID_TOP + gridy * (BUTTON_HEIGHT + MARGIN), w = column == center ? 2 * (COLUMN_WIDTH + MARGIN) : COLUMN_WIDTH;
 		if(column == left) cx = LEFT_CENTER;
 		else if(column == right) cx = RIGHT_CENTER;

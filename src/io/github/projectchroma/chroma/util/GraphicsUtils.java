@@ -13,4 +13,7 @@ public class GraphicsUtils{
 	public static void fill(Graphics g, Rectangle rect){
 		g.fillRect(rect.x, rect.y, rect.width, rect.height);
 	}
+	public static void fill(Graphics g, BoundingBox bounds){
+		g.fillRect((int)bounds.getX(), (int)bounds.getY(), (int)bounds.getWidth(), (int)bounds.getHeight());
+	}
 }

@@ -18,11 +18,16 @@ public class Resources{
 	public static ImageResource getImage(String name){
 		return loadResource(new ImageResource(name));
 	}
+	public static LevelResource getLevel(int id){
+		return loadResource(new LevelResource(id));
+	}
+	
 	private static <T extends Resource<?>> T loadResource(T resource){
 		resources.add(resource);
 		numResources++;
 		return resource;
 	}
+	
 	public static InputStream getResourceAsStream(String path) throws IOException{
 		return Resources.class.getResourceAsStream(path);
 	}

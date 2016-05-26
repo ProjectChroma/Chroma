@@ -11,16 +11,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Input{
+	private static final int NUM_KEYS = 255, NUM_BUTTONS = 3;
 	private List<InputListener> listeners = new ArrayList<>();
-	private boolean[] keyStates = new boolean[255], keyPressedStates = new boolean[255];
-	private boolean[] mouseStates = new boolean[3], mousePressedStates = new boolean[3];
+	private boolean[] keyStates = new boolean[NUM_KEYS], keyPressedStates = new boolean[NUM_KEYS], keyReleasedStates = new boolean[NUM_KEYS];
+	private boolean[] mouseStates = new boolean[NUM_BUTTONS], mousePressedStates = new boolean[NUM_BUTTONS], mouseReleasedStates = new boolean[NUM_BUTTONS];
 	private int mouseX, mouseY;
 	private Listener listener = new Listener();
 	public Input(){}
 	
+	public void addListener(InputListener l){
+		listeners.add(l);
+	}
+	public void clearListeners(){
+		listeners.clear();
+	}
+	
 	protected void clearPresses(){
-		for(int i=keyPressedStates.length-1; i>=0; --i) keyPressedStates[i] = false;
-		for(int i=mousePressedStates.length-1; i>=0; --i) mousePressedStates[i] = false;
+		for(int i=NUM_KEYS-1; i>=0; --i){
+			keyPressedStates[i] = false;
+			keyReleasedStates[i] = false;
+		}
+		for(int i=NUM_BUTTONS-1; i>=0; --i){
+			mousePressedStates[i] = false;
+			mouseReleasedStates[i] = false;
+		}
 	}
 	protected Listener getListener(){
 		return listener;
@@ -29,11 +43,17 @@ public class Input{
 	public boolean isKeyPressed(int key){
 		return keyPressedStates[key];
 	}
+	public boolean isKeyReleased(int key){
+		return keyReleasedStates[key];
+	}
 	public boolean isKeyDown(int key){
 		return keyStates[key];
 	}
 	public boolean isMousePressed(int key){
 		return mousePressedStates[key];
+	}
+	public boolean isMouseReleased(int key){
+		return mouseReleasedStates[key];
 	}
 	public boolean isMouseDown(int key){
 		return mouseStates[key];
@@ -61,6 +81,7 @@ public class Input{
 				listener.keyReleased(e.getKeyChar(), e.getKeyCode());
 			}
 			keyStates[e.getKeyCode()] = false;
+			keyReleasedStates[e.getKeyCode()] = true;
 		}
 		@Override
 		public void mouseClicked(MouseEvent e){}
@@ -78,6 +99,7 @@ public class Input{
 				listener.mouseReleased(e.getButton());
 			}
 			mouseStates[e.getButton()] = false;
+			mouseReleasedStates[e.getButton()] = true;
 		}
 		@Override
 		public void mouseEntered(MouseEvent e){}
