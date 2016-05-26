@@ -25,6 +25,7 @@ public class LevelState extends BaseGameState{
 	private static Sound soundSwitch;
 	private String name;
 	private float playerX, playerY;
+	private boolean allowSwitching;
 	private LevelElement[] elements;
 	private Color[] schemes;
 	private int scheme = 0;
@@ -38,8 +39,9 @@ public class LevelState extends BaseGameState{
 		
 		LevelObject level = Resources.loadLevel(id);
 		name = level.name;
-		playerX = level.playerStart.x;
-		playerY = level.playerStart.y;
+		playerX = level.player.x;
+		playerY = level.player.y;
+		allowSwitching = level.player.allowSwitching;
 		
 		elements = new LevelElement[level.blocks.size() + level.hints.size() + 4];//The blocks, the hints, three barriers, and the player
 		elements[0] = Blocks.createBlock(null, 0, Chroma.WINDOW_HEIGHT - Block.WALL_WIDTH, Chroma.WINDOW_WIDTH, Block.WALL_WIDTH, null);//Floor
@@ -78,7 +80,7 @@ public class LevelState extends BaseGameState{
 		if(!container.isPaused()){
 			for(LevelElement element : elements)
 				element.update(container, this, delta);
-			if(container.getInput().isKeyPressed(Input.KEY_UP)){
+			if(allowSwitching && container.getInput().isKeyPressed(Input.KEY_UP)){
 				soundSwitch.play();
 				cycleScheme();
 			}

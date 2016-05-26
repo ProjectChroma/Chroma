@@ -1,6 +1,6 @@
 {
 	"name": "Down to Basics",
-	"playerStart": {
+	"player": {
 		"x": 100,
 		"y": 500
 	},

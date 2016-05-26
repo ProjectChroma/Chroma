@@ -18,7 +18,7 @@ public class Blocks{
 		register(SlowBlock.COLOR_NAME, SlowBlock.class);
 		register(InvisaBlock.COLOR_NAME, InvisaBlock.class);
 		register(InvisaBlockHelp.COLOR_NAME, InvisaBlockHelp.class);
-		register(Switch.COLOR_NAME, Switch.class);
+		register(SwitchBlock.COLOR_NAME, SwitchBlock.class);
 	}
 	public static void register(String colorName, Class<? extends Block> blockClass){
 		classByColor.put(colorName, blockClass);

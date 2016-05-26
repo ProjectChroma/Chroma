@@ -8,7 +8,7 @@ public class LevelObject{
 	public String name;
 	public List<String> schemes = Arrays.asList("white", "black");//Default to alternating schemes, starting with white
 	public List<BlockObject> blocks;
-	public PointObject playerStart;
+	public PlayerObject player;
 	public List<HintObject> hints = new ArrayList<>();//Initialize to empty list, to prevent null issues if the level has no hints
 	private LevelObject(){}
 	
@@ -16,8 +16,9 @@ public class LevelObject{
 		public float x, y, width, height;
 		public String color, scheme;
 	}
-	public static class PointObject{
+	public static class PlayerObject{
 		public float x, y;
+		public boolean allowSwitching = true;
 	}
 	public static class HintObject{
 		public float x, y;

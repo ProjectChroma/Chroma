@@ -1,6 +1,6 @@
 {
 	"name": "Take Flight",
-	"playerStart": {
+	"player": {
 		"x": 100,
 		"y": 500
 	},

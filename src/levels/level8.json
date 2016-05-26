@@ -1,6 +1,6 @@
 {
 	"name": "Elevator to Heaven",
-	"playerStart": {
+	"player": {
 		"x": 100,
 		"y": 530
 	},

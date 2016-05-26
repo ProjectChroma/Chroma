@@ -1,14 +1,18 @@
 {
 	"name": "Maze",
-	"playerStart": {
+	"player": {
 		"x": 30,
-		"y": 530
+		"y": 530,
+		"allowSwitching": false
 	},
 	"blocks": [
-		{"x": 300, "y": 585, "width": 15, "height": 15, "color": "green", "scheme": "white"}
+		{"x": 100, "y": 585, "width": 15, "height": 15, "color": "pink"},
+		
+		{"x": 65, "y": 500, "width": 200, "height": 15, "color": "clear2"},
+		{"x": 65, "y": 500, "width": 200, "height": 15, "color": "white", "scheme": "black"}
 	],
 	"hints": [
-		{"x": 100, "y": 450, "text": "Step on the green block to see the invsable maze walls", "color": "black"},
-		{"x": 15, "y": 550, "text": "Careful.. not only do the walls hurt you, they disapear...", "color": "white"}
+		{"x": 100, "y": 550, "text": "Step on the green block to see the invisible maze walls", "color": "black"},
+		{"x": 15, "y": 550, "text": "Memorize this now...", "color": "white"}
 	]
 }

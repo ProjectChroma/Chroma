@@ -1,6 +1,6 @@
 {
 	"name": "Red for Dead",
-	"playerStart": {
+	"player": {
 		"x": 30,
 		"y": 530
 	},

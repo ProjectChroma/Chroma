@@ -1,6 +1,6 @@
 {
 	"name": "No Spacing Out",
-	"playerStart": {
+	"player": {
 		"x": 30,
 		"y": 530
 	},

@@ -1,7 +1,7 @@
 {
 	"name": "Triple Switch",
 	"schemes": ["white", "black", "red"],
-	"playerStart": {
+	"player": {
 		"x": 30,
 		"y": 530
 	},

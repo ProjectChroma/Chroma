@@ -1,6 +1,6 @@
 {
 	"name": "Life in the Fast Lane",
-	"playerStart": {
+	"player": {
 		"x": 100,
 		"y": 530
 	},
