@@ -16,6 +16,6 @@ public class SlowBlock extends Block{
 	}
 	@Override
 	protected void onContact(GameContainer container, LevelState level, Player player) throws SlickException{
-		player.vX *= SPEED_MULTIPLIER;
+		player.v.x *= SPEED_MULTIPLIER;
 	}
 }

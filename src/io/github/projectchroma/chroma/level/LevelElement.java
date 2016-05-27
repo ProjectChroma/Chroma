@@ -7,6 +7,8 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 
+import io.github.projectchroma.chroma.util.Direction;
+
 public abstract class LevelElement{
 	protected Rectangle bounds;
 	protected Color color, scheme;
@@ -53,6 +55,15 @@ public abstract class LevelElement{
 	public float getHeight(){
 		return bounds.getHeight();
 	}
+	public float get(Direction dir){
+		switch(dir){
+			case UP: return getTop();
+			case DOWN: return getBottom();
+			case LEFT: return getLeft();
+			case RIGHT: return getRight();
+			default: throw new NullPointerException("Null direction");
+		}
+	}
 	public Shape getBounds(){
 		return bounds;
 	}
@@ -88,6 +99,15 @@ public abstract class LevelElement{
 	}
 	protected void setBottom(float y){
 		bounds.setY(y - bounds.getHeight());
+	}
+	protected void set(Direction dir, float val){
+		switch(dir){
+			case UP: setTop(val); break;
+			case DOWN: setBottom(val); break;
+			case LEFT: setLeft(val); break;
+			case RIGHT: setRight(val); break;
+			default: throw new NullPointerException("Null direction " + dir);
+		}
 	}
 	
 	public String toString(){

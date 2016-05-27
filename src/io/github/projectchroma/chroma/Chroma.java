@@ -91,8 +91,8 @@ public class Chroma extends StateBasedGame{
 			Sounds.init();
 			AppGameContainer app = new AppGameContainer(instance);
 			app.setDisplayMode(WINDOW_WIDTH, WINDOW_HEIGHT, false);//Width, height, fullscreen
-			app.setTargetFrameRate(DEBUG_MODE ? 25 : FPS);
-			app.setShowFPS(DEBUG_MODE);//Hide FPS counter
+			app.setTargetFrameRate(DEBUG_MODE ? 30 : FPS);
+			app.setShowFPS(false);//Hide FPS counter
 			app.setIcons(new String[]{Resources.getTexturePath("icon32.png"), Resources.getTexturePath("icon24.png"), Resources.getTexturePath("icon16.png")});
 			app.start();
 		}catch(SlickException ex){
