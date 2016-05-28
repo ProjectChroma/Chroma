@@ -63,6 +63,7 @@ public class Player extends LevelElement{
 		Rectangle collisionBounds = RectangleUtils.grow(bounds, 1);
 		for(LevelElement element : level.elements()){
 			if(element == this || !element.isTangible(level)) continue;
+			element.update(container, level, delta);
 			if(element instanceof Block && collisionBounds.intersects(element.getBounds()))
 				((Block)element).onContact(container, level);
 		}

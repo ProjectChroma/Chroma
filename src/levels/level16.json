@@ -1,0 +1,15 @@
+{
+	"name": "Levitation",
+	"player": {
+		"x": 40,
+		"y": 225
+	},
+	"blocks": [
+		{"x": 15, "y": 300, "width": 100, "height": 15},
+		{"x": 157, "y": 0, "width": 16, "height": 15, "color": "purple"},
+		{"x": 357, "y": 0, "width": 16, "height": 15, "color": "purple"},
+		{"x": 557, "y": 0, "width": 16, "height": 15, "color": "purple"},
+		{"x": 685, "y": 300, "width": 100, "height": 15, "color": "gold"} 
+	],
+	"hints": []
+}

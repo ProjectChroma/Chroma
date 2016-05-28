@@ -49,6 +49,9 @@ public class LevelSelectState extends GUIState{
 	}
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException{
 		Progress.read();
+		for(GUIElement element : elements){
+			if(element instanceof LevelIcon) ((LevelIcon)element).level.setScheme(0);
+		}
 	}
 	
 	public static LevelSelectState instance(){

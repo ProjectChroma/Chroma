@@ -14,6 +14,7 @@
 		{"x": 100, "y": 405, "width": 685, "height": 15, "color": "blue", "scheme": "white"},
 		
 		{"x": 15, "y": 315, "width": 685, "height": 15, "color": "orange"},
+		{"x": 100, "y": 250, "width": 635, "height": 15, "color": "orange"},
 		
 		{"x": 100, "y": 225, "width": 685, "height": 15, "color": "white"},
 		{"x": 100, "y": 225, "width": 685, "height": 15, "color": "blue", "scheme": "white"},
@@ -25,6 +26,7 @@
 	"hints": [
 		{"x": 250, "y": 530, "text": "Blue slows you down"},
 		{"x": 65, "y":  445, "text": "Orange speeds you up"},
+		{"x": 150, "y": 275, "text": "Multiple blocks' effects will stack"},
 		{"x": 200, "y": 175, "color": "black", "text": "Switching schemes might be advantageous"},
 		{"x": 200, "y": 175, "color": "white", "text": "Switching schemes will be helpful in unexpected places"}
 	]

@@ -78,8 +78,7 @@ public class LevelState extends BaseGameState{
 		super.update(container, game, delta);
 		if(container.getInput().isKeyPressed(Input.KEY_P)) game.enterState(PausedState.ID, null, new PausedState.Enter());
 		if(!container.isPaused()){
-			for(LevelElement element : elements)
-				element.update(container, this, delta);
+			Chroma.instance().player().update(container, this, delta);
 			if(allowSwitching && container.getInput().isKeyPressed(Input.KEY_UP)){
 				soundSwitch.play();
 				cycleScheme();
