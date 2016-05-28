@@ -5,7 +5,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.geom.Shape;
+import org.newdawn.slick.state.StateBasedGame;
 
 import io.github.projectchroma.chroma.util.Direction;
 
@@ -24,6 +24,8 @@ public abstract class LevelElement{
 		this.scheme = scheme;
 	}
 	public void init(GameContainer container) throws SlickException{}
+	public void enter(GameContainer container, StateBasedGame game) throws SlickException{}
+	public void leave(GameContainer container, StateBasedGame game) throws SlickException{}
 	public abstract void update(GameContainer container, LevelState level, int delta) throws SlickException;
 	public void render(GameContainer container, LevelState level, Graphics g) throws SlickException{
 		if(!doRender(level)) return;
@@ -64,7 +66,7 @@ public abstract class LevelElement{
 			default: throw new NullPointerException("Null direction");
 		}
 	}
-	public Shape getBounds(){
+	public Rectangle getBounds(){
 		return bounds;
 	}
 	public boolean isTangible(LevelState level){

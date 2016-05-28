@@ -1,0 +1,22 @@
+{
+	"name": "Bull in a China Shop",
+	"player": {
+		"x": 30,
+		"y": 200
+	},
+	"blocks": [
+		{"x": 15, "y": 450, "width": 200, "height": 15},
+		{"x": 215, "y": 465, "width": 200, "height": 15, "color": "lightblue"},
+		{"x": 215, "y": 480, "width": 200, "height": 15, "color": "gold"},
+		
+		{"x": 415, "y": 450, "width": 370, "height": 15},
+		{"x": 415, "y": 375, "width": 100, "height": 15, "color": "white"},
+		{"x": 415, "y": 300, "width": 100, "height": 15, "color": "black"},
+		{"x": 415, "y": 225, "width": 100, "height": 15, "color": "white"},
+		{"x": 415, "y": 150, "width": 100, "height": 15, "color": "black"},
+		{"x": 415, "y": 75, "width": 100, "height": 15, "color": "white"}
+	],
+	"hints": [
+		{"x": 30, "y": 350, "text": "Light blue blocks can be broken\nif hit at a high speed"}
+	]
+}

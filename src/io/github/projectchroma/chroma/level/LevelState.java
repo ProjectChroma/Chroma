@@ -65,13 +65,13 @@ public class LevelState extends BaseGameState{
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException{
 		g.setColor(background());
-		g.setFont(nameFont);
 		g.fillRect(0, 0, Chroma.WINDOW_WIDTH, Chroma.WINDOW_HEIGHT);//Draw background
-		g.setColor(foreground());
-		g.drawString(name, Block.WALL_WIDTH, 0);
 		for(LevelElement element : elements){
 			if(!element.getColor(this).equals(background())) element.render(container, this, g);
 		}
+		g.setColor(foreground());
+		g.setFont(nameFont);
+		g.drawString(name, Block.WALL_WIDTH, 0);
 	}
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException{
@@ -89,6 +89,12 @@ public class LevelState extends BaseGameState{
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException{
 		super.enter(container, game);
 		if(!(Chroma.instance().previousState() instanceof PausedState)) restart();
+		for(LevelElement element : elements) element.enter(container, game);
+	}
+	@Override
+	public void leave(GameContainer container, StateBasedGame game) throws SlickException{
+		super.leave(container, game);
+		for(LevelElement element : elements) element.leave(container, game);
 	}
 	public void restart(){
 		Chroma.instance().player().moveTo(playerX, playerY);

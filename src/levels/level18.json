@@ -1,0 +1,21 @@
+{
+	"name": "Gravity Slingshot",
+	"player": {
+		"x": 100,
+		"y": 300
+	},
+	"blocks": [
+		{"x": 15, "y": 390, "width": 285, "height": 20},
+		{"x": 500, "y": 390, "width": 285, "height": 20},
+		
+		{"x": 300, "y": 585, "width": 200, "height": 15, "color": "green", "scheme": "white"},
+		{"x": 300, "y": 585, "width": 200, "height": 15, "color": "purple", "scheme": "black"},
+		
+		{"x": 15, "y": 15, "width": 770, "height": 15, "color": "lightblue"},
+		{"x": 15, "y": 45, "width": 770, "height": 15, "color": "lightblue"},
+		{"x": 15, "y": 75, "width": 770, "height": 15, "color": "lightblue"},
+		{"x": 15, "y": 105, "width": 770, "height": 15, "color": "lightblue"},
+		{"x": 15, "y": 135, "width": 770, "height": 15, "color": "lightblue"},
+		{"x": 15, "y": 0, "width": 770, "height": 15, "color": "gold"}
+	]
+}
