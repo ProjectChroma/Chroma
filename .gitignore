@@ -13,3 +13,6 @@ screenshots/
 
 #Random file storage
 misc/
+
+#Exported libraries
+Chroma_lib/

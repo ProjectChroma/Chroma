@@ -4,6 +4,7 @@ A 2D puzzle platformer built on colors and shapes
 ## Installation for Development
 
 1. Clone this repository (`git clone https://github.com/ProjectChroma/Chroma.git`)
+1. Install [git-lfs](https://git-lfs.github.com/) using the directions at the bottom-left
 1. Download [Slick2D](http://slick.ninjacave.com/) and extract its contents
 1. Open Eclipse
 1. Set your workspace to the folder you cloned into (i.e. `C:\Users\You\workspace`)
@@ -19,5 +20,18 @@ A 2D puzzle platformer built on colors and shapes
 1. Right-click the project and open "Build Path" > "Configure Build Path..."
 1. Click "Add JARs..." and select `gson-2.6.2.jar`, `slick.jar`, `lwjgl.jar`, and `ibxm.jar`
 1. Expand `lwjgl.jar` in the center area and double-click "Native library location: (None)"
-1. Locate the `natives-windows` folder
+1. Locate and select the `natives-windows` folder
 1. Run `io.github.projectchroma.chroma.Chroma` to run the game
+
+## Exporting Game
+The launcher does all of the hard work for running the game, so the export process is very simple.
+
+1. Right-click the project in Eclipse
+1. Click Export...
+1. Expand "Java" and select "Runnable JAR File", then click "Next"
+1. Select the run configuration for the project (should point to `io.github.projectchroma.chroma.Chroma` as the main class)
+1. Type `Chroma\Chroma.jar` for the jar-file path
+1. Select "Copy required libraries into a sub-folder next to the generated JAR"
+1. Click "Finish"
+
+Your changes should now be made to `Chroma.jar` in the project root, which will be detected by the launcher.
