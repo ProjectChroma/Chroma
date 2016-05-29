@@ -11,13 +11,14 @@ import io.github.projectchroma.chroma.Resources;
 import io.github.projectchroma.chroma.SwipeTransition;
 import io.github.projectchroma.chroma.level.LevelState;
 import io.github.projectchroma.chroma.level.Player;
+import io.github.projectchroma.chroma.level.LevelObject.BlockObject;
 
 public class HazardBlock extends Block{
 	public static final String COLOR_NAME = "red";
 	public static final Color COLOR = Color.red;
 	private static Sound deathSound;
-	public HazardBlock(float x, float y, float width, float height, Color scheme){
-		super(x, y, width, height, COLOR, scheme);
+	public HazardBlock(BlockObject block){
+		super(block, COLOR);
 	}
 	@Override
 	public void init(GameContainer container) throws SlickException{

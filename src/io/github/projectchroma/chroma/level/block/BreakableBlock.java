@@ -8,14 +8,16 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import io.github.projectchroma.chroma.level.LevelState;
 import io.github.projectchroma.chroma.level.Player;
+import io.github.projectchroma.chroma.level.LevelObject.BlockObject;
 import io.github.projectchroma.chroma.util.RectangleUtils;
 
 public class BreakableBlock extends Block{
 	public static final String COLOR_NAME = "lightblue";
 	public static final Color COLOR = new Color(0.7F, 0.7F, 1);
 	private boolean broken;
-	public BreakableBlock(float x, float y, float width, float height, Color scheme){
-		super(x, y, width, height, COLOR, scheme);
+	private float minSpeed = 7;
+	public BreakableBlock(BlockObject block){
+		super(block, COLOR);
 	}
 	@Override
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException{
@@ -27,13 +29,11 @@ public class BreakableBlock extends Block{
 	}
 	@Override
 	protected void update(GameContainer container, LevelState level, Player player) throws SlickException{
-		if(Math.abs(player.v.y) > 7.5){
+		if(player.v.length() > minSpeed){
 			Rectangle newBounds = RectangleUtils.clone(player.getBounds());
 			newBounds.setX(newBounds.getX() + player.v.x);
 			newBounds.setY(newBounds.getY() + player.v.y);
-			if(newBounds.intersects(bounds)){
-				broken = true;
-			}
+			if(newBounds.intersects(bounds)) broken = true;
 		}
 	}
 	@Override

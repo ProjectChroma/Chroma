@@ -8,14 +8,15 @@ import org.newdawn.slick.Sound;
 import io.github.projectchroma.chroma.Resources;
 import io.github.projectchroma.chroma.level.LevelState;
 import io.github.projectchroma.chroma.level.Player;
+import io.github.projectchroma.chroma.level.LevelObject.BlockObject;
 
 public class SwitchBlock extends Block{
 	public static final String COLOR_NAME = "pink";
 	public static final Color COLOR = Color.pink;
 	private static Sound switchSound;
 	private boolean contacting = false, prevContacting = false;
-	public SwitchBlock(float x, float y, float width, float height, Color scheme){
-		super(x, y, width, height, COLOR, scheme);
+	public SwitchBlock(BlockObject block){
+		super(block, COLOR);
 	}
 	@Override
 	public void init(GameContainer container) throws SlickException{

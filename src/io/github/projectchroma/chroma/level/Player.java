@@ -21,7 +21,7 @@ import io.github.projectchroma.chroma.util.RectangleUtils;
 
 public class Player extends LevelElement{
 	/**Acceleration caused by gravity*/
-	private static final float gravity = 0.07F;
+	public static final float gravity = 0.07F;
 	/**Velocities during player-caused motion*/
 	private static final float VX = 2F, VY = -3.7F;
 	/**Sound effects*/
@@ -39,7 +39,6 @@ public class Player extends LevelElement{
 	public Player(){
 		super(0, 0, 50, 50);
 		moveTo(0, 0);
-		resetKinematics();
 	}
 	
 	@Override
@@ -115,10 +114,6 @@ public class Player extends LevelElement{
 	public void moveTo(float x, float y){
 		setLeft(x);
 		setTop(y);
-	}
-	public void resetKinematics(){
-		v.x = v.y = a.x = 0;
-		a.y = gravity;
 	}
 	
 	public void setRenderColor(Color c){

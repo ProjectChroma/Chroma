@@ -17,7 +17,6 @@ import io.github.projectchroma.chroma.gui.MainMenuState;
 import io.github.projectchroma.chroma.gui.SettingsMenuState;
 import io.github.projectchroma.chroma.level.LevelState;
 import io.github.projectchroma.chroma.level.PausedState;
-import io.github.projectchroma.chroma.level.Player;
 import io.github.projectchroma.chroma.level.block.BlackBlock;
 import io.github.projectchroma.chroma.level.block.WhiteBlock;
 import io.github.projectchroma.chroma.util.Colors;
@@ -36,12 +35,10 @@ public class Chroma extends StateBasedGame{
 	private static Chroma instance;
 	
 	private Font javaFont;
-	private Player player;
 	private GameState prevState = null;
 	
 	private Chroma() throws SlickException{
 		super("Chroma");
-		player = new Player();
 		javaFont = Resources.loadFont("mysteron.ttf");
 	}
 	
@@ -59,9 +56,6 @@ public class Chroma extends StateBasedGame{
 	public void enterState(int id, Transition leave, Transition enter){
 		prevState = getCurrentState();
 		super.enterState(id, leave, enter);
-	}
-	public Player player(){
-		return player;
 	}
 	public UnicodeFont createFont(float size) throws SlickException{
 		return createFont(size, Font.PLAIN);

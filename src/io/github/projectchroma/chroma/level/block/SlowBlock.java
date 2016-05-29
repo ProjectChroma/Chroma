@@ -6,13 +6,14 @@ import org.newdawn.slick.SlickException;
 
 import io.github.projectchroma.chroma.level.LevelState;
 import io.github.projectchroma.chroma.level.Player;
+import io.github.projectchroma.chroma.level.LevelObject.BlockObject;
 
 public class SlowBlock extends Block{
 	public static final String COLOR_NAME = "blue";
 	public static final Color COLOR = Color.blue;
 	private static final float SPEED_MULTIPLIER = 0.6F;
-	public SlowBlock(float x, float y, float width, float height, Color scheme){
-		super(x, y, width, height, COLOR, scheme);
+	public SlowBlock(BlockObject block){
+		super(block, COLOR);
 	}
 	@Override
 	protected void onContact(GameContainer container, LevelState level, Player player) throws SlickException{

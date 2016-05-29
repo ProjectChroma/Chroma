@@ -9,6 +9,7 @@ import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.Transition;
 
+import io.github.projectchroma.chroma.level.LevelState;
 import io.github.projectchroma.chroma.level.block.GoalBlock;
 import io.github.projectchroma.chroma.level.block.HazardBlock;
 
@@ -17,6 +18,7 @@ public class LevelExitTransition implements Transition{
 	private int delta, length;
 	private Color c;
 	private Sound sound;
+	private LevelState prevLevel;
 	public LevelExitTransition(boolean win, Sound sound){
 		length = win ? LENGTH_VICTORY : LENGTH_DEATH;
 		c = win ? GoalBlock.COLOR : HazardBlock.COLOR;
@@ -33,7 +35,7 @@ public class LevelExitTransition implements Transition{
 	@Override
 	public boolean isComplete(){
 		if(delta >= length){
-			Chroma.instance().player().resetRenderColor();
+			prevLevel.player().resetRenderColor();
 			return true;
 		}else
 			return false;
@@ -41,7 +43,8 @@ public class LevelExitTransition implements Transition{
 	@Override
 	public void init(GameState firstState, GameState secondState){
 		delta = 0;
-		Chroma.instance().player().setRenderColor(c);
+		prevLevel = (LevelState)firstState;
+		prevLevel.player().setRenderColor(c);
 		if(sound != null) sound.play();
 	}
 }
