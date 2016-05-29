@@ -31,7 +31,7 @@ The launcher does all of the hard work for running the game, so the export proce
 1. Expand "Java" and select "Runnable JAR File", then click "Next"
 1. Select the run configuration for the project (should point to `io.github.projectchroma.chroma.Chroma` as the main class)
 1. Type `Chroma\Chroma.jar` for the jar-file path
-1. Select "Copy required libraries into a sub-folder next to the generated JAR"
+1. Select "Package required libraries into generated JAR"
 1. Click "Finish"
 
 Your changes should now be made to `Chroma.jar` in the project root, which will be detected by the launcher.
