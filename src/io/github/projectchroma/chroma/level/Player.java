@@ -54,7 +54,10 @@ public class Player extends LevelElement{
 		if(container.getInput().isKeyDown(Input.KEY_LEFT)) v.x = -VX;
 		else if(container.getInput().isKeyDown(Input.KEY_RIGHT)) v.x = VX;
 		else v.x = 0;
-		if(container.getInput().isKeyPressed(Input.KEY_SPACE) && colliding[DOWN.ordinal()]) v.y = VY;
+		if(container.getInput().isKeyPressed(Input.KEY_SPACE) && colliding[DOWN.ordinal()]){
+			v.y = VY;
+			jump.play();
+		}
 		
 		//Reset collisions
 		for(int i=0; i<colliding.length; i++) colliding[i] = false;

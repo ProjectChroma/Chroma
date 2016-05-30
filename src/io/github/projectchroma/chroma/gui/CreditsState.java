@@ -17,7 +17,8 @@ public class CreditsState extends GUIState{
 	public static final int ID = -2;
 	private static final float LEFT_X = 100, RIGHT_X = Chroma.WINDOW_WIDTH - LEFT_X;
 	private static Font titleFont, textFont;
-	private Map<String, String> creditsPC = new LinkedHashMap<>(), creditsExternal = new LinkedHashMap<>();
+	private Map<String, String> credits = new LinkedHashMap<>(), attributions = new LinkedHashMap<>();
+	private float[] y = new float[2];//Pointer for two floats: top and bottom of text
 	public CreditsState(){
 		super(ID);
 	}
@@ -33,34 +34,64 @@ public class CreditsState extends GUIState{
 		if(titleFont == null) titleFont = Chroma.instance().createFont(36);
 		if(textFont == null) textFont = Chroma.instance().createFont(24);
 		
-		creditsPC.put("Engine Designer", "Ian");
-		creditsPC.put("Level Design", "Jill");
-		creditsPC.put("Web Design", "Duncan");
+		credits.put("Website Design", "Duncan");
+		credits.put("Engine Design", "Ian");
+		credits.put("Level Design", "Jill");
 		
-		creditsExternal.put("Font", "\"Mysterons\" by Brian Kent\nAenigma Fonts");
+		attributions.put("Font", "\"Mysterons\" by Brian Kent\nwww.aenigmafonts.com");
+		attributions.put("Menu Music", "\"Fantasy Game Background\"\nby Eric Matyas\nwww.soundimage.org");
+		attributions.put("Level Music", "\"Fairyland_120\" by AlienXXX\nwww.freesound.org/people/AlienXXX/");
 	}
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException{
-		super.render(container, game, g);
 		g.setColor(Color.black);
-		float[] y = {100};//float[] so changes to y[0] are passed out
-		renderCredits("Project:Chroma", creditsPC, g, y);
-		renderCredits("External Credits", creditsExternal, g, y);
+		y[1] = y[0];
+		renderCredits("Project:Chroma", credits, g, y);
+		renderCredits("Attribution", attributions, g, y);
+		
+		g.setColor(Color.white);
+		RenderedText title = (RenderedText)elements.get(0);
+		g.fillRect(0, 0, Chroma.WINDOW_WIDTH, title.getBottom() + 20);
+		
+		Button button = (Button)elements.get(1);
+		g.fillRect(0, button.getTop() - 20, Chroma.WINDOW_WIDTH, Chroma.WINDOW_HEIGHT - button.getTop() + 20);
+		super.render(container, game, g);//Render title and back button over credits
 	}
 	private void renderCredits(String title, Map<String, String> credits, Graphics g, float[] y){
 		g.setFont(titleFont);
-		g.drawString(title, Chroma.WINDOW_WIDTH/2 - titleFont.getWidth(title)/2, y[0]);
-		y[0] += 1.2 * titleFont.getLineHeight();
+		g.drawString(title, Chroma.WINDOW_WIDTH/2 - titleFont.getWidth(title)/2, y[1]);
+		y[1] += 1.2 * titleFont.getLineHeight();
 		g.setFont(textFont);
 		for(Map.Entry<String, String> entry : credits.entrySet()){
-			String[] lines = entry.getValue().split("\\R");
-			g.drawString(entry.getKey(), LEFT_X, y[0] + textFont.getLineHeight() * (lines.length-1) / 2);
-			for(String line : lines){
-				g.drawString(line, RIGHT_X - textFont.getWidth(line), y[0]);
-				y[0] += textFont.getLineHeight();
+			String[] keyLines = entry.getKey().split("\\R"), valueLines = entry.getValue().split("\\R");
+			int offsetK = 0, offsetV = 0;
+			if(keyLines.length > valueLines.length){
+				offsetV = textFont.getLineHeight() * (keyLines.length - valueLines.length) / 2;
+			}else if(valueLines.length > keyLines.length){
+				offsetK = textFont.getLineHeight() * (valueLines.length - keyLines.length) / 2;
 			}
-			y[0] += 0.5 * textFont.getLineHeight();//Space before next credit
+			float yK = y[1] + offsetK, yV = y[1] + offsetV;
+			for(String kLine : keyLines){
+				g.drawString(kLine, LEFT_X, yK);
+				yK += textFont.getLineHeight();
+			}
+			for(String vLine : valueLines){
+				g.drawString(vLine, RIGHT_X - textFont.getWidth(vLine), yV);
+				yV += textFont.getLineHeight();
+			}
+			y[1] = Math.max(yK, yV) + 0.5F * textFont.getLineHeight();//Lowest point in current block, plus space before next credit
 		}
-		y[0] += titleFont.getLineHeight();
+		y[1] += titleFont.getLineHeight();
+	}
+	@Override
+	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException{
+		super.update(container, game, delta);
+		y[0] -= 0.5;
+		if(y[1] < ((RenderedText)elements.get(0)).getBottom()) y[0] = ((Button)elements.get(1)).getTop();
+	}
+	@Override
+	public void enter(GameContainer container, StateBasedGame game) throws SlickException{
+		super.enter(container, game);
+		y[0] = ((Button)elements.get(1)).getTop();
 	}
 }
