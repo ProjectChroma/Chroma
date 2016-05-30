@@ -5,9 +5,9 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 
 import io.github.projectchroma.chroma.level.LevelElement;
+import io.github.projectchroma.chroma.level.LevelObject.BlockObject;
 import io.github.projectchroma.chroma.level.LevelState;
 import io.github.projectchroma.chroma.level.Player;
-import io.github.projectchroma.chroma.level.LevelObject.BlockObject;
 import io.github.projectchroma.chroma.util.Colors;
 
 public abstract class Block extends LevelElement{

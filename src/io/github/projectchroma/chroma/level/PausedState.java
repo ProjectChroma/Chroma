@@ -18,9 +18,9 @@ import io.github.projectchroma.chroma.Sounds;
 import io.github.projectchroma.chroma.SwipeTransition;
 import io.github.projectchroma.chroma.gui.Button;
 import io.github.projectchroma.chroma.gui.MainMenuState;
-import io.github.projectchroma.chroma.level.block.SlowBlock;
 import io.github.projectchroma.chroma.level.block.GoalBlock;
 import io.github.projectchroma.chroma.level.block.HazardBlock;
+import io.github.projectchroma.chroma.level.block.SlowBlock;
 import io.github.projectchroma.chroma.util.RectangleUtils;
 
 public class PausedState extends BaseGameState{

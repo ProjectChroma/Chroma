@@ -4,9 +4,9 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 
+import io.github.projectchroma.chroma.level.LevelObject.BlockObject;
 import io.github.projectchroma.chroma.level.LevelState;
 import io.github.projectchroma.chroma.level.Player;
-import io.github.projectchroma.chroma.level.LevelObject.BlockObject;
 
 public class BlackBlock extends Block{
 	public static final String COLOR_NAME = "black";

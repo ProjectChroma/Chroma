@@ -11,6 +11,7 @@ import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.Transition;
 
+import io.github.projectchroma.chroma.gui.CreditsState;
 import io.github.projectchroma.chroma.gui.GameEndState;
 import io.github.projectchroma.chroma.gui.LevelSelectState;
 import io.github.projectchroma.chroma.gui.MainMenuState;
@@ -47,6 +48,7 @@ public class Chroma extends StateBasedGame{
 		addState(new MainMenuState());
 		addState(new LevelSelectState(NUM_LEVELS + 2));
 		addState(new SettingsMenuState());
+		addState(new CreditsState());
 		for(int i = 1; i <= NUM_LEVELS; i++)
 			addState(new LevelState(i));
 		addState(PausedState.instance);

@@ -8,7 +8,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import io.github.projectchroma.chroma.SwipeTransition;
 
 public class SettingsMenuState extends GUIState{
-	public static final int ID = -2;
+	public static final int ID = -1;
 	public SettingsMenuState(){
 		super(ID);
 	}
