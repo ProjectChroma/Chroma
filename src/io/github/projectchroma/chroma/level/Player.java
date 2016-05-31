@@ -60,7 +60,7 @@ public class Player extends LevelElement{
 		if(keyLeft.isDown()) v.x = -VX;
 		else if(keyRight.isDown()) v.x = VX;
 		else v.x = 0;
-		if(keyJump.isPressed() && colliding[DOWN.ordinal()]){
+		if(keyJump.isDown() && colliding[DOWN.ordinal()]){
 			v.y = VY;
 			jump.play();
 		}

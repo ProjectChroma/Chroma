@@ -27,6 +27,6 @@
 	],
 	"hints": [
 		{"x": 100, "y": 450, "text": "This level is called Top Zozzle for a reason.", "color": "black"},
-		{"x": 15, "y": 550, "text": "Careful.. Invisable blocks can help OR hurt...", "color": "white"}
+		{"x": 15, "y": 550, "text": "Careful.. Invisible blocks can help OR hurt...", "color": "white"}
 	]
 }

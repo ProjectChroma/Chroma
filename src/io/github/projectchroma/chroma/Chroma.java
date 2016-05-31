@@ -20,6 +20,7 @@ import io.github.projectchroma.chroma.level.LevelState;
 import io.github.projectchroma.chroma.level.PausedState;
 import io.github.projectchroma.chroma.level.block.BlackBlock;
 import io.github.projectchroma.chroma.level.block.WhiteBlock;
+import io.github.projectchroma.chroma.settings.Keybind;
 import io.github.projectchroma.chroma.util.Colors;
 
 public class Chroma extends StateBasedGame{
@@ -89,6 +90,7 @@ public class Chroma extends StateBasedGame{
 	public static void main(String[] args){
 		try{
 			instance = new Chroma();
+			Keybind.read();
 			Sounds.init();
 			AppGameContainer app = new AppGameContainer(instance);
 			app.setDisplayMode(WINDOW_WIDTH, WINDOW_HEIGHT, false);//Width, height, fullscreen

@@ -43,11 +43,15 @@ public class SettingsMenuState extends GUIState{
 		});
 	}
 	@Override
+	public void leave(GameContainer container, StateBasedGame game) throws SlickException{
+		super.leave(container, game);
+		if(Keybind.hasChanged()) Keybind.write();
+	}
+	@Override
 	public void keyPressed(int key, char c){
 		if(activeKeybind != null){
 			activeKeybind.keybind.setKey(key);
 			activeKeybind.setText(Input.getKeyName(key));
-			System.out.println("Set keybind " + activeKeybind.keybind.getName() + " to " + activeKeybind.getText());
 			activeKeybind = null;
 		}
 	}

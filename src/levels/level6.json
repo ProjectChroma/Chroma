@@ -17,6 +17,6 @@
 		{"x": 100, "y": 200, "width": 100, "height": 15, "color": "gold"}
 	],
 	"hints": [
-		{"x": 300, "y": 100, "text": "Space to toggle colors"}
+		{"x": 300, "y": 100, "text": "{keybind:player.switch} to toggle colors"}
 	]
 }

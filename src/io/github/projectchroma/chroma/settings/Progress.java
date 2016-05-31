@@ -6,7 +6,7 @@ import java.io.PrintStream;
 import java.util.Scanner;
 
 public class Progress{
-	private static final File file = new File("data/progress.dat");
+	private static final File file = new File(Settings.SETTINGS_DIR, "progress.dat");
 	private static int lastCompletedLevel;
 	public static void read(){
 		try(Scanner in = new Scanner(file)){
