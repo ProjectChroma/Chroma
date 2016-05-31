@@ -18,7 +18,7 @@ import com.google.gson.Gson;
 import io.github.projectchroma.chroma.level.LevelObject;
 
 public class Resources {
-	private static final Gson gson = new Gson();
+	public static final Gson gson = new Gson();
 	public static final String ASSET_PATH = "assets/", TEXTURE_PATH = ASSET_PATH + "textures/", FONT_PATH = ASSET_PATH + "fonts/", SOUND_PATH = ASSET_PATH + "sounds/",
 			LEVEL_PATH = "levels/";
 	public static String getFontPath(String name){

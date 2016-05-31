@@ -11,6 +11,7 @@ import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.Transition;
 
+import io.github.projectchroma.chroma.gui.ControlsMenuState;
 import io.github.projectchroma.chroma.gui.CreditsState;
 import io.github.projectchroma.chroma.gui.GameEndState;
 import io.github.projectchroma.chroma.gui.LevelSelectState;
@@ -21,6 +22,7 @@ import io.github.projectchroma.chroma.level.PausedState;
 import io.github.projectchroma.chroma.level.block.BlackBlock;
 import io.github.projectchroma.chroma.level.block.WhiteBlock;
 import io.github.projectchroma.chroma.settings.Keybind;
+import io.github.projectchroma.chroma.settings.Settings;
 import io.github.projectchroma.chroma.util.Colors;
 
 public class Chroma extends StateBasedGame{
@@ -48,7 +50,8 @@ public class Chroma extends StateBasedGame{
 	public void initStatesList(GameContainer container) throws SlickException{
 		addState(new MainMenuState());
 		addState(new LevelSelectState(NUM_LEVELS + 2));
-		addState(new SettingsMenuState(NUM_LEVELS + 3));
+		addState(new SettingsMenuState());
+		addState(new ControlsMenuState(NUM_LEVELS + 3));
 		addState(new CreditsState());
 		for(int i = 1; i <= NUM_LEVELS; i++)
 			addState(new LevelState(i));
@@ -57,7 +60,8 @@ public class Chroma extends StateBasedGame{
 	}
 	@Override
 	public void addState(GameState state){
-		if(getState(state.getID()) != null) throw new IllegalArgumentException("State with ID " + state.getID() + " already exists");
+		if(getState(state.getID()) != null)//State with that ID already exists
+			throw new IllegalArgumentException(getState(state.getID()).getClass().getName() + " and " + state.getClass().getName() + " conflict on ID " + state.getID());
 		super.addState(state);
 	}
 	@Override
@@ -90,6 +94,7 @@ public class Chroma extends StateBasedGame{
 	public static void main(String[] args){
 		try{
 			instance = new Chroma();
+			Settings.read();
 			Keybind.read();
 			Sounds.init();
 			AppGameContainer app = new AppGameContainer(instance);
@@ -97,6 +102,7 @@ public class Chroma extends StateBasedGame{
 			app.setTargetFrameRate(DEBUG_MODE ? 30 : FPS);
 			app.setShowFPS(false);//Hide FPS counter
 			app.setIcons(new String[]{Resources.getTexturePath("icon32.png"), Resources.getTexturePath("icon24.png"), Resources.getTexturePath("icon16.png")});
+			Settings.update(app);
 			app.start();
 		}catch(SlickException ex){
 			ex.printStackTrace();

@@ -12,6 +12,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import io.github.projectchroma.chroma.Chroma;
 import io.github.projectchroma.chroma.SwipeTransition;
+import io.github.projectchroma.chroma.util.Direction;
 
 public class CreditsState extends GUIState{
 	public static final int ID = -1;
@@ -27,7 +28,7 @@ public class CreditsState extends GUIState{
 		add(new RenderedText("Credits", Chroma.instance().createFont(50), Chroma.WINDOW_WIDTH/2, 40, Color.black));
 		add(new Button(buttonArea(center, 8), "Back", Color.red.darker()){
 			public void onclick(){
-				game.enterState(MainMenuState.ID, null, new SwipeTransition(SwipeTransition.LEFT));
+				game.enterState(MainMenuState.ID, null, new SwipeTransition(Direction.UP));
 			}
 		});
 		

@@ -16,6 +16,7 @@ import io.github.projectchroma.chroma.level.LevelElement;
 import io.github.projectchroma.chroma.level.LevelState;
 import io.github.projectchroma.chroma.level.block.Block;
 import io.github.projectchroma.chroma.settings.Progress;
+import io.github.projectchroma.chroma.util.Direction;
 
 public class LevelSelectState extends GUIState{
 	private static final float GRID_WIDTH = 700, GRID_TOP = 100, ICON_SIZE = 100, NUM_COLUMNS = 6;
@@ -43,7 +44,7 @@ public class LevelSelectState extends GUIState{
 		}
 		add(new Button(buttonArea(center, 8), "Back", Color.red.darker()){
 			public void onclick(){
-				game.enterState(MainMenuState.ID, null, new SwipeTransition(SwipeTransition.LEFT));
+				game.enterState(MainMenuState.ID, null, new SwipeTransition(Direction.LEFT));
 			}
 		});
 	}
@@ -97,7 +98,7 @@ public class LevelSelectState extends GUIState{
 			if(minX <= mouseX && mouseX <= maxX && minY <= mouseY && mouseY <= maxY){//Mouse is over this element 
 				mouseOver = true;
 				if(!Progress.isLevelLocked(level.getID()) && container.getInput().isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)){
-					game.enterState(level.getID(), null, new SwipeTransition(SwipeTransition.RIGHT));
+					game.enterState(level.getID(), null, new SwipeTransition(Direction.RIGHT));
 				}
 			}else mouseOver = false;
 		}

@@ -12,6 +12,7 @@ import io.github.projectchroma.chroma.SwipeTransition;
 import io.github.projectchroma.chroma.level.LevelObject.BlockObject;
 import io.github.projectchroma.chroma.level.LevelState;
 import io.github.projectchroma.chroma.level.Player;
+import io.github.projectchroma.chroma.util.Direction;
 
 public class HazardBlock extends Block{
 	public static final String COLOR_NAME = "red";
@@ -26,6 +27,6 @@ public class HazardBlock extends Block{
 	}
 	@Override
 	protected void onContact(GameContainer container, LevelState level, Player player){
-		Chroma.instance().enterState(level.getID(), new LevelExitTransition(false, deathSound), new SwipeTransition(SwipeTransition.RIGHT));
+		Chroma.instance().enterState(level.getID(), new LevelExitTransition(false, deathSound), new SwipeTransition(Direction.RIGHT));
 	}
 }

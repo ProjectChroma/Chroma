@@ -11,48 +11,34 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import io.github.projectchroma.chroma.Chroma;
 import io.github.projectchroma.chroma.SwipeTransition;
-import io.github.projectchroma.chroma.level.block.PullBlock;
-import io.github.projectchroma.chroma.level.block.PushBlock;
-import io.github.projectchroma.chroma.level.block.SpeedBlock;
 import io.github.projectchroma.chroma.settings.Keybind;
-import io.github.projectchroma.chroma.settings.Settings;
 import io.github.projectchroma.chroma.util.Direction;
 
-public class SettingsMenuState extends GUIState{
-	public static final int ID = -2;
+public class ControlsMenuState extends GUIState{
+	private static ControlsMenuState instance;
 	private static Font textFont;
 	
 	private KeybindButton activeKeybind = null;
-	public SettingsMenuState(){
-		super(ID);
+	public ControlsMenuState(int id){
+		super(id);
+		instance = this;
 	}
 	@Override
 	public void init(GameContainer container, final StateBasedGame game) throws SlickException{
-		add(new RenderedText("Settings", Chroma.instance().createFont(50), Chroma.WINDOW_WIDTH/2, 50));
+		add(new RenderedText("Controls", Chroma.instance().createFont(50), Chroma.WINDOW_WIDTH/2, 50));
 		if(textFont == null) textFont = Chroma.instance().createFont(20);
-		
-		add(new Button(buttonArea(left, 5), "Toggle Sounds", PullBlock.COLOR.darker()){
-			public void onclick(){
-				Settings.toggleSounds();
-				Settings.update(container);
-			}
-		});
-		add(new Button(buttonArea(right, 5), "Toggle Music", PushBlock.COLOR.darker()){
-			public void onclick(){
-				Settings.toggleMusic();
-				Settings.update(container);
-			}
-		});
 			
-		add(new Button(buttonArea(center, 7), "Controls", SpeedBlock.COLOR.darker()){
-			public void onclick(){
-				game.enterState(ControlsMenuState.instance().getID(), null, new SwipeTransition(Direction.DOWN));
-			}
-		});
+		int i = 2;
+		for(Keybind keybind : Keybind.bindings()){
+			Rectangle textArea = buttonArea(left, i);
+			add(new RenderedText(keybind.getName(), textFont, textArea.getMinX() + textFont.getWidth(keybind.getName())/2, textArea.getCenterY()));
+			add(new KeybindButton(buttonArea(right, i), keybind));
+			++i;
+		}
 		
 		add(new Button(buttonArea(center, 8), "Back", Color.red.darker()){
 			public void onclick(){
-				game.enterState(MainMenuState.ID, null, new SwipeTransition(Direction.RIGHT));
+				game.enterState(SettingsMenuState.ID, null, new SwipeTransition(Direction.UP));
 			}
 		});
 	}
@@ -60,7 +46,6 @@ public class SettingsMenuState extends GUIState{
 	public void leave(GameContainer container, StateBasedGame game) throws SlickException{
 		super.leave(container, game);
 		if(Keybind.hasChanged()) Keybind.write();
-		Settings.write();
 	}
 	@Override
 	public void keyPressed(int key, char c){
@@ -86,5 +71,8 @@ public class SettingsMenuState extends GUIState{
 			if(activeKeybind == this) bg = bgActive; else bg = bgNormal;
 			super.render(container, game, g);
 		}
+	}
+	public static ControlsMenuState instance(){
+		return instance;
 	}
 }

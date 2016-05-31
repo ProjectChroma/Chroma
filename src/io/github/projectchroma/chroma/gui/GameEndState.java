@@ -11,6 +11,7 @@ import io.github.projectchroma.chroma.Sounds;
 import io.github.projectchroma.chroma.SwipeTransition;
 import io.github.projectchroma.chroma.level.block.BlackBlock;
 import io.github.projectchroma.chroma.level.block.GoalBlock;
+import io.github.projectchroma.chroma.util.Direction;
 
 public class GameEndState extends GUIState{
 	public GameEndState(int id){
@@ -20,7 +21,7 @@ public class GameEndState extends GUIState{
 	public void init(GameContainer container, final StateBasedGame game) throws SlickException{
 		add(new Button(buttonArea(center, 8), "Back to Menu", GoalBlock.COLOR.darker()){
 			public void onclick(){
-				game.enterState(MainMenuState.ID, null, new SwipeTransition(SwipeTransition.LEFT));
+				game.enterState(MainMenuState.ID, null, new SwipeTransition(Direction.LEFT));
 			}
 		});
 	}

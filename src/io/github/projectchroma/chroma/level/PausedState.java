@@ -22,10 +22,11 @@ import io.github.projectchroma.chroma.level.block.GoalBlock;
 import io.github.projectchroma.chroma.level.block.HazardBlock;
 import io.github.projectchroma.chroma.level.block.SlowBlock;
 import io.github.projectchroma.chroma.settings.Keybind;
+import io.github.projectchroma.chroma.util.Direction;
 import io.github.projectchroma.chroma.util.RectangleUtils;
 
 public class PausedState extends BaseGameState{
-	public static final int ID = -2;
+	public static final int ID = -3;
 	public static final PausedState instance = new PausedState();
 	public static final Color BACKGROUND = new Color(0.5F, 0.5F, 0.5F, 0.7F);
 	private static Keybind pause;
@@ -57,13 +58,13 @@ public class PausedState extends BaseGameState{
 		resume.setRight(area.getCenterX() - 5);
 		restart = new Button(new Rectangle(0, 0, (buttonWidth - 10) / 2, 50), "Restart", textFont, SlowBlock.COLOR.darker()){
 			public void onclick(){
-				game.enterState(level.getID(), new Leave(true), new SwipeTransition(SwipeTransition.RIGHT));
+				game.enterState(level.getID(), new Leave(true), new SwipeTransition(Direction.RIGHT));
 			}
 		};
 		restart.setLeft(area.getCenterX() + 5);
 		exit = new Button(new Rectangle(0, 0, buttonWidth, 50), "Exit to Main Menu", textFont, HazardBlock.COLOR.darker()){
 			public void onclick(){
-				game.enterState(MainMenuState.ID, null, new SwipeTransition(SwipeTransition.LEFT));
+				game.enterState(MainMenuState.ID, null, new SwipeTransition(Direction.LEFT));
 			}
 		};
 		exit.setCenterX(area.getCenterX());
