@@ -14,7 +14,7 @@ import io.github.projectchroma.chroma.Chroma;
 import io.github.projectchroma.chroma.SwipeTransition;
 
 public class CreditsState extends GUIState{
-	public static final int ID = -2;
+	public static final int ID = -1;
 	private static final float LEFT_X = 100, RIGHT_X = Chroma.WINDOW_WIDTH - LEFT_X;
 	private static Font titleFont, textFont;
 	private Map<String, String> credits = new LinkedHashMap<>(), attributions = new LinkedHashMap<>();

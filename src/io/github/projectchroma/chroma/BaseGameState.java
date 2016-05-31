@@ -38,7 +38,8 @@ public abstract class BaseGameState implements GameState{
 				Sounds.getCurrentMusic().stop();
 		}
 	}
-	
+	@Override
+	public void init(GameContainer container, StateBasedGame game) throws SlickException{}
 	@Override
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException{}
 	@Override

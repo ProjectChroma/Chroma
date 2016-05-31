@@ -16,6 +16,7 @@ import org.newdawn.slick.geom.Vector2f;
 import io.github.projectchroma.chroma.Chroma;
 import io.github.projectchroma.chroma.Resources;
 import io.github.projectchroma.chroma.level.block.Block;
+import io.github.projectchroma.chroma.settings.Keybind;
 import io.github.projectchroma.chroma.util.Direction;
 import io.github.projectchroma.chroma.util.RectangleUtils;
 
@@ -26,6 +27,7 @@ public class Player extends LevelElement{
 	private static final float VX = 2F, VY = -3.7F;
 	/**Sound effects*/
 	private static Sound jump, win, death;
+	private static Keybind keyLeft, keyRight, keyJump;
 	
 	/**Hitboxes for collision detection*/
 	private Rectangle[] hitboxes = new Rectangle[4];
@@ -46,15 +48,19 @@ public class Player extends LevelElement{
 		if(jump == null) jump = Resources.loadSound("jump.aif");
 		if(win == null) win = Resources.loadSound("win.aif");
 		if(death == null) death = Resources.loadSound("death.aif");
+		
+		if(keyLeft == null) keyLeft = Keybind.get("player.left", Input.KEY_LEFT);
+		if(keyRight == null) keyRight = Keybind.get("player.right", Input.KEY_RIGHT);
+		if(keyJump == null) keyJump = Keybind.get("player.up", Input.KEY_SPACE);
 	}
 	
 	public void update(GameContainer container, LevelState level, int delta) throws SlickException{
 		//Initialize velocity and acceleration to defaults
 		a.y = gravity;
-		if(container.getInput().isKeyDown(Input.KEY_LEFT)) v.x = -VX;
-		else if(container.getInput().isKeyDown(Input.KEY_RIGHT)) v.x = VX;
+		if(keyLeft.isDown()) v.x = -VX;
+		else if(keyRight.isDown()) v.x = VX;
 		else v.x = 0;
-		if(container.getInput().isKeyPressed(Input.KEY_SPACE) && colliding[DOWN.ordinal()]){
+		if(keyJump.isPressed() && colliding[DOWN.ordinal()]){
 			v.y = VY;
 			jump.play();
 		}

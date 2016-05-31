@@ -15,8 +15,8 @@ import io.github.projectchroma.chroma.util.RectangleUtils;
 public abstract class Button extends GUIElement{
 	private Rectangle area;
 	private String text;
-	private Font font;
-	private Color bg, border, bgHover, fg;
+	protected Font font;
+	protected Color bg, border, bgHover, fg;
 	private boolean mouseOver = false, mouseDown = false;
 	public Button(Rectangle area, String text) throws SlickException{
 		this(area, text, null, null, null, null, null);
@@ -81,6 +81,10 @@ public abstract class Button extends GUIElement{
 	public float getHeight(){
 		return area.getHeight();
 	}
+	public String getText(){
+		return text;
+	}
+	
 	public void setLeft(float x){
 		area.setX(x);
 	}
@@ -104,5 +108,8 @@ public abstract class Button extends GUIElement{
 	}
 	public void setHeight(float height){
 		area.setHeight(height);
+	}
+	public void setText(String text){
+		this.text = text;
 	}
 }

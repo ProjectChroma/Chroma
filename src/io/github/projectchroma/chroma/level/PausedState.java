@@ -21,19 +21,22 @@ import io.github.projectchroma.chroma.gui.MainMenuState;
 import io.github.projectchroma.chroma.level.block.GoalBlock;
 import io.github.projectchroma.chroma.level.block.HazardBlock;
 import io.github.projectchroma.chroma.level.block.SlowBlock;
+import io.github.projectchroma.chroma.settings.Keybind;
 import io.github.projectchroma.chroma.util.RectangleUtils;
 
 public class PausedState extends BaseGameState{
-	public static final int ID = -3;
-	public static final PausedState instance = new PausedState(ID);
+	public static final int ID = -2;
+	public static final PausedState instance = new PausedState();
 	public static final Color BACKGROUND = new Color(0.5F, 0.5F, 0.5F, 0.7F);
+	private static Keybind pause;
+	
 	private LevelState level;
 	private Rectangle area;
 	private final float yStart, yEnd;
 	private Font titleFont, textFont;
 	private Button resume, restart, exit;
-	private PausedState(int id){
-		super(id);
+	private PausedState(){
+		super(ID);
 		area = new Rectangle(0, 0, 400, 300);
 		area.setCenterX(Chroma.WINDOW_WIDTH / 2);
 		yStart = -area.getHeight() / 2;//Just offscreen above
@@ -42,6 +45,7 @@ public class PausedState extends BaseGameState{
 	}
 	@Override
 	public void init(GameContainer container, final StateBasedGame game) throws SlickException{
+		if(pause == null) pause = Keybind.get("level.unpause", Input.KEY_P);
 		titleFont = Chroma.instance().createFont(45);
 		textFont = Chroma.instance().createFont(24);
 		float buttonWidth = area.getWidth() - 40;
@@ -91,7 +95,7 @@ public class PausedState extends BaseGameState{
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException{
 		super.update(container, game, delta);
-		if(container.getInput().isKeyPressed(Input.KEY_P)) game.enterState(level.getID(), new Leave(), null);
+		if(pause.isPressed()) game.enterState(level.getID(), new Leave(), null);
 		resume.update(container, game, delta);
 		restart.update(container, game, delta);
 		exit.update(container, game, delta);

@@ -24,7 +24,7 @@ public class LevelSelectState extends GUIState{
 	private static LevelSelectState instance;
 	public LevelSelectState(int id){
 		super(id);
-		if(instance == null) instance = this;
+		instance = this;
 	}
 	@Override
 	public void init(GameContainer container, final StateBasedGame game) throws SlickException{
@@ -52,10 +52,6 @@ public class LevelSelectState extends GUIState{
 		for(GUIElement element : elements){
 			if(element instanceof LevelIcon) ((LevelIcon)element).level.setScheme(0);
 		}
-	}
-	
-	public static LevelSelectState instance(){
-		return instance;
 	}
 	
 	private static class LevelIcon extends GUIElement{
@@ -105,5 +101,8 @@ public class LevelSelectState extends GUIState{
 				}
 			}else mouseOver = false;
 		}
+	}
+	public static LevelSelectState instance(){
+		return instance;
 	}
 }

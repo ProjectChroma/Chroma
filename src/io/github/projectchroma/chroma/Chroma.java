@@ -47,12 +47,17 @@ public class Chroma extends StateBasedGame{
 	public void initStatesList(GameContainer container) throws SlickException{
 		addState(new MainMenuState());
 		addState(new LevelSelectState(NUM_LEVELS + 2));
-		addState(new SettingsMenuState());
+		addState(new SettingsMenuState(NUM_LEVELS + 3));
 		addState(new CreditsState());
 		for(int i = 1; i <= NUM_LEVELS; i++)
 			addState(new LevelState(i));
 		addState(PausedState.instance);
 		addState(new GameEndState(NUM_LEVELS + 1));//Add game end after all levels
+	}
+	@Override
+	public void addState(GameState state){
+		if(getState(state.getID()) != null) throw new IllegalArgumentException("State with ID " + state.getID() + " already exists");
+		super.addState(state);
 	}
 	@Override
 	public void enterState(int id, Transition leave, Transition enter){

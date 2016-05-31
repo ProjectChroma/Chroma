@@ -34,7 +34,7 @@ public class MainMenuState extends GUIState{
 		});
 		add(new Button(buttonArea(center, 5), "Settings", SlowBlock.COLOR.darker()){
 			public void onclick(){
-				game.enterState(SettingsMenuState.ID, null, new SwipeTransition(SwipeTransition.LEFT));
+				game.enterState(SettingsMenuState.instance().getID(), null, new SwipeTransition(SwipeTransition.LEFT));
 			}
 		});
 		add(new Button(buttonArea(center, 6), "Credits", PushBlock.COLOR.darker()){

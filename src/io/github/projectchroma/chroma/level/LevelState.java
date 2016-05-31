@@ -18,11 +18,14 @@ import io.github.projectchroma.chroma.level.LevelObject.BlockObject;
 import io.github.projectchroma.chroma.level.LevelObject.HintObject;
 import io.github.projectchroma.chroma.level.block.Block;
 import io.github.projectchroma.chroma.level.block.Blocks;
+import io.github.projectchroma.chroma.settings.Keybind;
 import io.github.projectchroma.chroma.util.Colors;
 
 public class LevelState extends BaseGameState{
 	private static Font nameFont;
 	private static Sound soundSwitch;
+	private static Keybind keyPause, keySwitch;
+	
 	private String name;
 	private float playerX, playerY;
 	private boolean allowSwitching;
@@ -37,6 +40,8 @@ public class LevelState extends BaseGameState{
 	public void init(GameContainer container, StateBasedGame game) throws SlickException{
 		if(nameFont == null) nameFont = Chroma.instance().createFont(30F);
 		if(soundSwitch == null) soundSwitch = Resources.loadSound("switch.aif");
+		if(keyPause == null) keyPause = Keybind.get("level.pause", Input.KEY_P);
+		if(keySwitch == null) keySwitch = Keybind.get("player.switch", Input.KEY_UP);
 		
 		LevelObject level = Resources.loadLevel(id);
 		name = level.name;
@@ -77,13 +82,11 @@ public class LevelState extends BaseGameState{
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException{
 		super.update(container, game, delta);
-		if(container.getInput().isKeyPressed(Input.KEY_P)) game.enterState(PausedState.ID, null, new PausedState.Enter());
-		if(!container.isPaused()){
-			player.update(container, this, delta);
-			if(allowSwitching && container.getInput().isKeyPressed(Input.KEY_UP)){
-				soundSwitch.play();
-				cycleScheme();
-			}
+		if(keyPause.isPressed()) game.enterState(PausedState.ID, null, new PausedState.Enter());
+		player.update(container, this, delta);
+		if(allowSwitching && keySwitch.isPressed()){
+			soundSwitch.play();
+			cycleScheme();
 		}
 	}
 	@Override
