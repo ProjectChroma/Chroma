@@ -19,6 +19,7 @@ public class GameEndState extends GUIState{
 	}
 	@Override
 	public void init(GameContainer container, final StateBasedGame game) throws SlickException{
+		super.init(container, game);
 		add(new Button(buttonArea(center, 8), "Back to Menu", GoalBlock.COLOR.darker()){
 			public void onclick(){
 				game.enterState(MainMenuState.ID, null, new SwipeTransition(Direction.LEFT));

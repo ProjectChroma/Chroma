@@ -24,6 +24,7 @@ import io.github.projectchroma.chroma.level.block.WhiteBlock;
 import io.github.projectchroma.chroma.settings.Keybind;
 import io.github.projectchroma.chroma.settings.Settings;
 import io.github.projectchroma.chroma.util.Colors;
+import io.github.projectchroma.chroma.util.FileIO;
 
 public class Chroma extends StateBasedGame{
 	/**
@@ -94,6 +95,7 @@ public class Chroma extends StateBasedGame{
 	public static void main(String[] args){
 		try{
 			instance = new Chroma();
+			FileIO.init();
 			Settings.read();
 			Keybind.read();
 			Sounds.init();

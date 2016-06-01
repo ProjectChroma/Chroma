@@ -25,6 +25,7 @@ public class CreditsState extends GUIState{
 	}
 	@Override
 	public void init(GameContainer container, final StateBasedGame game) throws SlickException{
+		super.init(container, game);
 		add(new RenderedText("Credits", Chroma.instance().createFont(50), Chroma.WINDOW_WIDTH/2, 40, Color.black));
 		add(new Button(buttonArea(center, 8), "Back", Color.red.darker()){
 			public void onclick(){

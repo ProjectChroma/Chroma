@@ -29,6 +29,7 @@ public class LevelSelectState extends GUIState{
 	}
 	@Override
 	public void init(GameContainer container, final StateBasedGame game) throws SlickException{
+		super.init(container, game);
 		int row = 0, column = 0;
 		add(new RenderedText("Level Select", Chroma.instance().createFont(50), Chroma.WINDOW_WIDTH/2, 40, Color.black));
 		for(int i = 1; i <= Chroma.NUM_LEVELS; i++){//For each level

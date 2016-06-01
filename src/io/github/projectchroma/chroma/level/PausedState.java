@@ -46,6 +46,7 @@ public class PausedState extends BaseGameState{
 	}
 	@Override
 	public void init(GameContainer container, final StateBasedGame game) throws SlickException{
+		super.init(container, game);
 		if(pause == null) pause = Keybind.get("level.unpause", Input.KEY_P);
 		titleFont = Chroma.instance().createFont(45);
 		textFont = Chroma.instance().createFont(24);

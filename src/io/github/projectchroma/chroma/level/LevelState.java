@@ -38,6 +38,7 @@ public class LevelState extends BaseGameState{
 	}
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException{
+		super.init(container, game);
 		if(nameFont == null) nameFont = Chroma.instance().createFont(30F);
 		if(soundSwitch == null) soundSwitch = Resources.loadSound("switch.aif");
 		if(keyPause == null) keyPause = Keybind.get("level.pause", Input.KEY_P);
@@ -64,7 +65,6 @@ public class LevelState extends BaseGameState{
 		for(int j = 0; j < schemes.length; ++j){
 			schemes[j] = Colors.byName(level.schemes.get(j));
 		}
-		
 		for(LevelElement element : elements)
 			element.init(container);
 	}
