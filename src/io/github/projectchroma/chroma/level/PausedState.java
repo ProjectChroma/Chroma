@@ -5,36 +5,39 @@ import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.openal.Audio;
 import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.Transition;
 
 import io.github.projectchroma.chroma.BaseGameState;
 import io.github.projectchroma.chroma.Chroma;
-import io.github.projectchroma.chroma.GameMusic;
+import io.github.projectchroma.chroma.Sounds;
 import io.github.projectchroma.chroma.SwipeTransition;
-import io.github.projectchroma.chroma.gui.Button;
 import io.github.projectchroma.chroma.gui.MainMenuState;
+import io.github.projectchroma.chroma.gui.util.Button;
 import io.github.projectchroma.chroma.level.block.GoalBlock;
 import io.github.projectchroma.chroma.level.block.HazardBlock;
 import io.github.projectchroma.chroma.level.block.SlowBlock;
-import io.github.projectchroma.chroma.resource.Resources;
+import io.github.projectchroma.chroma.settings.Keybind;
+import io.github.projectchroma.chroma.util.Direction;
 import io.github.projectchroma.chroma.util.RectangleUtils;
 
 public class PausedState extends BaseGameState{
 	public static final int ID = -3;
-	public static final PausedState instance = new PausedState(ID);
+	public static final PausedState instance = new PausedState();
 	public static final Color BACKGROUND = new Color(0.5F, 0.5F, 0.5F, 0.7F);
+	private static Keybind pause;
+	
 	private LevelState level;
 	private Rectangle area;
 	private final float yStart, yEnd;
 	private Font titleFont, textFont;
 	private Button resume, restart, exit;
-	private PausedState(int id){
-		super(id);
+	private PausedState(){
+		super(ID);
 		area = new Rectangle(0, 0, 400, 300);
 		area.setCenterX(Chroma.WINDOW_WIDTH / 2);
 		yStart = -area.getHeight() / 2;//Just offscreen above
@@ -42,12 +45,11 @@ public class PausedState extends BaseGameState{
 		area.setCenterY(yStart);
 	}
 	@Override
-	public void loadResources(GameContainer container, StateBasedGame game) throws SlickException{
-		titleFont = Resources.loadFont("mysteron.ttf", 45);
-		textFont = Resources.loadFont("mysteron.ttf", 24);
-	}
-	@Override
-	public void initialize(GameContainer container, final StateBasedGame game) throws SlickException{
+	public void init(GameContainer container, final StateBasedGame game) throws SlickException{
+		super.init(container, game);
+		if(pause == null) pause = Keybind.get("level.unpause", Input.KEY_P);
+		titleFont = Chroma.instance().createFont(45);
+		textFont = Chroma.instance().createFont(24);
 		float buttonWidth = area.getWidth() - 40;
 		resume = new Button(new Rectangle(0, 0, (buttonWidth - 10) / 2, 50), "Resume", textFont, GoalBlock.COLOR.darker()){
 			public void onclick(){
@@ -57,13 +59,13 @@ public class PausedState extends BaseGameState{
 		resume.setRight(area.getCenterX() - 5);
 		restart = new Button(new Rectangle(0, 0, (buttonWidth - 10) / 2, 50), "Restart", textFont, SlowBlock.COLOR.darker()){
 			public void onclick(){
-				game.enterState(level.getID(), new Leave(true), new SwipeTransition(SwipeTransition.RIGHT));
+				game.enterState(level.getID(), new Leave(true), new SwipeTransition(Direction.RIGHT));
 			}
 		};
 		restart.setLeft(area.getCenterX() + 5);
 		exit = new Button(new Rectangle(0, 0, buttonWidth, 50), "Exit to Main Menu", textFont, HazardBlock.COLOR.darker()){
 			public void onclick(){
-				game.enterState(MainMenuState.ID, null, new SwipeTransition(SwipeTransition.LEFT));
+				game.enterState(MainMenuState.ID, null, new SwipeTransition(Direction.LEFT));
 			}
 		};
 		exit.setCenterX(area.getCenterX());
@@ -94,7 +96,8 @@ public class PausedState extends BaseGameState{
 	
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException{
-		if(container.getInput().isKeyPressed(Input.KEY_P)) game.enterState(level.getID(), new Leave(), null);
+		super.update(container, game, delta);
+		if(pause.isPressed()) game.enterState(level.getID(), new Leave(), null);
 		resume.update(container, game, delta);
 		restart.update(container, game, delta);
 		exit.update(container, game, delta);
@@ -157,7 +160,7 @@ public class PausedState extends BaseGameState{
 		}
 	}
 	@Override
-	protected Audio getMusic(){
-		return GameMusic.getLevelMusic();
+	protected Music getMusic(){
+		return Sounds.getLevelMusic();
 	}
 }

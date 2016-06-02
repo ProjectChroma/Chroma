@@ -1,167 +1,128 @@
 package io.github.projectchroma.chroma.level;
 
-import static io.github.projectchroma.chroma.util.RectangleUtils.fromDimensions;
+import static io.github.projectchroma.chroma.util.Direction.*;
+import static io.github.projectchroma.chroma.util.MathUtils.sameSign;
+import static io.github.projectchroma.chroma.util.RectangleUtils.fromCenter;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.openal.Audio;
+import org.newdawn.slick.geom.Vector2f;
 
 import io.github.projectchroma.chroma.Chroma;
+import io.github.projectchroma.chroma.Resources;
 import io.github.projectchroma.chroma.level.block.Block;
-import io.github.projectchroma.chroma.resource.Resources;
+import io.github.projectchroma.chroma.settings.Keybind;
+import io.github.projectchroma.chroma.util.Direction;
+import io.github.projectchroma.chroma.util.RectangleUtils;
 
 public class Player extends LevelElement{
-	/**
-	 * Size of box used for collision detection. Collisions will be detected if
-	 * the edge of the colliding object is within this far of the edge of the
-	 * player.
-	 */
-	private static final float HITBOX = 5;
-	/**
-	 * Acceleration caused by gravity
-	 */
-	private static final float gravity = 0.07F;
-	/**
-	 * Velocities during player-caused motion
-	 */
-	private static final float VX = 2F, VY = -3.5F;
-	/**
-	 * Kinematics values for player
-	 */
-	public float vX = 0, vY = 0, aX = 0, aY = gravity;
-	/**
-	 * Rectangles used to detect collisions. Each item of this array represents
-	 * an edge of the player, excluding the corners.
-	 */
-	private Rectangle[] collisionBoxes = new Rectangle[4];
-	/**
-	 * Whether the player has landed, and can jump again.
-	 */
-	private boolean landed = false;
-	/**
-	 * Color to render the player, regardless of scheme (null uses scheme color)
-	 */
+	/**Acceleration caused by gravity*/
+	public static final float gravity = 0.07F;
+	/**Velocities during player-caused motion*/
+	private static final float VX = 2F, VY = -3.7F;
+	/**Sound effects*/
+	private static Sound jump, win, death;
+	private static Keybind keyLeft, keyRight, keyJump;
+	
+	/**Hitboxes for collision detection*/
+	private Rectangle[] hitboxes = new Rectangle[4];
+	/**Stores whether or not the player has collided with an object on each of its sides*/
+	private boolean[] colliding = new boolean[4];
+	/**Kinematics*/
+	public Vector2f v = new Vector2f(), a = new Vector2f();
+	/**Color to render the player, regardless of scheme (null uses scheme color)*/
 	private Color renderCol = null;
-	/**
-	 * Sound effects
-	 */
-	private static Audio jump;
 	
 	public Player(){
 		super(0, 0, 50, 50);
 		moveTo(0, 0);
-		resetKinematics();
 	}
 	
 	@Override
 	public void init(GameContainer container) throws SlickException{
 		if(jump == null) jump = Resources.loadSound("jump.aif");
+		if(win == null) win = Resources.loadSound("win.aif");
+		if(death == null) death = Resources.loadSound("death.aif");
+		
+		if(keyLeft == null) keyLeft = Keybind.get("player.left", Input.KEY_LEFT);
+		if(keyRight == null) keyRight = Keybind.get("player.right", Input.KEY_RIGHT);
+		if(keyJump == null) keyJump = Keybind.get("player.up", Input.KEY_SPACE);
 	}
 	
-	public void update(GameContainer container, int delta) throws SlickException{
-		LevelState state = (LevelState)Chroma.instance().getCurrentState();
-		float oldX = bounds.getX(), oldY = bounds.getY();
-		
-		landed = false;
-		
-		for(LevelElement element : state.elements()){
-			if(element == this || !element.isTangible()) continue;
-			if(collisionBoxes[0].intersects(element.getBounds())){//Collision above
-				if(vY <= 0) setTop(element.getBottom());
-				if(vY < 0) vY = 0;//Stop moving up
-				if(aY < 0) aY = 0;//Stop accelerating up
-			}
-			if(collisionBoxes[1].intersects(element.getBounds())){//Collision on right side
-				if(vX >= 0) setRight(element.getLeft());
-				if(vX > 0) vX = 0;//Stop moving right
-				if(aX > 0) aX = 0;//Stop accelerating right
-			}
-			if(collisionBoxes[2].intersects(element.getBounds())){//Collision below
-				landed = true;
-				if(vY >= 0) setBottom(element.getTop());
-				if(vY > 0) vY = 0;//Stop moving down
-				if(aY > 0) aY = 0;//Stop accelerating down
-			}
-			if(collisionBoxes[3].intersects(element.getBounds())){//Collision on left side
-				if(vX <= 0) setLeft(element.getRight());
-				if(vX < 0) vX = 0;//Stop moving left
-				if(aX < 0) aX = 0;//Stop accelerating left
-			}
-			if(element instanceof Block && bounds.intersects(element.bounds)){
-				((Block)element).onContact(container);
-			}
+	public void update(GameContainer container, LevelState level, int delta) throws SlickException{
+		//Initialize velocity and acceleration to defaults
+		a.y = gravity;
+		if(keyLeft.isDown()) v.x = -VX;
+		else if(keyRight.isDown()) v.x = VX;
+		else v.x = 0;
+		if(keyJump.isDown() && colliding[DOWN.ordinal()]){
+			v.y = VY;
+			jump.play();
 		}
 		
-		translate(vX, vY);
-		
-		float dx = bounds.getX() - oldX, dy = bounds.getY() - oldY;
-		for(Rectangle collisionBox : collisionBoxes)
-			collisionBox.setLocation(collisionBox.getX() + dx, collisionBox.getY() + dy);
-		
-		if(container.getInput().isKeyDown(Input.KEY_LEFT))
-			vX = -VX;
-		else if(container.getInput().isKeyDown(Input.KEY_RIGHT))
-			vX = VX;
-		else
-			vX = 0;
-		
-		if(container.getInput().isKeyPressed(Input.KEY_SPACE) && landed){//keyPressed, not keyDown; only apply the velocity once
-			vY = VY;
-			jump.playAsSoundEffect(0, 0, false);
+		//Reset collisions
+		for(int i=0; i<colliding.length; i++) colliding[i] = false;
+		//Update level elements on contact
+		Rectangle collisionBounds = RectangleUtils.grow(bounds, 1);
+		for(LevelElement element : level.elements()){
+			if(element == this || !element.isTangible(level)) continue;
+			element.update(container, level, delta);
+			if(element instanceof Block && collisionBounds.intersects(element.getBounds()))
+				((Block)element).onContact(container, level);
 		}
-		
-		vX += aX;
-		vY += aY;
-		if(!landed) aY = gravity;
+		//Detect collisions
+		for(LevelElement element : level.elements()){
+			if(element == this || !element.isTangible(level)) continue;
+			sizeHitboxes();
+			for(Direction d : Direction.values()){
+				if(hitboxes[d.ordinal()].intersects(element.getBounds())){
+					colliding[d.ordinal()] = true;
+					if(d.isHorizontal()){
+						if(sameSign(v.x, d.offsetX) || v.x == 0) set(d, element.get(d.opposite()));
+						if(sameSign(v.x, d.offsetX)) v.x = 0;
+						if(sameSign(a.x, d.offsetX)) a.x = 0;
+					}else{
+						if(sameSign(v.y, d.offsetY) || v.y == 0) set(d, element.get(d.opposite()));
+						if(sameSign(v.y, d.offsetY)) v.y = 0;
+						if(sameSign(a.y, d.offsetY)) a.y = 0;
+					}
+				}
+			}
+		}
+		setLeft(getLeft() + v.x);
+		setTop(getTop() + v.y);
+		v.add(a);
+	}
+	private void sizeHitboxes(){
+		hitboxes[UP.ordinal()] = fromCenter(getCenterX(), getCenterY() - (getHeight()-v.y)/2, getWidth()-2, -v.y);
+		hitboxes[DOWN.ordinal()] = fromCenter(getCenterX(), getCenterY() + (getHeight()+v.y)/2, getWidth()-2, v.y);
+		hitboxes[LEFT.ordinal()] = fromCenter(getCenterX() - (getWidth()-v.x)/2, getCenterY(), -v.x, getHeight()-2);
+		hitboxes[RIGHT.ordinal()] = fromCenter(getCenterX() + (getWidth()+v.x)/2, getCenterY(), v.x, getHeight()-2);
 	}
 	
-	public void render(GameContainer container, Graphics g) throws SlickException{
-		g.setColor(renderCol != null ? renderCol : getColor());
+	public void render(GameContainer container, LevelState level, Graphics g) throws SlickException{
+		g.setColor(renderCol != null ? renderCol : getColor(level));
 		g.fill(bounds);
 		
 		if(Chroma.DEBUG_MODE){
-			if(landed){
-				g.setColor(Color.cyan);
-				g.fillRect(getLeft(), getBottom() - 5, getWidth(), 5);
+			g.translate(v.x, v.y);
+			Color[] colors = {Color.red, Color.green, Color.cyan, Color.yellow};
+			for(int i=0; i<hitboxes.length; i++){
+				if(hitboxes[i] == null) continue;
+				g.setColor(colliding[i] ? colors[i] : colors[i].darker());
+				g.fill(hitboxes[i]);
 			}
-			
-			g.setColor(Color.red);
-			g.fill(collisionBoxes[0]);
-			
-			g.setColor(Color.green);
-			g.fill(collisionBoxes[1]);
-			
-			g.setColor(Color.blue);
-			g.fill(collisionBoxes[2]);
-			
-			g.setColor(Color.yellow);
-			g.fill(collisionBoxes[3]);
-			
-			g.setColor(Chroma.instance().background());
-			g.drawString(getLeft() + "", getLeft(), getTop());
-			g.drawString(getTop() + "", getLeft(), getTop() + g.getFont().getLineHeight());
+			g.translate(-v.x, -v.y);
 		}
 	}
 	public void moveTo(float x, float y){
 		setLeft(x);
 		setTop(y);
-		
-		float w = getWidth() - 2 * HITBOX, h = getHeight() - 2 * HITBOX;
-		collisionBoxes[0] = fromDimensions(getLeft() + HITBOX, getTop() - 1, w, HITBOX);//Top
-		collisionBoxes[1] = fromDimensions(getRight() + 1, getTop() + HITBOX, -HITBOX, h);//Right
-		collisionBoxes[2] = fromDimensions(getLeft() + HITBOX, getBottom() + 1, w, -HITBOX);//Bottom
-		collisionBoxes[3] = fromDimensions(getLeft() - 1, getTop() + HITBOX, HITBOX, h);//Left
-	}
-	
-	public void resetKinematics(){
-		vX = 0;
-		vY = 0;
-		aX = 0;
-		aY = gravity;
 	}
 	
 	public void setRenderColor(Color c){

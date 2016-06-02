@@ -29,4 +29,7 @@ public class RectangleUtils{
 	public static Rectangle grow(Rectangle rect, float left, float right, float top, float bottom){
 		return fromVertices(rect.getMinX() - left, rect.getMinY() - top, rect.getMaxX() + right, rect.getMaxY() + bottom);
 	}
+	public static Rectangle clone(Rectangle rect){
+		return new Rectangle(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
+	}
 }

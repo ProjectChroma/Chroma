@@ -1,6 +1,6 @@
 {
 	"name": "Pole Vault",
-	"playerStart": {
+	"player": {
 		"x": 30,
 		"y": 530
 	},

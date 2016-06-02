@@ -1,6 +1,6 @@
 {
 	"name": "Access Tunnel",
-	"playerStart": {
+	"player": {
 		"x": 100,
 		"y": 300
 	},

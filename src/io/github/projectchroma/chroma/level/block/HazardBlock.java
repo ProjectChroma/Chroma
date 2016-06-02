@@ -3,21 +3,23 @@ package io.github.projectchroma.chroma.level.block;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.openal.Audio;
+import org.newdawn.slick.Sound;
 
 import io.github.projectchroma.chroma.Chroma;
 import io.github.projectchroma.chroma.LevelExitTransition;
+import io.github.projectchroma.chroma.Resources;
 import io.github.projectchroma.chroma.SwipeTransition;
+import io.github.projectchroma.chroma.level.LevelObject.BlockObject;
 import io.github.projectchroma.chroma.level.LevelState;
 import io.github.projectchroma.chroma.level.Player;
-import io.github.projectchroma.chroma.resource.Resources;
+import io.github.projectchroma.chroma.util.Direction;
 
 public class HazardBlock extends Block{
 	public static final String COLOR_NAME = "red";
 	public static final Color COLOR = Color.red;
-	private static Audio deathSound;
-	public HazardBlock(float x, float y, float width, float height, Color scheme){
-		super(x, y, width, height, COLOR, scheme);
+	private static Sound deathSound;
+	public HazardBlock(BlockObject block){
+		super(block, COLOR);
 	}
 	@Override
 	public void init(GameContainer container) throws SlickException{
@@ -25,6 +27,6 @@ public class HazardBlock extends Block{
 	}
 	@Override
 	protected void onContact(GameContainer container, LevelState level, Player player){
-		Chroma.instance().enterState(level.getID(), new LevelExitTransition(false, deathSound), new SwipeTransition(SwipeTransition.RIGHT));
+		Chroma.instance().enterState(level.getID(), new LevelExitTransition(false, deathSound), new SwipeTransition(Direction.RIGHT));
 	}
 }

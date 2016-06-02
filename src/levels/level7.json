@@ -1,6 +1,6 @@
 {
 	"name": "Alternating Stairs",
-	"playerStart": {
+	"player": {
 		"x": 30,
 		"y": 530
 	},

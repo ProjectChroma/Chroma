@@ -10,6 +10,10 @@ lib/
 #Game data
 data/
 screenshots/
+screenshots*
 
 #Random file storage
 misc/
+
+#Exported libraries
+Chroma_lib/

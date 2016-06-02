@@ -5,14 +5,16 @@ import java.io.File;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.openal.Audio;
 import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import io.github.projectchroma.chroma.settings.Keybind;
 import io.github.projectchroma.chroma.util.FileIO;
 
 public abstract class BaseGameState implements GameState{
+	protected static Keybind keyScreenshot, keyVidcap;
 	protected final int id;
 	protected BaseGameState(int id){
 		this.id = id;
@@ -22,29 +24,40 @@ public abstract class BaseGameState implements GameState{
 		return id;
 	}
 	
-	protected Audio getMusic(){
-		return GameMusic.getMenuMusic();
+	protected Music getMusic(){
+		return Sounds.getMenuMusic();
 	}
 	
 	@Override
-	public final void init(GameContainer container, StateBasedGame game) throws SlickException{
-		loadResources(container, game);
-	}
-	protected abstract void loadResources(GameContainer container, StateBasedGame game) throws SlickException;
-	public abstract void initialize(GameContainer container, StateBasedGame game) throws SlickException;
- 	
-	@Override
-	public void enter(GameContainer container, StateBasedGame game) throws SlickException{
+	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException{
 		if(getMusic() != null){
-			if(!getMusic().equals(GameMusic.getCurrentMusic())){
-				if(GameMusic.getCurrentMusic() != null) GameMusic.getCurrentMusic().stop();
-				getMusic().playAsMusic(1F, 1F, true);
+			if(!getMusic().equals(Sounds.getCurrentMusic())){
+				if(Sounds.getCurrentMusic() != null) Sounds.getCurrentMusic().stop();
+				getMusic().play();
 			}
 		}else{
-			if(GameMusic.getCurrentMusic() != null)
-				GameMusic.getCurrentMusic().stop();
+			if(Sounds.getCurrentMusic() != null)
+				Sounds.getCurrentMusic().stop();
+		}
+		if(keyScreenshot.isPressed() || keyVidcap.isDown()){
+			try{
+				Image target = new Image(Chroma.WINDOW_WIDTH, Chroma.WINDOW_HEIGHT);
+				Chroma.instance().getContainer().getGraphics().copyArea(target, 0, 0);
+				File file = FileIO.saveScreenshot(target);
+				System.out.println("Saved screenshot to " + file);
+			}catch(SlickException ex){
+				System.err.println("Error taking screenshot");
+				ex.printStackTrace();
+			}
 		}
 	}
+	@Override
+	public void init(GameContainer container, StateBasedGame game) throws SlickException{
+		if(keyScreenshot == null) keyScreenshot = Keybind.get("ui.screenshot", Input.KEY_F2);
+		if(keyVidcap == null) keyVidcap = Keybind.get("ui.vidcap", Input.KEY_F3);
+	}
+	@Override
+	public void enter(GameContainer container, StateBasedGame game) throws SlickException{}
 	@Override
 	public void leave(GameContainer container, StateBasedGame game) throws SlickException{}
 	
@@ -71,21 +84,8 @@ public abstract class BaseGameState implements GameState{
 	public void inputEnded(){}
 	@Override
 	public void inputStarted(){}
-	
 	@Override
-	public void keyPressed(int key, char c){
-		if(key == Input.KEY_F2){
-			try{
-				Image target = new Image(Chroma.WINDOW_WIDTH, Chroma.WINDOW_HEIGHT);
-				Chroma.instance().getContainer().getGraphics().copyArea(target, 0, 0);
-				File file = FileIO.saveScreenshot(target);
-				System.out.println("Saved screenshot to " + file);
-			}catch(SlickException ex){
-				System.err.println("Error taking screenshot");
-				ex.printStackTrace();
-			}
-		}
-	}
+	public void keyPressed(int key, char c){}
 	@Override
 	public void keyReleased(int key, char c){}
 	

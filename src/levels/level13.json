@@ -1,0 +1,53 @@
+{
+	"name": "A-Maze-ing Maze",
+	"player": {
+		"x": 30,
+		"y": 530,
+		"allowSwitching": false
+	},
+	"blocks": [
+		{"x": 100, "y": 585, "width": 15, "height": 15, "color": "pink"},
+		
+		{"x": 65, "y": 500, "width": 720, "height": 15, "color": "clear", "props": {"implColor": "orange"}},
+		{"x": 65, "y": 500, "width": 720, "height": 15, "color": "white", "scheme": "black"},
+		
+		{"x": 500, "y": 370, "width": 100, "height": 15, "color": "clear", "props": {"implColor": "orange"}},
+		{"x": 500, "y": 370, "width": 100, "height": 15, "color": "white", "scheme": "black"},
+		
+		{"x": 585, "y": 385, "width": 15, "height": 50, "color": "clear", "props": {"implColor": "orange"}},
+		{"x": 585, "y": 385, "width": 15, "height": 50, "color": "white", "scheme": "black"},
+		
+		{"x": 180, "y": 305, "width": 320, "height": 15, "color": "clear", "props": {"implColor": "orange"}},
+		{"x": 180, "y": 305, "width": 320, "height": 15, "color": "white", "scheme": "black"},
+		
+		{"x": 485, "y": 320, "width": 15, "height": 65, "color": "clear", "props": {"implColor": "orange"}},
+		{"x": 485, "y": 320, "width": 15, "height": 65, "color": "white", "scheme": "black"},
+		
+		{"x": 15, "y": 435, "width": 685, "height": 15, "color": "clear", "props": {"implColor": "orange"}},
+		{"x": 15, "y": 435, "width": 685, "height": 15, "color": "white", "scheme": "black"},
+		
+		{"x": 115, "y": 65, "width": 15, "height": 320, "color": "clear", "props": {"implColor": "orange"}},
+		{"x": 115, "y": 65, "width": 15, "height": 320, "color": "white", "scheme": "black"},
+		
+		{"x": 15, "y": 385, "width": 50, "height": 50, "color": "clear", "props": {"implColor": "orange"}},
+		{"x": 15, "y": 385, "width": 50, "height": 50, "color": "white", "scheme": "black"},
+		
+		{"x": 65, "y": 285, "width": 50, "height": 50, "color": "clear", "props": {"implColor": "orange"}},
+		{"x": 65, "y": 285, "width": 50, "height": 50, "color": "white", "scheme": "black"},
+		
+		{"x": 15, "y": 185, "width": 50, "height": 50, "color": "clear", "props": {"implColor": "orange"}},
+		{"x": 15, "y": 185, "width": 50, "height": 50, "color": "white", "scheme": "black"},
+		
+		{"x": 65, "y": 85, "width": 50, "height": 50, "color": "clear", "props": {"implColor": "orange"}},
+		{"x": 65, "y": 85, "width": 50, "height": 50, "color": "white", "scheme": "black"},
+		
+		{"x": 115, "y": 50, "width": 670, "height": 15, "color": "clear", "props": {"implColor": "orange"}},
+		{"x": 115, "y": 50, "width": 670, "height": 15, "color": "white", "scheme": "black"},
+		
+		{"x": 685, "y": 50, "width": 100, "height": 15, "color": "gold"}
+	],
+	"hints": [
+		{"x": 100, "y": 550, "text": "Step on the pink block to see the invisible maze walls", "color": "black"},
+		{"x": 200, "y": 550, "text": "Memorize this now...", "color": "white"}
+	]
+}
