@@ -37,8 +37,8 @@ public class LevelState extends BaseGameState{
 		super(id);
 	}
 	@Override
-	public void init(GameContainer container, StateBasedGame game) throws SlickException{
-		super.init(container, game);
+	public void initialize(GameContainer container, StateBasedGame game) throws SlickException{
+		super.initialize(container, game);
 		if(nameFont == null) nameFont = Chroma.instance().createFont(30F);
 		if(soundSwitch == null) soundSwitch = Resources.loadSound("switch.aif");
 		if(keyPause == null) keyPause = Keybind.get("level.pause", Input.KEY_P);

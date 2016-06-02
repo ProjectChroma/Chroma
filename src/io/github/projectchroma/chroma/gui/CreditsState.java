@@ -18,7 +18,7 @@ import io.github.projectchroma.chroma.gui.util.RenderedText;
 import io.github.projectchroma.chroma.util.Direction;
 
 public class CreditsState extends GUIState{
-	public static final int ID = -1;
+	public static final int ID = -4;
 	private static final float LEFT_X = 100, RIGHT_X = Chroma.WINDOW_WIDTH - LEFT_X;
 	private static Font titleFont, textFont;
 	private Map<String, String> credits = new LinkedHashMap<>(), attributions = new LinkedHashMap<>();
@@ -27,8 +27,8 @@ public class CreditsState extends GUIState{
 		super(ID);
 	}
 	@Override
-	public void init(GameContainer container, final StateBasedGame game) throws SlickException{
-		super.init(container, game);
+	public void initialize(GameContainer container, final StateBasedGame game) throws SlickException{
+		super.initialize(container, game);
 		add(new RenderedText("Credits", Chroma.instance().createFont(50), Chroma.WINDOW_WIDTH/2, 40, Color.black));
 		add(new BackButton(MainMenuState.ID, Direction.UP));
 		

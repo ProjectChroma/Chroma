@@ -23,19 +23,25 @@ import io.github.projectchroma.chroma.settings.Progress;
 import io.github.projectchroma.chroma.util.Direction;
 
 public class LevelSelectState extends GUIState{
+	public static final int ID = -1;
 	private static final float GRID_WIDTH = 700, GRID_TOP = 100, ICON_SIZE = 100, NUM_COLUMNS = 6;
 	private static final float SIDE_MARGINS = (Chroma.WINDOW_WIDTH - GRID_WIDTH) / 2,
 			ICON_MARGINS = (GRID_WIDTH - (NUM_COLUMNS * ICON_SIZE)) / (NUM_COLUMNS - 1);//Width of grid minus the width taken up by the icons, divided by the number of margins
 	private static LevelSelectState instance;
-	public LevelSelectState(int id){
-		super(id);
+	public LevelSelectState(){
+		super(ID);
 		instance = this;
 	}
 	@Override
-	public void init(GameContainer container, final StateBasedGame game) throws SlickException{
-		super.init(container, game);
-		int row = 0, column = 0;
+	public void initialize(GameContainer container, final StateBasedGame game) throws SlickException{
+		super.initialize(container, game);
 		add(new RenderedText("Level Select", Chroma.instance().createFont(50), Chroma.WINDOW_WIDTH/2, 40, Color.black));
+		add(new BackButton(MainMenuState.ID, Direction.LEFT));
+	}
+	@Override
+	public void postInit(GameContainer container, StateBasedGame game) throws SlickException{
+		super.postInit(container, game);
+		int row = 0, column = 0;
 		for(int i = 1; i <= Chroma.NUM_LEVELS; i++){//For each level
 			LevelState level = (LevelState)Chroma.instance().getState(i);
 			add(new LevelIcon(column * (ICON_SIZE + ICON_MARGINS) + SIDE_MARGINS, row * (ICON_SIZE + ICON_MARGINS) + GRID_TOP, level));
@@ -47,7 +53,6 @@ public class LevelSelectState extends GUIState{
 			}
 			
 		}
-		add(new BackButton(MainMenuState.ID, Direction.LEFT));
 	}
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException{
 		Progress.read();
