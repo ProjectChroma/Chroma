@@ -19,24 +19,31 @@ import io.github.projectchroma.chroma.settings.Keybind;
 import io.github.projectchroma.chroma.util.Direction;
 
 public class KeybindsMenuState extends GUIState{
+	public static final int ID = -3;
 	private static final int itemsPerPage = 10;
 	private static KeybindsMenuState instance;
 	private static Font textFont;
 	
 	private KeybindButton activeKeybind = null;
 	private PaginatedGrid grid;
-	public KeybindsMenuState(int id){
-		super(id);
+	public KeybindsMenuState(){
+		super(ID);
 		instance = this;
 	}
 	@Override
-	public void init(GameContainer container, final StateBasedGame game) throws SlickException{
+	public void initialize(GameContainer container, final StateBasedGame game) throws SlickException{
 		super.init(container, game);
 		add(new RenderedText("Controls", Chroma.instance().createFont(50), Chroma.WINDOW_WIDTH/2, 50));
 		if(textFont == null) textFont = Chroma.instance().createFont(20);
 		
 		grid = new PaginatedGrid(100, 150, 30);
 		add(grid);
+		
+		add(new BackButton(SettingsMenuState.ID, Direction.UP));
+	}
+	@Override
+	public void postInit(GameContainer container, StateBasedGame game) throws SlickException{
+		super.postInit(container, game);
 		int i = 0, row, page;
 		for(Keybind keybind : Keybind.bindings()){
 			row = i % itemsPerPage;
@@ -46,8 +53,6 @@ public class KeybindsMenuState extends GUIState{
 			grid.add(new KeybindButton(grid.area(row, BasicGrid.RIGHT_COLUMN), keybind), page);
 			++i;
 		}
-		
-		add(new BackButton(SettingsMenuState.ID, Direction.UP));
 	}
 	@Override
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException{

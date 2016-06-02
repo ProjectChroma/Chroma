@@ -19,8 +19,8 @@ public class GameEndState extends GUIState{
 		super(id);
 	}
 	@Override
-	public void init(GameContainer container, final StateBasedGame game) throws SlickException{
-		super.init(container, game);
+	public void initialize(GameContainer container, final StateBasedGame game) throws SlickException{
+		super.initialize(container, game);
 		add(new BackButton(MainMenuState.ID, Direction.LEFT, "Back to Menu", GoalBlock.COLOR));
 	}
 	@Override

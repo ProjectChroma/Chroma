@@ -26,7 +26,7 @@ import io.github.projectchroma.chroma.util.Direction;
 import io.github.projectchroma.chroma.util.RectangleUtils;
 
 public class PausedState extends BaseGameState{
-	public static final int ID = -3;
+	public static final int ID = -5;
 	public static final PausedState instance = new PausedState();
 	public static final Color BACKGROUND = new Color(0.5F, 0.5F, 0.5F, 0.7F);
 	private static Keybind pause;
@@ -45,8 +45,8 @@ public class PausedState extends BaseGameState{
 		area.setCenterY(yStart);
 	}
 	@Override
-	public void init(GameContainer container, final StateBasedGame game) throws SlickException{
-		super.init(container, game);
+	public void initialize(GameContainer container, final StateBasedGame game) throws SlickException{
+		super.initialize(container, game);
 		if(pause == null) pause = Keybind.get("level.unpause", Input.KEY_P);
 		titleFont = Chroma.instance().createFont(45);
 		textFont = Chroma.instance().createFont(24);

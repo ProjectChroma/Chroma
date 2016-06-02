@@ -52,10 +52,12 @@ public abstract class BaseGameState implements GameState{
 		}
 	}
 	@Override
-	public void init(GameContainer container, StateBasedGame game) throws SlickException{
+	public final void init(GameContainer container, StateBasedGame game) throws SlickException{}
+	public void initialize(GameContainer container, StateBasedGame game) throws SlickException{
 		if(keyScreenshot == null) keyScreenshot = Keybind.get("ui.screenshot", Input.KEY_F2);
 		if(keyVidcap == null) keyVidcap = Keybind.get("ui.vidcap", Input.KEY_F3);
 	}
+	public void postInit(GameContainer container, StateBasedGame game) throws SlickException{}
 	@Override
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException{}
 	@Override
