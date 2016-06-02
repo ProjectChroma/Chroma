@@ -8,7 +8,8 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import io.github.projectchroma.chroma.Chroma;
 import io.github.projectchroma.chroma.Sounds;
-import io.github.projectchroma.chroma.SwipeTransition;
+import io.github.projectchroma.chroma.gui.util.BackButton;
+import io.github.projectchroma.chroma.gui.util.GUIState;
 import io.github.projectchroma.chroma.level.block.BlackBlock;
 import io.github.projectchroma.chroma.level.block.GoalBlock;
 import io.github.projectchroma.chroma.util.Direction;
@@ -20,11 +21,7 @@ public class GameEndState extends GUIState{
 	@Override
 	public void init(GameContainer container, final StateBasedGame game) throws SlickException{
 		super.init(container, game);
-		add(new Button(buttonArea(center, 8), "Back to Menu", GoalBlock.COLOR.darker()){
-			public void onclick(){
-				game.enterState(MainMenuState.ID, null, new SwipeTransition(Direction.LEFT));
-			}
-		});
+		add(new BackButton(MainMenuState.ID, Direction.LEFT, "Back to Menu", GoalBlock.COLOR));
 	}
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException{

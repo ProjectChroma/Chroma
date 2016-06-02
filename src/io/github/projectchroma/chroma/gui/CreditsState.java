@@ -11,7 +11,10 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 import io.github.projectchroma.chroma.Chroma;
-import io.github.projectchroma.chroma.SwipeTransition;
+import io.github.projectchroma.chroma.gui.util.BackButton;
+import io.github.projectchroma.chroma.gui.util.Button;
+import io.github.projectchroma.chroma.gui.util.GUIState;
+import io.github.projectchroma.chroma.gui.util.RenderedText;
 import io.github.projectchroma.chroma.util.Direction;
 
 public class CreditsState extends GUIState{
@@ -27,11 +30,7 @@ public class CreditsState extends GUIState{
 	public void init(GameContainer container, final StateBasedGame game) throws SlickException{
 		super.init(container, game);
 		add(new RenderedText("Credits", Chroma.instance().createFont(50), Chroma.WINDOW_WIDTH/2, 40, Color.black));
-		add(new Button(buttonArea(center, 8), "Back", Color.red.darker()){
-			public void onclick(){
-				game.enterState(MainMenuState.ID, null, new SwipeTransition(Direction.UP));
-			}
-		});
+		add(new BackButton(MainMenuState.ID, Direction.UP));
 		
 		if(titleFont == null) titleFont = Chroma.instance().createFont(36);
 		if(textFont == null) textFont = Chroma.instance().createFont(24);

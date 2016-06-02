@@ -18,6 +18,7 @@ public class Keybind{
 	private static boolean changed = false;
 	private String name;
 	private int key;
+	private boolean conflicting = false;
 	private Keybind(String name, int key){
 		this.name = name;
 		setKey(key);
@@ -43,6 +44,9 @@ public class Keybind{
 	}
 	public boolean isPressed(){
 		return Chroma.instance().getContainer().getInput().isKeyPressed(key);
+	}
+	public boolean isConflicting(){
+		return conflicting;
 	}
 	
 	public static Keybind get(String name){
@@ -70,6 +74,7 @@ public class Keybind{
 			System.out.println("No keybinding file");
 			bindings = new HashMap<>();
 		}
+		checkConflicts();
 	}
 	public static boolean hasChanged(){
 		return changed;
@@ -84,6 +89,17 @@ public class Keybind{
 		}catch(FileNotFoundException ex){
 			System.err.println("Error writing keybinds to file");
 			ex.printStackTrace();
+		}
+	}
+	public static void checkConflicts(){
+		Map<Integer, Keybind> byKey = new HashMap<>();
+		for(Keybind keybind : bindings()) keybind.conflicting = false;
+		for(Keybind keybind : bindings()){
+			Keybind other = byKey.put(keybind.getKey(), keybind);
+			if(other != null){
+				other.conflicting = true;
+				keybind.conflicting = true;
+			}
 		}
 	}
 }

@@ -12,6 +12,10 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import io.github.projectchroma.chroma.Chroma;
 import io.github.projectchroma.chroma.SwipeTransition;
+import io.github.projectchroma.chroma.gui.util.BackButton;
+import io.github.projectchroma.chroma.gui.util.GUIElement;
+import io.github.projectchroma.chroma.gui.util.GUIState;
+import io.github.projectchroma.chroma.gui.util.RenderedText;
 import io.github.projectchroma.chroma.level.LevelElement;
 import io.github.projectchroma.chroma.level.LevelState;
 import io.github.projectchroma.chroma.level.block.Block;
@@ -43,11 +47,7 @@ public class LevelSelectState extends GUIState{
 			}
 			
 		}
-		add(new Button(buttonArea(center, 8), "Back", Color.red.darker()){
-			public void onclick(){
-				game.enterState(MainMenuState.ID, null, new SwipeTransition(Direction.LEFT));
-			}
-		});
+		add(new BackButton(MainMenuState.ID, Direction.LEFT));
 	}
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException{
 		Progress.read();

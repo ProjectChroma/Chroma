@@ -11,7 +11,7 @@ import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.Transition;
 
-import io.github.projectchroma.chroma.gui.ControlsMenuState;
+import io.github.projectchroma.chroma.gui.KeybindsMenuState;
 import io.github.projectchroma.chroma.gui.CreditsState;
 import io.github.projectchroma.chroma.gui.GameEndState;
 import io.github.projectchroma.chroma.gui.LevelSelectState;
@@ -52,7 +52,7 @@ public class Chroma extends StateBasedGame{
 		addState(new MainMenuState());
 		addState(new LevelSelectState(NUM_LEVELS + 2));
 		addState(new SettingsMenuState());
-		addState(new ControlsMenuState(NUM_LEVELS + 3));
+		addState(new KeybindsMenuState(NUM_LEVELS + 3));
 		addState(new CreditsState());
 		for(int i = 1; i <= NUM_LEVELS; i++)
 			addState(new LevelState(i));
@@ -93,6 +93,10 @@ public class Chroma extends StateBasedGame{
 		return instance;
 	}
 	public static void main(String[] args){
+		int fps = FPS;
+		for(String arg : args){
+			if(arg.startsWith("fps:")) fps = Integer.parseInt(arg.substring(4));
+		}
 		try{
 			instance = new Chroma();
 			FileIO.init();
@@ -101,10 +105,11 @@ public class Chroma extends StateBasedGame{
 			Sounds.init();
 			AppGameContainer app = new AppGameContainer(instance);
 			app.setDisplayMode(WINDOW_WIDTH, WINDOW_HEIGHT, false);//Width, height, fullscreen
-			app.setTargetFrameRate(DEBUG_MODE ? 30 : FPS);
+			app.setTargetFrameRate(fps);
 			app.setShowFPS(false);//Hide FPS counter
 			app.setIcons(new String[]{Resources.getTexturePath("icon32.png"), Resources.getTexturePath("icon24.png"), Resources.getTexturePath("icon16.png")});
 			Settings.update(app);
+			System.out.println("Starting app at " + fps + "FPS");
 			app.start();
 		}catch(SlickException ex){
 			ex.printStackTrace();

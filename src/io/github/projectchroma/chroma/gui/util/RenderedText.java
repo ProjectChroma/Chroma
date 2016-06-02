@@ -1,4 +1,4 @@
-package io.github.projectchroma.chroma.gui;
+package io.github.projectchroma.chroma.gui.util;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;

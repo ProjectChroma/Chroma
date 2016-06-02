@@ -1,4 +1,4 @@
-package io.github.projectchroma.chroma.gui;
+package io.github.projectchroma.chroma.gui.util;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;

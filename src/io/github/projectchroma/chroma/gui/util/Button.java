@@ -1,4 +1,4 @@
-package io.github.projectchroma.chroma.gui;
+package io.github.projectchroma.chroma.gui.util;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
@@ -16,8 +16,9 @@ public abstract class Button extends GUIElement{
 	private Rectangle area;
 	private String text;
 	protected Font font;
-	protected Color bg, border, bgHover, fg;
-	private boolean mouseOver = false, mouseDown = false;
+	protected Color bg, bgHover, fg;
+	protected boolean mouseOver = false;
+	protected boolean mouseDown = false;
 	public Button(Rectangle area, String text) throws SlickException{
 		this(area, text, null, null, null, null, null);
 	}
@@ -35,14 +36,13 @@ public abstract class Button extends GUIElement{
 		this.text = text;
 		this.font = font != null ? font : Chroma.instance().createFont(24);
 		this.bg = bg != null ? bg : Color.gray;
-		this.border = border != null ? border : this.bg.darker();
 		this.bgHover = bgHover != null ? bgHover : this.bg.brighter(0.5F);
 		this.fg = fg != null ? fg : Color.white;
 	}
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException{
-		g.setColor(border);
+		g.setColor(getBackground().darker(0.4F));
 		g.fill(area);
-		g.setColor(mouseOver ? bgHover : bg);
+		g.setColor(getBackground());
 		g.fill(RectangleUtils.grow(area, -3));
 		
 		g.setFont(font);
@@ -55,6 +55,7 @@ public abstract class Button extends GUIElement{
 		mouseDown = mouseOver && container.getInput().isMouseButtonDown(Input.MOUSE_LEFT_BUTTON);
 		if(oldMouseDown && !mouseDown) onclick();//Activate on release to switching to a screen and immediately pressing a button
 	}
+	public Color getBackground(){return mouseOver ? bgHover : bg;}
 	public abstract void onclick() throws SlickException;
 	
 	public float getLeft(){

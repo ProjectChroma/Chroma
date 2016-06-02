@@ -11,6 +11,11 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import io.github.projectchroma.chroma.Chroma;
 import io.github.projectchroma.chroma.SwipeTransition;
+import io.github.projectchroma.chroma.gui.util.BackButton;
+import io.github.projectchroma.chroma.gui.util.Button;
+import io.github.projectchroma.chroma.gui.util.BasicGrid;
+import io.github.projectchroma.chroma.gui.util.GUIState;
+import io.github.projectchroma.chroma.gui.util.RenderedText;
 import io.github.projectchroma.chroma.level.block.PullBlock;
 import io.github.projectchroma.chroma.level.block.PushBlock;
 import io.github.projectchroma.chroma.level.block.SpeedBlock;
@@ -32,30 +37,28 @@ public class SettingsMenuState extends GUIState{
 		add(new RenderedText("Settings", Chroma.instance().createFont(50), Chroma.WINDOW_WIDTH/2, 50));
 		if(textFont == null) textFont = Chroma.instance().createFont(20);
 		
-		add(new Button(buttonArea(left, 5), "Toggle Sounds", PullBlock.COLOR.darker()){
+		BasicGrid grid = new BasicGrid();
+		add(grid);
+		grid.add(new Button(grid.area(5, BasicGrid.LEFT_COLUMN), "Toggle Sounds", PullBlock.COLOR.darker()){
 			public void onclick(){
 				Settings.toggleSounds();
 				Settings.update(container);
 			}
 		});
-		add(new Button(buttonArea(right, 5), "Toggle Music", PushBlock.COLOR.darker()){
+		grid.add(new Button(grid.area(5, BasicGrid.RIGHT_COLUMN), "Toggle Music", PushBlock.COLOR.darker()){
 			public void onclick(){
 				Settings.toggleMusic();
 				Settings.update(container);
 			}
 		});
 			
-		add(new Button(buttonArea(center, 7), "Controls", SpeedBlock.COLOR.darker()){
+		grid.add(new Button(grid.area(7, BasicGrid.FULL_WIDTH), "Controls", SpeedBlock.COLOR.darker()){
 			public void onclick(){
-				game.enterState(ControlsMenuState.instance().getID(), null, new SwipeTransition(Direction.DOWN));
+				game.enterState(KeybindsMenuState.instance().getID(), null, new SwipeTransition(Direction.DOWN));
 			}
 		});
 		
-		add(new Button(buttonArea(center, 8), "Back", Color.red.darker()){
-			public void onclick(){
-				game.enterState(MainMenuState.ID, null, new SwipeTransition(Direction.RIGHT));
-			}
-		});
+		grid.add(new BackButton(MainMenuState.ID, Direction.RIGHT));
 	}
 	@Override
 	public void leave(GameContainer container, StateBasedGame game) throws SlickException{
