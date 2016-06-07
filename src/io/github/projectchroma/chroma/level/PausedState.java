@@ -21,6 +21,7 @@ import io.github.projectchroma.chroma.gui.util.Button;
 import io.github.projectchroma.chroma.level.block.GoalBlock;
 import io.github.projectchroma.chroma.level.block.HazardBlock;
 import io.github.projectchroma.chroma.level.block.SlowBlock;
+import io.github.projectchroma.chroma.settings.Analytics;
 import io.github.projectchroma.chroma.settings.Keybind;
 import io.github.projectchroma.chroma.util.Direction;
 import io.github.projectchroma.chroma.util.RectangleUtils;
@@ -65,6 +66,7 @@ public class PausedState extends BaseGameState{
 		restart.setLeft(area.getCenterX() + 5);
 		exit = new Button(new Rectangle(0, 0, buttonWidth, 50), "Exit to Main Menu", textFont, HazardBlock.COLOR.darker()){
 			public void onclick(){
+				Analytics.levelExited(level);
 				game.enterState(MainMenuState.ID, null, new SwipeTransition(Direction.LEFT));
 			}
 		};

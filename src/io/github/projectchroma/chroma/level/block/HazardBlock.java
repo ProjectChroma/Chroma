@@ -12,6 +12,7 @@ import io.github.projectchroma.chroma.SwipeTransition;
 import io.github.projectchroma.chroma.level.LevelObject.BlockObject;
 import io.github.projectchroma.chroma.level.LevelState;
 import io.github.projectchroma.chroma.level.entity.Entity;
+import io.github.projectchroma.chroma.settings.Analytics;
 import io.github.projectchroma.chroma.util.Direction;
 import io.github.projectchroma.chroma.util.EntityUtils;
 
@@ -29,6 +30,7 @@ public class HazardBlock extends Block{
 	@Override
 	public void onContact(GameContainer container, LevelState level, Entity entity){
 		if(EntityUtils.isPlayer(entity)){
+			Analytics.levelLost(level);
 			Chroma.instance().enterState(level.getID(), new LevelExitTransition(false, deathSound), new SwipeTransition(Direction.RIGHT));
 		}
 	}

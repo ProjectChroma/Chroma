@@ -51,7 +51,7 @@ public class LevelState extends BaseGameState{
 		name = level.name;
 		allowSwitching = level.player.allowSwitching;
 		
-		elements = new LevelElement[level.blocks.size() + level.hints.size() + level.entities.size()];//Blocks, hints, entities, three barriers, and the player
+		elements = new LevelElement[level.blocks.size() + level.hints.size() + level.entities.size() + 4];//Blocks, hints, entities, three barriers, and the player
 		elements[0] = Blocks.createBlock(0, Chroma.WINDOW_HEIGHT - Block.WALL_WIDTH, Chroma.WINDOW_WIDTH, Block.WALL_WIDTH, null, null);//Floor
 		elements[1] = Blocks.createBlock(0, 0, Block.WALL_WIDTH, Chroma.WINDOW_HEIGHT, null, null);//Left wall
 		elements[2] = Blocks.createBlock(Chroma.WINDOW_WIDTH - Block.WALL_WIDTH, 0, Block.WALL_WIDTH, Chroma.WINDOW_HEIGHT, null, null);//Right wall
