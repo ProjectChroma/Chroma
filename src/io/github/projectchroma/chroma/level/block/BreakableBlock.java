@@ -6,9 +6,10 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.StateBasedGame;
 
+import io.github.projectchroma.chroma.level.LevelElement;
 import io.github.projectchroma.chroma.level.LevelObject.BlockObject;
 import io.github.projectchroma.chroma.level.LevelState;
-import io.github.projectchroma.chroma.level.Player;
+import io.github.projectchroma.chroma.level.entity.Entity;
 import io.github.projectchroma.chroma.util.RectangleUtils;
 
 public class BreakableBlock extends Block{
@@ -28,12 +29,16 @@ public class BreakableBlock extends Block{
 		broken = false;//Reset on exit as well, for level select view
 	}
 	@Override
-	protected void update(GameContainer container, LevelState level, Player player) throws SlickException{
-		if(player.v.length() > minSpeed){
-			Rectangle newBounds = RectangleUtils.clone(player.getBounds());
-			newBounds.setX(newBounds.getX() + player.v.x);
-			newBounds.setY(newBounds.getY() + player.v.y);
-			if(newBounds.intersects(bounds)) broken = true;
+	public void update(GameContainer container, LevelState level, int delta) throws SlickException{
+		for(LevelElement element : level.elements()){
+			if(!(element instanceof Entity)) continue;
+			Entity entity = (Entity)element;
+			if(entity.v.length() > minSpeed){
+				Rectangle newBounds = RectangleUtils.clone(entity.getBounds());
+				newBounds.setX(newBounds.getX() + entity.v.x);
+				newBounds.setY(newBounds.getY() + entity.v.y);
+				if(newBounds.intersects(bounds)) broken = true;
+			}
 		}
 	}
 	@Override
