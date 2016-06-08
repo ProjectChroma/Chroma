@@ -22,6 +22,7 @@ public class Blocks{
 		register(PullBlock.COLOR_NAME, PullBlock.class);
 		register(PushBlock.COLOR_NAME, PushBlock.class);
 		register(BreakableBlock.COLOR_NAME, BreakableBlock.class);
+		register(FallingBlocks.COLOR_NAME, FallingBlocks.class);
 	}
 	public static void register(String colorName, Class<? extends Block> blockClass){
 		classByColor.put(colorName, blockClass);
