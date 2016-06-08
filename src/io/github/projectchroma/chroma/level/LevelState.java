@@ -1,5 +1,8 @@
 package io.github.projectchroma.chroma.level;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
@@ -33,7 +36,7 @@ public class LevelState extends BaseGameState{
 	private String name;
 	private boolean allowSwitching;
 	private Player player;
-	private LevelElement[] elements;
+	private List<LevelElement> elements = new ArrayList<>();
 	private Color[] schemes;
 	private int scheme = 0;
 	public LevelState(int id){
@@ -51,18 +54,16 @@ public class LevelState extends BaseGameState{
 		name = level.name;
 		allowSwitching = level.player.allowSwitching;
 		
-		elements = new LevelElement[level.blocks.size() + level.hints.size() + level.entities.size() + 4];//Blocks, hints, entities, three barriers, and the player
-		elements[0] = Blocks.createBlock(0, Chroma.WINDOW_HEIGHT - Block.WALL_WIDTH, Chroma.WINDOW_WIDTH, Block.WALL_WIDTH, null, null);//Floor
-		elements[1] = Blocks.createBlock(0, 0, Block.WALL_WIDTH, Chroma.WINDOW_HEIGHT, null, null);//Left wall
-		elements[2] = Blocks.createBlock(Chroma.WINDOW_WIDTH - Block.WALL_WIDTH, 0, Block.WALL_WIDTH, Chroma.WINDOW_HEIGHT, null, null);//Right wall
-		int i = 3;
+		elements.add(Blocks.createBlock(0, Chroma.WINDOW_HEIGHT - Block.WALL_WIDTH, Chroma.WINDOW_WIDTH, Block.WALL_WIDTH, null, null));//Floor
+		elements.add(Blocks.createBlock(0, 0, Block.WALL_WIDTH, Chroma.WINDOW_HEIGHT, null, null));//Left wall
+		elements.add(Blocks.createBlock(Chroma.WINDOW_WIDTH - Block.WALL_WIDTH, 0, Block.WALL_WIDTH, Chroma.WINDOW_HEIGHT, null, null));//Right wall
 		for(BlockObject block : level.blocks)
-			elements[i++] = Blocks.createBlock(block);
+			elements.add(Blocks.createBlock(block));
 		for(HintObject hint : level.hints)
-			elements[i++] = new Hint(hint.text, hint.x, hint.y, Colors.byName(hint.color), Colors.byName(hint.scheme));
-		elements[i++] = player = new Player(level.player);
+			elements.add(new Hint(hint.text, hint.x, hint.y, Colors.byName(hint.color), Colors.byName(hint.scheme)));
+		elements.add(player = new Player(level.player));
 		for(EntityObject entity : level.entities)
-			elements[i++] = Entities.createEntity(entity);
+			elements.add(Entities.createEntity(entity));
 		
 		schemes = new Color[level.schemes.size()];
 		for(int j = 0; j < schemes.length; ++j){
@@ -118,8 +119,8 @@ public class LevelState extends BaseGameState{
 	public String name(){
 		return name;
 	}
-	public LevelElement[] elements(){
-		return elements.clone();//Defensive copy
+	public List<LevelElement> elements(){
+		return elements;
 	}
 	public Player player(){
 		return player;

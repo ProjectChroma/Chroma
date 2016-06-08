@@ -1,0 +1,17 @@
+{
+	"name": "Help from Above",
+	"player": {
+		"x": 100,
+		"y": 300
+	},
+	"blocks": [
+		{"x": 15, "y": 390, "width": 220, "height": 15},
+		{"x": 565, "y": 390, "width": 220, "height": 15},
+		
+		{"x": 215, "y": 60, "width": 370, "height": 15, "color": "gray"},
+		{"x": 770, "y": 290, "width": 15, "height": 100, "color": "gold"}
+	],
+	"hints": [
+		{"x": 50, "y": 250, "text": "Gray blocks will fall when you walk under them\nand stop when they land"}
+	]
+}

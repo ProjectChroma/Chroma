@@ -58,7 +58,7 @@ public class Player extends Entity{
 		g.setColor(renderCol != null ? renderCol : getColor(level));
 		g.fill(bounds);
 		
-		if(Chroma.DEBUG_MODE){
+		if(Chroma.isDebugMode()){
 			g.translate(v.x, v.y);
 			Color[] colors = {Color.red, Color.green, Color.cyan, Color.yellow};
 			for(int i=0; i<hitboxes.length; i++){

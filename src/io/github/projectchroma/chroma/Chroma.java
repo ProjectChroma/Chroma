@@ -38,8 +38,8 @@ public class Chroma extends StateBasedGame{
 	 * <li>Shows the player's collision boxes</li>
 	 * </ul>
 	 */
-	public static final boolean DEBUG_MODE = false;
-	public static final int WINDOW_WIDTH = 800, WINDOW_HEIGHT = 600, NUM_LEVELS = 19, FPS = 100;
+	private static boolean debug = false;
+	public static final int WINDOW_WIDTH = 800, WINDOW_HEIGHT = 600, NUM_LEVELS = 20, FPS = 100;
 	private static Chroma instance;
 	
 	private Font javaFont;
@@ -102,6 +102,7 @@ public class Chroma extends StateBasedGame{
 		for(String arg : args){
 			if(arg.startsWith("fps:")) fps = Integer.parseInt(arg.substring(4));
 			else if(arg.startsWith("analytics:")) Analytics.setEnabled(Boolean.parseBoolean(arg.substring(10)));
+			else if(arg.startsWith("debug:")) debug = Boolean.parseBoolean(arg.substring(6));
 		}
 		try{
 			instance = new Chroma();
@@ -125,4 +126,5 @@ public class Chroma extends StateBasedGame{
 	public Collection<BaseGameState> states(){
 		return states.values();
 	}
+	public static boolean isDebugMode(){return debug;}
 }
