@@ -24,7 +24,7 @@ import io.github.projectchroma.chroma.util.Direction;
 
 public class LevelSelectState extends GUIState{
 	public static final int ID = -1;
-	private static final float GRID_WIDTH = 700, GRID_TOP = 100, ICON_SIZE = 100, NUM_COLUMNS = 6;
+	private static final float GRID_WIDTH = 700, GRID_TOP = 100, ICON_SIZE = 85, NUM_COLUMNS = 7;
 	private static final float SIDE_MARGINS = (Chroma.WINDOW_WIDTH - GRID_WIDTH) / 2,
 			ICON_MARGINS = (GRID_WIDTH - (NUM_COLUMNS * ICON_SIZE)) / (NUM_COLUMNS - 1);//Width of grid minus the width taken up by the icons, divided by the number of margins
 	private static LevelSelectState instance;
