@@ -8,11 +8,16 @@ import java.util.Map;
 public class LevelObject{
 	public String name;
 	public List<String> schemes = Arrays.asList("white", "black");//Default to alternating schemes, starting with white
-	public List<BlockObject> blocks;
 	public PlayerObject player;
+	public List<BlockObject> blocks;
 	public List<HintObject> hints = new ArrayList<>();//Initialize to empty list, to prevent null issues if the level has no hints
+	public List<EntityObject> entities = new ArrayList<>();
 	private LevelObject(){}
-	
+
+	public static class PlayerObject{
+		public float x, y;
+		public boolean allowSwitching = true;
+	}
 	public static class BlockObject{
 		public float x, y, width, height;
 		public String color, scheme;
@@ -23,13 +28,17 @@ public class LevelObject{
 		public float getFloatProperty(String name){return getProperty(name, Double.class).floatValue();}
 		public int getIntProperty(String name){return getProperty(name, Double.class).intValue();}
 	}
-	public static class PlayerObject{
-		public float x, y;
-		public boolean allowSwitching = true;
-	}
 	public static class HintObject{
 		public float x, y;
 		public String text;
 		public String color, scheme;
+	}
+	public static class EntityObject{
+		public float x, y;
+		public String type;
+		public EntityObject(float x, float y){
+			this.x = x;
+			this.y = y;
+		}
 	}
 }

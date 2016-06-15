@@ -1,5 +1,8 @@
 package io.github.projectchroma.chroma.level;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
@@ -15,9 +18,13 @@ import io.github.projectchroma.chroma.Chroma;
 import io.github.projectchroma.chroma.Resources;
 import io.github.projectchroma.chroma.Sounds;
 import io.github.projectchroma.chroma.level.LevelObject.BlockObject;
+import io.github.projectchroma.chroma.level.LevelObject.EntityObject;
 import io.github.projectchroma.chroma.level.LevelObject.HintObject;
 import io.github.projectchroma.chroma.level.block.Block;
 import io.github.projectchroma.chroma.level.block.Blocks;
+import io.github.projectchroma.chroma.level.entity.Entities;
+import io.github.projectchroma.chroma.level.entity.Entity;
+import io.github.projectchroma.chroma.level.entity.Player;
 import io.github.projectchroma.chroma.settings.Keybind;
 import io.github.projectchroma.chroma.util.Colors;
 
@@ -27,10 +34,9 @@ public class LevelState extends BaseGameState{
 	private static Keybind keyPause, keySwitch;
 	
 	private String name;
-	private float playerX, playerY;
 	private boolean allowSwitching;
 	private Player player;
-	private LevelElement[] elements;
+	private List<LevelElement> elements = new ArrayList<>();
 	private Color[] schemes;
 	private int scheme = 0;
 	public LevelState(int id){
@@ -46,20 +52,18 @@ public class LevelState extends BaseGameState{
 		
 		LevelObject level = Resources.loadLevel(id);
 		name = level.name;
-		playerX = level.player.x;
-		playerY = level.player.y;
 		allowSwitching = level.player.allowSwitching;
 		
-		elements = new LevelElement[level.blocks.size() + level.hints.size() + 4];//The blocks, the hints, three barriers, and the player
-		elements[0] = Blocks.createBlock(0, Chroma.WINDOW_HEIGHT - Block.WALL_WIDTH, Chroma.WINDOW_WIDTH, Block.WALL_WIDTH, null, null);//Floor
-		elements[1] = Blocks.createBlock(0, 0, Block.WALL_WIDTH, Chroma.WINDOW_HEIGHT, null, null);//Left wall
-		elements[2] = Blocks.createBlock(Chroma.WINDOW_WIDTH - Block.WALL_WIDTH, 0, Block.WALL_WIDTH, Chroma.WINDOW_HEIGHT, null, null);//Right wall
-		elements[3] = player = new Player();
-		int i = 4;
+		elements.add(Blocks.createBlock(0, Chroma.WINDOW_HEIGHT - Block.WALL_WIDTH, Chroma.WINDOW_WIDTH, Block.WALL_WIDTH, null, null));//Floor
+		elements.add(Blocks.createBlock(0, 0, Block.WALL_WIDTH, Chroma.WINDOW_HEIGHT, null, null));//Left wall
+		elements.add(Blocks.createBlock(Chroma.WINDOW_WIDTH - Block.WALL_WIDTH, 0, Block.WALL_WIDTH, Chroma.WINDOW_HEIGHT, null, null));//Right wall
 		for(BlockObject block : level.blocks)
-			elements[i++] = Blocks.createBlock(block);
+			elements.add(Blocks.createBlock(block));
 		for(HintObject hint : level.hints)
-			elements[i++] = new Hint(hint.text, hint.x, hint.y, Colors.byName(hint.color), Colors.byName(hint.scheme));
+			elements.add(new Hint(hint.text, hint.x, hint.y, Colors.byName(hint.color), Colors.byName(hint.scheme)));
+		elements.add(player = new Player(level.player));
+		for(EntityObject entity : level.entities)
+			elements.add(Entities.createEntity(entity));
 		
 		schemes = new Color[level.schemes.size()];
 		for(int j = 0; j < schemes.length; ++j){
@@ -83,7 +87,10 @@ public class LevelState extends BaseGameState{
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException{
 		super.update(container, game, delta);
 		if(keyPause.isPressed()) game.enterState(PausedState.ID, null, new PausedState.Enter());
-		player.update(container, this, delta);
+		for(LevelElement element : elements)
+			if(element instanceof Entity && element.isTangible(this)) ((Entity)element).setKinematics(container, this);
+		for(LevelElement element : elements)
+			if(element.isTangible(this)) element.update(container, this, delta);
 		if(allowSwitching && keySwitch.isPressed()){
 			soundSwitch.play();
 			cycleScheme();
@@ -101,7 +108,7 @@ public class LevelState extends BaseGameState{
 		for(LevelElement element : elements) element.leave(container, game);
 	}
 	public void restart(){
-		player.moveTo(playerX, playerY);
+		player.resetPosition();
 		setScheme(0);
 	}
 	@Override
@@ -112,8 +119,8 @@ public class LevelState extends BaseGameState{
 	public String name(){
 		return name;
 	}
-	public LevelElement[] elements(){
-		return elements.clone();//Defensive copy
+	public List<LevelElement> elements(){
+		return elements;
 	}
 	public Player player(){
 		return player;

@@ -7,7 +7,7 @@ import org.newdawn.slick.SlickException;
 import io.github.projectchroma.chroma.level.LevelElement;
 import io.github.projectchroma.chroma.level.LevelObject.BlockObject;
 import io.github.projectchroma.chroma.level.LevelState;
-import io.github.projectchroma.chroma.level.Player;
+import io.github.projectchroma.chroma.level.entity.Entity;
 import io.github.projectchroma.chroma.util.Colors;
 
 public abstract class Block extends LevelElement{
@@ -19,14 +19,8 @@ public abstract class Block extends LevelElement{
 	private Block(float x, float y, float width, float height, Color color, Color scheme){
 		super(x, y, width, height, color, scheme);
 	}
-	public void update(GameContainer container, LevelState level, int delta) throws SlickException{
-		update(container, level, level.player());
-	}
-	protected void update(GameContainer container, LevelState level, Player player) throws SlickException{}
-	public void onContact(GameContainer container, LevelState level) throws SlickException{
-		onContact(container, level, level.player());
-	}
-	protected void onContact(GameContainer container, LevelState level, Player player) throws SlickException{}
+	@Override public void update(GameContainer container, LevelState level, int delta) throws SlickException{}
+	public void onContact(GameContainer container, LevelState level, Entity entity) throws SlickException{}
 	@Override
 	public String toString(){
 		return super.toString() + '{' + (color == null ? "null" : (color.r + "," + color.g + "," + color.b)) + '}';

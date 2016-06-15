@@ -13,9 +13,11 @@ import io.github.projectchroma.chroma.Resources;
 import io.github.projectchroma.chroma.SwipeTransition;
 import io.github.projectchroma.chroma.level.LevelObject.BlockObject;
 import io.github.projectchroma.chroma.level.LevelState;
-import io.github.projectchroma.chroma.level.Player;
+import io.github.projectchroma.chroma.level.entity.Entity;
+import io.github.projectchroma.chroma.settings.Analytics;
 import io.github.projectchroma.chroma.settings.Progress;
 import io.github.projectchroma.chroma.util.Direction;
+import io.github.projectchroma.chroma.util.EntityUtils;
 
 public class GoalBlock extends Block{
 	public static final String COLOR_NAME = "gold";
@@ -29,13 +31,16 @@ public class GoalBlock extends Block{
 		if(winSound == null) winSound = Resources.loadSound("win.aif");
 	}
 	@Override
-	protected void onContact(GameContainer container, LevelState level, Player player){
-		try{
-			if(Progress.setLevelComplete(level.getID())) Progress.write();
-		}catch(FileNotFoundException ex){
-			System.err.println("Error writing game progress to file (progress will not be saved)");
-			ex.printStackTrace();
+	public void onContact(GameContainer container, LevelState level, Entity entity){
+		if(EntityUtils.isPlayer(entity)){
+			try{
+				if(Progress.setLevelComplete(level.getID())) Progress.write();
+			}catch(FileNotFoundException ex){
+				System.err.println("Error writing game progress to file (progress will not be saved)");
+				ex.printStackTrace();
+			}
+			Analytics.levelWon(level);
+			Chroma.instance().enterState(level.getID()+1, new LevelExitTransition(true, winSound), new SwipeTransition(Direction.RIGHT));
 		}
-		Chroma.instance().enterState(level.getID()+1, new LevelExitTransition(true, winSound), new SwipeTransition(Direction.RIGHT));
 	}
 }

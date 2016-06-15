@@ -6,7 +6,7 @@ import org.newdawn.slick.SlickException;
 
 import io.github.projectchroma.chroma.level.LevelObject.BlockObject;
 import io.github.projectchroma.chroma.level.LevelState;
-import io.github.projectchroma.chroma.level.Player;
+import io.github.projectchroma.chroma.level.entity.Entity;
 
 public class SpeedBlock extends Block{
 	public static final String COLOR_NAME = "orange";
@@ -16,7 +16,7 @@ public class SpeedBlock extends Block{
 		super(block, COLOR);
 	}
 	@Override
-	protected void onContact(GameContainer container, LevelState level, Player player) throws SlickException{
-		player.v.x *= SPEED_MULTIPLIER;
+	public void onContact(GameContainer container, LevelState level, Entity entity) throws SlickException{
+		entity.v.x *= SPEED_MULTIPLIER;
 	}
 }

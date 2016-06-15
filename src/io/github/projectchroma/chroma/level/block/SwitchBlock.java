@@ -8,7 +8,7 @@ import org.newdawn.slick.Sound;
 import io.github.projectchroma.chroma.Resources;
 import io.github.projectchroma.chroma.level.LevelObject.BlockObject;
 import io.github.projectchroma.chroma.level.LevelState;
-import io.github.projectchroma.chroma.level.Player;
+import io.github.projectchroma.chroma.level.entity.Entity;
 
 public class SwitchBlock extends Block{
 	public static final String COLOR_NAME = "pink";
@@ -23,7 +23,7 @@ public class SwitchBlock extends Block{
 		if(switchSound == null) switchSound = Resources.loadSound("switch.aif");
 	}
 	@Override
-	protected void update(GameContainer container, LevelState level, Player player){
+	public void update(GameContainer container, LevelState level, int delta){
 		if(contacting != prevContacting){
 			level.cycleScheme();
 		}
@@ -31,7 +31,7 @@ public class SwitchBlock extends Block{
 		contacting = false;
 	}
 	@Override
-	protected void onContact(GameContainer container, LevelState level, Player player){
+	public void onContact(GameContainer container, LevelState level, Entity entity){
 		contacting = true;
 	}
 }

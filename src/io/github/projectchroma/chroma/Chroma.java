@@ -23,6 +23,7 @@ import io.github.projectchroma.chroma.level.LevelState;
 import io.github.projectchroma.chroma.level.PausedState;
 import io.github.projectchroma.chroma.level.block.BlackBlock;
 import io.github.projectchroma.chroma.level.block.WhiteBlock;
+import io.github.projectchroma.chroma.settings.Analytics;
 import io.github.projectchroma.chroma.settings.Keybind;
 import io.github.projectchroma.chroma.settings.Settings;
 import io.github.projectchroma.chroma.util.Colors;
@@ -37,8 +38,8 @@ public class Chroma extends StateBasedGame{
 	 * <li>Shows the player's collision boxes</li>
 	 * </ul>
 	 */
-	public static final boolean DEBUG_MODE = false;
-	public static final int WINDOW_WIDTH = 800, WINDOW_HEIGHT = 600, NUM_LEVELS = 18, FPS = 100;
+	private static boolean debug = false;
+	public static final int WINDOW_WIDTH = 800, WINDOW_HEIGHT = 600, NUM_LEVELS = 20, FPS = 100;
 	private static Chroma instance;
 	
 	private Font javaFont;
@@ -100,6 +101,8 @@ public class Chroma extends StateBasedGame{
 		int fps = FPS;
 		for(String arg : args){
 			if(arg.startsWith("fps:")) fps = Integer.parseInt(arg.substring(4));
+			else if(arg.startsWith("analytics:")) Analytics.setEnabled(Boolean.parseBoolean(arg.substring(10)));
+			else if(arg.startsWith("debug:")) debug = Boolean.parseBoolean(arg.substring(6));
 		}
 		try{
 			instance = new Chroma();
@@ -107,13 +110,14 @@ public class Chroma extends StateBasedGame{
 			Settings.read();
 			Keybind.read();
 			Sounds.init();
+			Analytics.init();
 			ChromaContainer app = new ChromaContainer(instance);
 			app.setTargetFrameRate(fps);
 			app.setShowFPS(false);//Hide FPS counter
-			app.setIcons(new String[]{Resources.getTexturePath("icon32.png"), Resources.getTexturePath("icon24.png"), Resources.getTexturePath("icon16.png")});
+			app.setIcons(new String[]{Resources.getTexturePath("icon32.png"), Resources.getTexturePath("icon16.png")});
 			app.setForceExit(true);//Call System.exit(0) when game is closed
 			Settings.update(app);
-			System.out.println("Starting app at " + fps + "FPS");
+			System.out.println("Starting game at " + fps + "FPS");
 			app.start();
 		}catch(SlickException ex){
 			ex.printStackTrace();
@@ -122,4 +126,5 @@ public class Chroma extends StateBasedGame{
 	public Collection<BaseGameState> states(){
 		return states.values();
 	}
+	public static boolean isDebugMode(){return debug;}
 }

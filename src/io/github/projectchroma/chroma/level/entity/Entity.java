@@ -1,83 +1,68 @@
-package io.github.projectchroma.chroma.level;
+package io.github.projectchroma.chroma.level.entity;
 
 import static io.github.projectchroma.chroma.util.Direction.*;
 import static io.github.projectchroma.chroma.util.MathUtils.sameSign;
 import static io.github.projectchroma.chroma.util.RectangleUtils.fromCenter;
 
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.state.StateBasedGame;
 
-import io.github.projectchroma.chroma.Chroma;
-import io.github.projectchroma.chroma.Resources;
+import io.github.projectchroma.chroma.level.LevelElement;
+import io.github.projectchroma.chroma.level.LevelObject.EntityObject;
+import io.github.projectchroma.chroma.level.LevelState;
 import io.github.projectchroma.chroma.level.block.Block;
-import io.github.projectchroma.chroma.settings.Keybind;
 import io.github.projectchroma.chroma.util.Direction;
 import io.github.projectchroma.chroma.util.RectangleUtils;
 
-public class Player extends LevelElement{
+public abstract class Entity extends LevelElement{
 	/**Acceleration caused by gravity*/
 	public static final float gravity = 0.07F;
-	/**Velocities during player-caused motion*/
-	private static final float VX = 2F, VY = -3.7F;
-	/**Sound effects*/
-	private static Sound jump, win, death;
-	private static Keybind keyLeft, keyRight, keyJump;
 	
+	/**Starting coordinates*/
+	protected float startX, startY;
 	/**Hitboxes for collision detection*/
-	private Rectangle[] hitboxes = new Rectangle[4];
+	protected Rectangle[] hitboxes = new Rectangle[4];
 	/**Stores whether or not the player has collided with an object on each of its sides*/
-	private boolean[] colliding = new boolean[4];
+	protected boolean[] colliding = new boolean[4];
 	/**Kinematics*/
 	public Vector2f v = new Vector2f(), a = new Vector2f();
-	/**Color to render the player, regardless of scheme (null uses scheme color)*/
-	private Color renderCol = null;
+	/**Steed*/
+	protected Steed steed = null;
 	
-	public Player(){
-		super(0, 0, 50, 50);
-		moveTo(0, 0);
+	public Entity(EntityObject entity, float width, float height){
+		super(entity.x, entity.y, width, height);
+		startX = entity.x;
+		startY = entity.y;
 	}
-	
 	@Override
-	public void init(GameContainer container) throws SlickException{
-		if(jump == null) jump = Resources.loadSound("jump.aif");
-		if(win == null) win = Resources.loadSound("win.aif");
-		if(death == null) death = Resources.loadSound("death.aif");
-		
-		if(keyLeft == null) keyLeft = Keybind.get("player.left", Input.KEY_LEFT);
-		if(keyRight == null) keyRight = Keybind.get("player.right", Input.KEY_RIGHT);
-		if(keyJump == null) keyJump = Keybind.get("player.up", Input.KEY_SPACE);
-	}
-	
-	public void update(GameContainer container, LevelState level, int delta) throws SlickException{
-		//Initialize velocity and acceleration to defaults
-		a.y = gravity;
-		if(keyLeft.isDown()) v.x = -VX;
-		else if(keyRight.isDown()) v.x = VX;
-		else v.x = 0;
-		if(keyJump.isDown() && colliding[DOWN.ordinal()]){
-			v.y = VY;
-			jump.play();
+	public void enter(GameContainer container, StateBasedGame game) throws SlickException{
+		super.enter(container, game);
+		resetPosition();
+		v.x = v.y = a.x = a.y = 0;
+		if(steed != null){
+			steed.rider = null;
+			steed = null;
 		}
-		
+	}
+	@Override
+	public void update(GameContainer container, LevelState level, int delta) throws SlickException{
 		//Reset collisions
 		for(int i=0; i<colliding.length; i++) colliding[i] = false;
 		//Update level elements on contact
 		Rectangle collisionBounds = RectangleUtils.grow(bounds, 1);
 		for(LevelElement element : level.elements()){
 			if(element == this || !element.isTangible(level)) continue;
-			element.update(container, level, delta);
 			if(element instanceof Block && collisionBounds.intersects(element.getBounds()))
-				((Block)element).onContact(container, level);
+				((Block)element).onContact(container, level, this);
+			else if(element instanceof Entity && collisionBounds.intersects(element.getBounds()))
+				((Entity)element).onContact(container, level, this);
 		}
 		//Detect collisions
 		for(LevelElement element : level.elements()){
-			if(element == this || !element.isTangible(level)) continue;
+			if(element == this || !element.isTangible(level) || (!(element instanceof Block))) continue;
 			sizeHitboxes();
 			for(Direction d : Direction.values()){
 				if(hitboxes[d.ordinal()].intersects(element.getBounds())){
@@ -92,43 +77,48 @@ public class Player extends LevelElement{
 						if(sameSign(a.y, d.offsetY)) a.y = 0;
 					}
 				}
+				if(steed != null){
+					this.setCenterX(steed.getCenterX());
+					this.setBottom(steed.getCenterY());
+					if(steed.hitboxes[d.ordinal()].intersects(element.getBounds())){
+						if(d.isHorizontal()){
+							if(sameSign(v.x, d.offsetX)) v.x = 0;
+							if(sameSign(a.x, d.offsetX)) a.x = 0;
+						}else{
+							if(sameSign(v.y, d.offsetY)) v.y = 0;
+							if(sameSign(a.y, d.offsetY)) a.y = 0;
+						}
+					}
+				}
 			}
 		}
 		setLeft(getLeft() + v.x);
 		setTop(getTop() + v.y);
 		v.add(a);
 	}
-	private void sizeHitboxes(){
+	public void setKinematics(GameContainer container, LevelState level) throws SlickException{
+		a.y = gravity;
+	}
+	protected void sizeHitboxes(){
 		hitboxes[UP.ordinal()] = fromCenter(getCenterX(), getCenterY() - (getHeight()-v.y)/2, getWidth()-2, -v.y);
 		hitboxes[DOWN.ordinal()] = fromCenter(getCenterX(), getCenterY() + (getHeight()+v.y)/2, getWidth()-2, v.y);
 		hitboxes[LEFT.ordinal()] = fromCenter(getCenterX() - (getWidth()-v.x)/2, getCenterY(), -v.x, getHeight()-2);
 		hitboxes[RIGHT.ordinal()] = fromCenter(getCenterX() + (getWidth()+v.x)/2, getCenterY(), v.x, getHeight()-2);
 	}
-	
-	public void render(GameContainer container, LevelState level, Graphics g) throws SlickException{
-		g.setColor(renderCol != null ? renderCol : getColor(level));
-		g.fill(bounds);
-		
-		if(Chroma.DEBUG_MODE){
-			g.translate(v.x, v.y);
-			Color[] colors = {Color.red, Color.green, Color.cyan, Color.yellow};
-			for(int i=0; i<hitboxes.length; i++){
-				if(hitboxes[i] == null) continue;
-				g.setColor(colliding[i] ? colors[i] : colors[i].darker());
-				g.fill(hitboxes[i]);
-			}
-			g.translate(-v.x, -v.y);
+	public void onContact(GameContainer container, LevelState level, Entity entity) throws SlickException{
+		if(entity instanceof Steed && steed == null){
+			this.steed = (Steed)entity;
+			this.steed.rider = this;
+			this.setCenterX(steed.getCenterX());
+			this.setBottom(steed.getCenterY());
 		}
 	}
-	public void moveTo(float x, float y){
+	public void resetPosition(){
+		moveTo(startX, startY);
+	}
+	protected void moveTo(float x, float y){
 		setLeft(x);
 		setTop(y);
 	}
-	
-	public void setRenderColor(Color c){
-		renderCol = c;
-	}
-	public void resetRenderColor(){
-		renderCol = null;
-	}
+	public Entity getSteed(){return steed;}
 }

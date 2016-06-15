@@ -8,7 +8,7 @@ import org.newdawn.slick.Sound;
 import io.github.projectchroma.chroma.Resources;
 import io.github.projectchroma.chroma.level.LevelObject.BlockObject;
 import io.github.projectchroma.chroma.level.LevelState;
-import io.github.projectchroma.chroma.level.Player;
+import io.github.projectchroma.chroma.level.entity.Entity;
 
 public class InvisaBlock extends Block{
 	public static final String COLOR_NAME = "clear";
@@ -26,11 +26,11 @@ public class InvisaBlock extends Block{
 		impl.init(container);
 	}
 	@Override
-	protected void update(GameContainer container, LevelState level, Player player) throws SlickException{
-		impl.update(container, level, player);
+	public void update(GameContainer container, LevelState level, int delta) throws SlickException{
+		impl.update(container, level, delta);
 	}
 	@Override
-	protected void onContact(GameContainer container, LevelState level, Player player) throws SlickException{
-		impl.onContact(container, level, player);
+	public void onContact(GameContainer container, LevelState level, Entity entity) throws SlickException{
+		impl.onContact(container, level, entity);
 	}
 }
