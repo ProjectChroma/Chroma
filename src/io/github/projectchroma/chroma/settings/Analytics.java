@@ -25,7 +25,7 @@ public class Analytics{
 	private static void write(LevelState level, String code){
 		if(!enabled) return;
 		try(PrintStream out = new PrintStream(new FileOutputStream(file, true), true)){
-			out.println(level.getID() + "[" + level.name() + "]" + code);
+			out.println(level.getID() + code);
 		}catch(FileNotFoundException ex){
 			System.err.println("Unable to create analytics file");
 			ex.printStackTrace();

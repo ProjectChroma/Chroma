@@ -114,7 +114,7 @@ public class Chroma extends StateBasedGame{
 			ChromaContainer app = new ChromaContainer(instance);
 			app.setTargetFrameRate(fps);
 			app.setShowFPS(false);//Hide FPS counter
-			app.setIcons(new String[]{Resources.getTexturePath("icon32.png"), Resources.getTexturePath("icon24.png"), Resources.getTexturePath("icon16.png")});
+			app.setIcons(new String[]{Resources.getTexturePath("icon32.png"), Resources.getTexturePath("icon16.png")});
 			app.setForceExit(true);//Call System.exit(0) when game is closed
 			Settings.update(app);
 			System.out.println("Starting game at " + fps + "FPS");
