@@ -16,9 +16,8 @@ public abstract class GUIState extends BaseGameState{
 	
 	protected List<GUIElement> elements = new ArrayList<>();
 	protected Color bg;
-	protected GUIState(int id){this(id, Color.white);}
-	protected GUIState(int id, Color bg){
-		super(id);
+	protected GUIState(){this(Color.white);}
+	protected GUIState(Color bg){
 		this.bg = bg;
 		for(GUIElement element : elements) add(element);
 	}

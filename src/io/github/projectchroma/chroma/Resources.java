@@ -55,17 +55,8 @@ public class Resources {
 		return new Music(ResourceLoader.getResourceAsStream(getSoundPath(name)), getSoundPath(name));
 	}
 	
-	public static String getLevelPath(int id){
-		return getLevelPath("level" + id + ".json");
-	}
-	public static String getLevelPath(String name){
-		return LEVEL_PATH + name;
-	}
-	public static LevelObject loadLevel(int id){
-		return gson.fromJson(new InputStreamReader(ResourceLoader.getResourceAsStream(getLevelPath(id))), LevelObject.class);
-	}
-	public static LevelObject loadLevel(String name){
-		return gson.fromJson(new InputStreamReader(ResourceLoader.getResourceAsStream(getLevelPath(name))), LevelObject.class);
+	public static LevelObject loadLevel(String path){
+		return gson.fromJson(new InputStreamReader(ResourceLoader.getResourceAsStream(path)), LevelObject.class);
 	}
 	public static Sound loadSound(String name) throws SlickException{
 		return new Sound(getSoundPath(name));

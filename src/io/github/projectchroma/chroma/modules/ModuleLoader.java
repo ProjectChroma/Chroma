@@ -12,12 +12,19 @@ import java.util.jar.JarFile;
 
 import org.newdawn.slick.SlickException;
 
+import io.github.projectchroma.chroma.ChromaContext;
+
 public class ModuleLoader {
 	private static ModuleLoader instance;
 	private File dir = new File("modules");
 	private List<ModuleContext> instances = new ArrayList<>(), validInstances = new ArrayList<>();
+	private ModuleContext activeModule = null;
 	public static ModuleLoader instance(){
 		return instance == null ? instance = new ModuleLoader() : instance;
+	}
+	private ModuleLoader(){
+		instances.add(ChromaContext.INSTANCE);
+		validInstances.add(ChromaContext.INSTANCE);
 	}
 	public void createModules(){
 		for(File module : dir.listFiles((parent, name) -> name.endsWith(".jar"))){
@@ -41,7 +48,7 @@ public class ModuleLoader {
 				try{
 					Class<?> clazz = loader.loadClass(className);
 					if(Module.class.isAssignableFrom(clazz)){
-						ModuleContext context = new ModuleContext(module, (Class<? extends Module>)clazz);
+						ModuleContext context = new ModuleContext((Class<? extends Module>)clazz);
 						instances.add(context);
 						validInstances.add(context);
 					}
@@ -78,6 +85,9 @@ public class ModuleLoader {
 			}
 		}
 	}
+	protected void setActiveModule(ModuleContext module){activeModule = module;}
+	public ModuleContext getActiveModule(){return activeModule;}
 	public int getModuleCount(){return instances.size();}
 	public int getValidModuleCount(){return validInstances.size();}
+	public List<ModuleContext> getLoadedModules(){return new ArrayList<>(validInstances);}
 }

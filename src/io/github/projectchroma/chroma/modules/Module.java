@@ -16,6 +16,11 @@ public abstract class Module {
 	public String getID(){return id;}
 	public String getVersion(){return version;}
 	public abstract void load();
+	@Override
+	public String toString(){
+		if(version.isEmpty()) return id;
+		else return id.concat("@").concat(version);
+	}
 	
 	@Retention(RUNTIME)
 	@Target(FIELD)

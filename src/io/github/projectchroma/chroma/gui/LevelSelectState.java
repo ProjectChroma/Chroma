@@ -15,43 +15,46 @@ import io.github.projectchroma.chroma.SwipeTransition;
 import io.github.projectchroma.chroma.gui.util.BackButton;
 import io.github.projectchroma.chroma.gui.util.GUIElement;
 import io.github.projectchroma.chroma.gui.util.GUIState;
+import io.github.projectchroma.chroma.gui.util.PaginatedGrid;
 import io.github.projectchroma.chroma.gui.util.RenderedText;
 import io.github.projectchroma.chroma.level.LevelElement;
 import io.github.projectchroma.chroma.level.LevelState;
 import io.github.projectchroma.chroma.level.block.Block;
+import io.github.projectchroma.chroma.modules.ModuleContext;
+import io.github.projectchroma.chroma.modules.ModuleLoader;
 import io.github.projectchroma.chroma.settings.Progress;
 import io.github.projectchroma.chroma.util.Direction;
 
 public class LevelSelectState extends GUIState{
-	public static final int ID = -1;
+	public static final LevelSelectState instance = new LevelSelectState();
 	private static final float GRID_WIDTH = 700, GRID_TOP = 100, ICON_SIZE = 85, NUM_COLUMNS = 7;
 	private static final float SIDE_MARGINS = (Chroma.WINDOW_WIDTH - GRID_WIDTH) / 2,
 			ICON_MARGINS = (GRID_WIDTH - (NUM_COLUMNS * ICON_SIZE)) / (NUM_COLUMNS - 1);//Width of grid minus the width taken up by the icons, divided by the number of margins
-	private static LevelSelectState instance;
-	public LevelSelectState(){
-		super(ID);
-		instance = this;
-	}
+	private PaginatedGrid grid;
+	private LevelSelectState(){}
 	@Override
 	public void initialize(GameContainer container, final StateBasedGame game) throws SlickException{
 		super.initialize(container, game);
 		add(new RenderedText("Level Select", Chroma.instance().createFont(50), Chroma.WINDOW_WIDTH/2, 40, Color.black));
-		add(new BackButton(MainMenuState.ID, Direction.LEFT));
+		add(new BackButton(MainMenuState.instance.getID(), Direction.LEFT));
 	}
 	@Override
 	public void postInit(GameContainer container, StateBasedGame game) throws SlickException{
 		super.postInit(container, game);
-		int row = 0, column = 0;
-		for(int i = 1; i <= Chroma.NUM_LEVELS; i++){//For each level
-			LevelState level = (LevelState)Chroma.instance().getState(i);
-			add(new LevelIcon(column * (ICON_SIZE + ICON_MARGINS) + SIDE_MARGINS, row * (ICON_SIZE + ICON_MARGINS) + GRID_TOP, level));
-			if(column+1 == NUM_COLUMNS){//If this column was the last column
-				row++;//Drop down to a new row
-				column = 0;//and reset the column
-			}else{
-				column++;//Otherwise, just move to the right
+		grid = new PaginatedGrid();
+		add(grid);
+		List<ModuleContext> modules = ModuleLoader.instance().getLoadedModules();
+		for(int page=0; page<modules.size(); ++page){
+			int row = 0, column = 0;
+			for(LevelState level : LevelState.getLevels(modules.get(page))){
+				grid.add(new LevelIcon(column * (ICON_SIZE + ICON_MARGINS) + SIDE_MARGINS, row * (ICON_SIZE + ICON_MARGINS) + GRID_TOP, level), page);
+				if(column+1 == NUM_COLUMNS){//If this column was the last column
+					row++;//Drop down to a new row
+					column = 0;//and reset the column
+				}else{
+					column++;//Otherwise, just move to the right
+				}
 			}
-			
 		}
 	}
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException{
@@ -59,6 +62,11 @@ public class LevelSelectState extends GUIState{
 		for(GUIElement element : elements){
 			if(element instanceof LevelIcon) ((LevelIcon)element).level.setScheme(0);
 		}
+	}
+	@Override
+	public void keyPressed(int key, char c){
+		if(key == Input.KEY_LEFT) grid.prevPage();
+		else if(key == Input.KEY_RIGHT) grid.nextPage();
 	}
 	
 	private static class LevelIcon extends GUIElement{
@@ -80,12 +88,12 @@ public class LevelSelectState extends GUIState{
 		@Override
 		public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException{
 			g.translate(x, y);//(0, 0) is now the top-left corner of this icon
-			if(Progress.isLevelLocked(level.getID())){
+			if(Progress.isLevelLocked(level)){
 				g.setColor(new Color(0.5F, 0.5F, 0.5F, 1F));
 				g.fillRect(0, 0, ICON_SIZE, ICON_SIZE);
 			}else if(mouseOver){
 				//If the mouse is over this icon and it's not locked, don't render any background color
-			}else if(Progress.isLevelComplete(level.getID())){
+			}else if(Progress.isLevelComplete(level)){
 				g.setColor(new Color(0.5F, 1F, 0.5F, 0.5F));
 				g.fillRect(0, 0, ICON_SIZE, ICON_SIZE);
 			}else{
@@ -103,13 +111,10 @@ public class LevelSelectState extends GUIState{
 					mouseX = container.getInput().getMouseX(), mouseY = container.getInput().getMouseY();
 			if(minX <= mouseX && mouseX <= maxX && minY <= mouseY && mouseY <= maxY){//Mouse is over this element 
 				mouseOver = true;
-				if(!Progress.isLevelLocked(level.getID()) && container.getInput().isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)){
+				if(!Progress.isLevelLocked(level) && container.getInput().isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)){
 					game.enterState(level.getID(), null, new SwipeTransition(Direction.RIGHT));
 				}
 			}else mouseOver = false;
 		}
-	}
-	public static LevelSelectState instance(){
-		return instance;
 	}
 }

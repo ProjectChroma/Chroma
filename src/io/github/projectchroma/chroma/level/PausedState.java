@@ -27,7 +27,6 @@ import io.github.projectchroma.chroma.util.Direction;
 import io.github.projectchroma.chroma.util.RectangleUtils;
 
 public class PausedState extends BaseGameState{
-	public static final int ID = -5;
 	public static final PausedState instance = new PausedState();
 	public static final Color BACKGROUND = new Color(0.5F, 0.5F, 0.5F, 0.7F);
 	private static Keybind pause;
@@ -38,7 +37,6 @@ public class PausedState extends BaseGameState{
 	private Font titleFont, textFont;
 	private Button resume, restart, exit;
 	private PausedState(){
-		super(ID);
 		area = new Rectangle(0, 0, 400, 300);
 		area.setCenterX(Chroma.WINDOW_WIDTH / 2);
 		yStart = -area.getHeight() / 2;//Just offscreen above
@@ -67,7 +65,7 @@ public class PausedState extends BaseGameState{
 		exit = new Button(new Rectangle(0, 0, buttonWidth, 50), "Exit to Main Menu", textFont, HazardBlock.COLOR.darker()){
 			public void onclick(){
 				Analytics.levelExited(level);
-				game.enterState(MainMenuState.ID, null, new SwipeTransition(Direction.LEFT));
+				game.enterState(MainMenuState.instance.getID(), null, new SwipeTransition(Direction.LEFT));
 			}
 		};
 		exit.setCenterX(area.getCenterX());

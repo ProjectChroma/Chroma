@@ -13,14 +13,6 @@ import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.Transition;
 
-import io.github.projectchroma.chroma.gui.CreditsState;
-import io.github.projectchroma.chroma.gui.GameEndState;
-import io.github.projectchroma.chroma.gui.KeybindsMenuState;
-import io.github.projectchroma.chroma.gui.LevelSelectState;
-import io.github.projectchroma.chroma.gui.MainMenuState;
-import io.github.projectchroma.chroma.gui.SettingsMenuState;
-import io.github.projectchroma.chroma.level.LevelState;
-import io.github.projectchroma.chroma.level.PausedState;
 import io.github.projectchroma.chroma.level.block.BlackBlock;
 import io.github.projectchroma.chroma.level.block.WhiteBlock;
 import io.github.projectchroma.chroma.modules.ModuleLoader;
@@ -52,18 +44,7 @@ public class Chroma extends StateBasedGame{
 		javaFont = Resources.loadFont("mysteron.ttf");
 	}
 	
-	@Override
-	public void initStatesList(GameContainer container) throws SlickException{
-		addState(new MainMenuState());
-		addState(new LevelSelectState());
-		addState(new SettingsMenuState());
-		addState(new KeybindsMenuState());
-		addState(new CreditsState());
-		for(int i = 1; i <= NUM_LEVELS; i++)
-			addState(new LevelState(i));
-		addState(PausedState.instance);
-		addState(new GameEndState(NUM_LEVELS + 1));//Add game end after all levels
-	}
+	@Override public void initStatesList(GameContainer container) throws SlickException{}//Done by ChromaModule
 	@Override
 	public void addState(GameState state){
 		if(getState(state.getID()) != null)//State with that ID already exists

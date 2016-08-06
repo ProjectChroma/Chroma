@@ -15,13 +15,12 @@ import io.github.projectchroma.chroma.level.block.GoalBlock;
 import io.github.projectchroma.chroma.util.Direction;
 
 public class GameEndState extends GUIState{
-	public GameEndState(int id){
-		super(id);
-	}
+	public static final GameEndState instance = new GameEndState();
+	private GameEndState(){}
 	@Override
 	public void initialize(GameContainer container, final StateBasedGame game) throws SlickException{
 		super.initialize(container, game);
-		add(new BackButton(MainMenuState.ID, Direction.LEFT, "Back to Menu", GoalBlock.COLOR));
+		add(new BackButton(MainMenuState.instance.getID(), Direction.LEFT, "Back to Menu", GoalBlock.COLOR));
 	}
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException{

@@ -1,7 +1,9 @@
 package io.github.projectchroma.chroma.level;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
@@ -26,15 +28,19 @@ import io.github.projectchroma.chroma.level.block.Blocks;
 import io.github.projectchroma.chroma.level.entity.Entities;
 import io.github.projectchroma.chroma.level.entity.Entity;
 import io.github.projectchroma.chroma.level.entity.Player;
+import io.github.projectchroma.chroma.modules.ModuleContext;
+import io.github.projectchroma.chroma.modules.ModuleLoader;
 import io.github.projectchroma.chroma.settings.Keybind;
 import io.github.projectchroma.chroma.util.Colors;
 
 public class LevelState extends BaseGameState{
+	private static final Map<ModuleContext, List<LevelState>> levels = new HashMap<>();
 	private static Font nameFont;
 	private static Sound soundSwitch;
 	private static Keybind keyPause, keySwitch;
 	
-	private String name;
+	private ModuleContext module;
+	private String path, name;
 	private boolean allowSwitching;
 	private Player player;
 	private List<LevelElement> elements = new ArrayList<>();
@@ -42,7 +48,12 @@ public class LevelState extends BaseGameState{
 	private int scheme = 0;
 	private int width, height;
 	private Rectangle camera;
-	public LevelState(int id){super(id);}
+	public LevelState(int number){this(Resources.LEVEL_PATH + "level" + number + ".json");}
+	public LevelState(String path){
+		this.module = ModuleLoader.instance().getActiveModule();
+		this.path = path;
+		levels.computeIfAbsent(module, (ctx) -> new ArrayList<>()).add(this);
+	}
 	@Override
 	public void initialize(GameContainer container, StateBasedGame game) throws SlickException{
 		super.initialize(container, game);
@@ -51,7 +62,7 @@ public class LevelState extends BaseGameState{
 		if(keyPause == null) keyPause = Keybind.get("level.pause", Input.KEY_P);
 		if(keySwitch == null) keySwitch = Keybind.get("player.switch", Input.KEY_UP);
 		
-		LevelObject level = Resources.loadLevel(id);
+		LevelObject level = Resources.loadLevel(path);
 		name = level.name;
 		allowSwitching = level.player.allowSwitching;
 		width = level.width;
@@ -111,7 +122,7 @@ public class LevelState extends BaseGameState{
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException{
 		super.update(container, game, delta);
-		if(keyPause.isPressed()) game.enterState(PausedState.ID, null, new PausedState.Enter());
+		if(keyPause.isPressed()) game.enterState(PausedState.instance.getID(), null, new PausedState.Enter());
 		for(LevelElement element : elements)
 			if(element instanceof Entity && element.isTangible(this)) ((Entity)element).setKinematics(container, this);
 		for(LevelElement element : elements)
@@ -154,5 +165,9 @@ public class LevelState extends BaseGameState{
 		Color bg = background();
 		float avg = (bg.r + bg.g + bg.b) / 3;
 		return avg > 0.5 ? Color.black : Color.white;//If the average RGB value is greater than 0.5, this is a bright background, so use a dark foreground.
+	}
+	public ModuleContext getDeclaringModule(){return module;}
+	public static List<LevelState> getLevels(ModuleContext module){
+		return levels.get(module);
 	}
 }

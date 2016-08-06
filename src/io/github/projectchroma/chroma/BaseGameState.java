@@ -15,9 +15,10 @@ import io.github.projectchroma.chroma.util.FileIO;
 
 public abstract class BaseGameState implements GameState{
 	protected static Keybind keyScreenshot, keyVidcap;
+	private static int idCounter = 0;
 	protected final int id;
-	protected BaseGameState(int id){
-		this.id = id;
+	protected BaseGameState(){
+		this.id = idCounter++;
 	}
 	@Override
 	public int getID(){

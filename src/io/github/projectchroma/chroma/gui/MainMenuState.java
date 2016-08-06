@@ -9,8 +9,8 @@ import io.github.projectchroma.chroma.Chroma;
 import io.github.projectchroma.chroma.Resources;
 import io.github.projectchroma.chroma.SwipeTransition;
 import io.github.projectchroma.chroma.gui.util.BackButton;
-import io.github.projectchroma.chroma.gui.util.Button;
 import io.github.projectchroma.chroma.gui.util.BasicGrid;
+import io.github.projectchroma.chroma.gui.util.Button;
 import io.github.projectchroma.chroma.gui.util.GUIState;
 import io.github.projectchroma.chroma.gui.util.RenderedImage;
 import io.github.projectchroma.chroma.gui.util.RenderedText;
@@ -20,10 +20,8 @@ import io.github.projectchroma.chroma.level.block.SlowBlock;
 import io.github.projectchroma.chroma.util.Direction;
 
 public class MainMenuState extends GUIState{
-	public static final int ID = 0;
-	public MainMenuState(){
-		super(ID);
-	}
+	public static final MainMenuState instance = new MainMenuState();
+	private MainMenuState(){}
 	@Override
 	public void initialize(final GameContainer container, final StateBasedGame game) throws SlickException{
 		super.initialize(container, game);
@@ -39,17 +37,17 @@ public class MainMenuState extends GUIState{
 		add(grid);
 		grid.add(new Button(grid.area(4, BasicGrid.FULL_WIDTH), "Play", GoalBlock.COLOR.darker()){
 			public void onclick(){
-				game.enterState(LevelSelectState.instance().getID(), null, new SwipeTransition(Direction.RIGHT));
+				game.enterState(LevelSelectState.instance.getID(), null, new SwipeTransition(Direction.RIGHT));
 			}
 		});
 		grid.add(new Button(grid.area(5, BasicGrid.FULL_WIDTH), "Settings", SlowBlock.COLOR.darker()){
 			public void onclick(){
-				game.enterState(SettingsMenuState.ID, null, new SwipeTransition(Direction.LEFT));
+				game.enterState(SettingsMenuState.instance.getID(), null, new SwipeTransition(Direction.LEFT));
 			}
 		});
 		grid.add(new Button(grid.area(6, BasicGrid.FULL_WIDTH), "Credits", PushBlock.COLOR.darker()){
 			public void onclick(){
-				game.enterState(CreditsState.ID, null, new SwipeTransition(Direction.DOWN));
+				game.enterState(CreditsState.instance.getID(), null, new SwipeTransition(Direction.DOWN));
 			}
 		});
 		grid.add(new BackButton(0, null, "Exit"){

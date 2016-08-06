@@ -12,8 +12,8 @@ import org.newdawn.slick.state.StateBasedGame;
 import io.github.projectchroma.chroma.Chroma;
 import io.github.projectchroma.chroma.SwipeTransition;
 import io.github.projectchroma.chroma.gui.util.BackButton;
-import io.github.projectchroma.chroma.gui.util.Button;
 import io.github.projectchroma.chroma.gui.util.BasicGrid;
+import io.github.projectchroma.chroma.gui.util.Button;
 import io.github.projectchroma.chroma.gui.util.GUIState;
 import io.github.projectchroma.chroma.gui.util.RenderedText;
 import io.github.projectchroma.chroma.level.block.PullBlock;
@@ -24,13 +24,11 @@ import io.github.projectchroma.chroma.settings.Settings;
 import io.github.projectchroma.chroma.util.Direction;
 
 public class SettingsMenuState extends GUIState{
-	public static final int ID = -2;
+	public static final SettingsMenuState instance = new SettingsMenuState();
 	private static Font textFont;
 	
 	private KeybindButton activeKeybind = null;
-	public SettingsMenuState(){
-		super(ID);
-	}
+	private SettingsMenuState(){}
 	@Override
 	public void initialize(GameContainer container, final StateBasedGame game) throws SlickException{
 		super.initialize(container, game);
@@ -54,11 +52,11 @@ public class SettingsMenuState extends GUIState{
 			
 		grid.add(new Button(grid.area(7, BasicGrid.FULL_WIDTH), "Controls", SpeedBlock.COLOR.darker()){
 			public void onclick(){
-				game.enterState(KeybindsMenuState.instance().getID(), null, new SwipeTransition(Direction.DOWN));
+				game.enterState(KeybindsMenuState.instance.getID(), null, new SwipeTransition(Direction.DOWN));
 			}
 		});
 		
-		grid.add(new BackButton(MainMenuState.ID, Direction.RIGHT));
+		grid.add(new BackButton(MainMenuState.instance.getID(), Direction.RIGHT));
 	}
 	@Override
 	public void leave(GameContainer container, StateBasedGame game) throws SlickException{
