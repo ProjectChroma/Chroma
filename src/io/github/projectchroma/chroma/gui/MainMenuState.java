@@ -25,7 +25,7 @@ public class MainMenuState extends GUIState{
 	@Override
 	public void initialize(final GameContainer container, final StateBasedGame game) throws SlickException{
 		super.initialize(container, game);
-		RenderedImage logo = new RenderedImage(Resources.loadImage("logo.png"), 0, 100, 100, 100);
+		RenderedImage logo = new RenderedImage(Resources.loadImage(Resources.getTexturePath("logo.png")), 0, 100, 100, 100);
 		RenderedText title = new RenderedText("Chroma", Chroma.instance().createFont(50F), 100, 100, Color.black);
 		float totalWidth = logo.getWidth() + 20 + title.getWidth();
 		logo.setLeft((Chroma.WINDOW_WIDTH - totalWidth)/2);

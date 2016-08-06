@@ -25,7 +25,7 @@ public class HazardBlock extends Block{
 	}
 	@Override
 	public void init(GameContainer container) throws SlickException{
-		if(deathSound == null) deathSound = Resources.loadSound("death.aif");
+		if(deathSound == null) deathSound = Resources.loadSound(Resources.getSoundPath("death.aif"));
 	}
 	@Override
 	public void onContact(GameContainer container, LevelState level, Entity entity){

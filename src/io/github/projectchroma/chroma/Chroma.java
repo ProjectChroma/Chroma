@@ -41,7 +41,7 @@ public class Chroma extends StateBasedGame{
 	
 	private Chroma() throws SlickException{
 		super("Chroma");
-		javaFont = Resources.loadFont("mysteron.ttf");
+		javaFont = Resources.loadFont(Resources.getFontPath("mysteron.ttf"));
 	}
 	
 	@Override public void initStatesList(GameContainer container) throws SlickException{}//Done by ChromaModule

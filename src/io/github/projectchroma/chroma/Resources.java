@@ -19,46 +19,39 @@ import io.github.projectchroma.chroma.level.LevelObject;
 
 public class Resources {
 	public static final Gson gson = new Gson();
-	public static final String ASSET_PATH = "assets/", TEXTURE_PATH = ASSET_PATH + "textures/", FONT_PATH = ASSET_PATH + "fonts/", SOUND_PATH = ASSET_PATH + "sounds/",
-			LEVEL_PATH = "levels/";
-	public static String getFontPath(String name){
-		return FONT_PATH + name;
-	}
-	public static Font loadFont(String name) throws SlickException{
+	public static final String ASSET_PATH = "assets/", TEXTURE_PATH = ASSET_PATH + "textures/", FONT_PATH = ASSET_PATH + "fonts/", SOUND_PATH = ASSET_PATH + "sounds/", LEVEL_PATH = "levels/";
+	public static String getFontPath(String name){return FONT_PATH + name;}
+	public static Font loadFont(String path) throws SlickException{
 		try{
-			return Font.createFont(Font.TRUETYPE_FONT, ResourceLoader.getResourceAsStream(getFontPath(name)));
+			return Font.createFont(Font.TRUETYPE_FONT, ResourceLoader.getResourceAsStream(path));
 		}catch(IOException | FontFormatException ex){
-			throw new SlickException("Error loading font " + name, ex);
+			throw new SlickException("Error loading font " + path, ex);
 		}
 	}
-	public static String getTexturePath(String name){
-		return TEXTURE_PATH + name;
-	}
-	public static Texture loadTexture(String name) throws SlickException{
+	public static String getTexturePath(String name){return TEXTURE_PATH + name;}
+	public static Texture loadTexture(String path) throws SlickException{
 		String format;
-		if(name.contains(".")) format = name.substring(name.lastIndexOf('.')+1).toUpperCase();
+		if(path.contains(".")) format = path.substring(path.lastIndexOf('.')+1).toUpperCase();
 		else format = "PNG";
-		return loadTexture(name, format);
+		return loadTexture(path, format);
 	}
-	public static Texture loadTexture(String name, String format) throws SlickException{
+	public static Texture loadTexture(String path, String format) throws SlickException{
 		try{
-			return TextureLoader.getTexture(format, ResourceLoader.getResourceAsStream(getTexturePath(name)));
-		}catch(IOException ex){throw new SlickException("Error reading texture " + name + '@' + format, ex);}
+			return TextureLoader.getTexture(format, ResourceLoader.getResourceAsStream(path));
+		}catch(IOException ex){throw new SlickException("Error reading texture " + path + '@' + format, ex);}
 	}
 	public static Image loadImage(String name) throws SlickException{
 		return new Image(loadTexture(name));
 	}
-	public static String getSoundPath(String name){
-		return SOUND_PATH + name;
+	public static String getSoundPath(String name){return SOUND_PATH + name;}
+	public static Music loadMusic(String path) throws SlickException{
+		return new Music(ResourceLoader.getResourceAsStream(path), path);
 	}
-	public static Music loadMusic(String name) throws SlickException{
-		return new Music(ResourceLoader.getResourceAsStream(getSoundPath(name)), getSoundPath(name));
+	public static Sound loadSound(String path) throws SlickException{
+		return new Sound(path);
 	}
 	
 	public static LevelObject loadLevel(String path){
 		return gson.fromJson(new InputStreamReader(ResourceLoader.getResourceAsStream(path)), LevelObject.class);
-	}
-	public static Sound loadSound(String name) throws SlickException{
-		return new Sound(getSoundPath(name));
 	}
 }

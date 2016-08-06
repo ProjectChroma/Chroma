@@ -6,8 +6,8 @@ import org.newdawn.slick.SlickException;
 public class Sounds{
 	private static Music menuMusic, levelMusic;
 	public static void init() throws SlickException{
-		menuMusic = Resources.loadMusic("menuMusic.aiff");
-		levelMusic = Resources.loadMusic("levelMusic.aiff");
+		menuMusic = Resources.loadMusic(Resources.getSoundPath("menuMusic.aiff"));
+		levelMusic = Resources.loadMusic(Resources.getSoundPath("levelMusic.aiff"));
 	}
 	public static Music getMenuMusic(){
 		return menuMusic;

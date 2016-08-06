@@ -58,7 +58,7 @@ public class LevelState extends BaseGameState{
 	public void initialize(GameContainer container, StateBasedGame game) throws SlickException{
 		super.initialize(container, game);
 		if(nameFont == null) nameFont = Chroma.instance().createFont(30F);
-		if(soundSwitch == null) soundSwitch = Resources.loadSound("switch.aif");
+		if(soundSwitch == null) soundSwitch = Resources.loadSound(Resources.getSoundPath("switch.aif"));
 		if(keyPause == null) keyPause = Keybind.get("level.pause", Input.KEY_P);
 		if(keySwitch == null) keySwitch = Keybind.get("player.switch", Input.KEY_UP);
 		
