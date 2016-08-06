@@ -11,6 +11,7 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
+import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.StateBasedGame;
 
 import io.github.projectchroma.chroma.BaseGameState;
@@ -39,9 +40,9 @@ public class LevelState extends BaseGameState{
 	private List<LevelElement> elements = new ArrayList<>();
 	private Color[] schemes;
 	private int scheme = 0;
-	public LevelState(int id){
-		super(id);
-	}
+	private int width, height;
+	private Rectangle camera;
+	public LevelState(int id){super(id);}
 	@Override
 	public void initialize(GameContainer container, StateBasedGame game) throws SlickException{
 		super.initialize(container, game);
@@ -53,10 +54,13 @@ public class LevelState extends BaseGameState{
 		LevelObject level = Resources.loadLevel(id);
 		name = level.name;
 		allowSwitching = level.player.allowSwitching;
+		width = level.width;
+		height = level.height;
+		camera = new Rectangle(0, 0, level.camera.width, level.camera.height);
 		
-		elements.add(Blocks.createBlock(0, Chroma.WINDOW_HEIGHT - Block.WALL_WIDTH, Chroma.WINDOW_WIDTH, Block.WALL_WIDTH, null, null));//Floor
-		elements.add(Blocks.createBlock(0, 0, Block.WALL_WIDTH, Chroma.WINDOW_HEIGHT, null, null));//Left wall
-		elements.add(Blocks.createBlock(Chroma.WINDOW_WIDTH - Block.WALL_WIDTH, 0, Block.WALL_WIDTH, Chroma.WINDOW_HEIGHT, null, null));//Right wall
+		elements.add(Blocks.createBlock(0, level.height - Block.WALL_WIDTH, level.width, Block.WALL_WIDTH, null, null));//Floor
+		elements.add(Blocks.createBlock(0, 0, Block.WALL_WIDTH, level.height, null, null));//Left wall
+		elements.add(Blocks.createBlock(level.width - Block.WALL_WIDTH, 0, Block.WALL_WIDTH, level.height, null, null));//Right wall
 		for(BlockObject block : level.blocks)
 			elements.add(Blocks.createBlock(block));
 		for(HintObject hint : level.hints)
@@ -74,14 +78,30 @@ public class LevelState extends BaseGameState{
 	}
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException{
+		camera.setCenterX(player.getCenterX());
+		if(camera.getMinX() < 0) camera.setCenterX(camera.getCenterX() - camera.getMinX());
+		if(camera.getMaxX() > width) camera.setCenterX(camera.getCenterX() + width - camera.getMaxX());
+		camera.setCenterY(player.getCenterY());
+		if(camera.getMinY() < 0) camera.setCenterY(camera.getCenterY() - camera.getMinY());
+		if(camera.getMaxY() > height) camera.setCenterY(camera.getCenterY() + height - camera.getMaxY());
+		
+		
+		float scaleX = Chroma.WINDOW_WIDTH / camera.getWidth(), scaleY = Chroma.WINDOW_HEIGHT / camera.getHeight();
+		g.scale(scaleX, scaleY);
+		g.translate(-camera.getMinX(), -camera.getMinY());
+		
 		g.setColor(background());
-		g.fillRect(0, 0, Chroma.WINDOW_WIDTH, Chroma.WINDOW_HEIGHT);//Draw background
+		g.fillRect(0, 0, width, height);//Draw background
 		for(LevelElement element : elements){
 			if(!element.getColor(this).equals(background())) element.render(container, this, g);
 		}
 		g.setColor(foreground());
 		g.setFont(nameFont);
 		g.drawString(name, Block.WALL_WIDTH, 0);
+		
+		g.translate(camera.getMinX(), camera.getMinY());
+		g.scale(1 / scaleX, 1 / scaleY);
+		
 		if(Chroma.isDebugMode()){
 			Input input = container.getInput();
 			String mouse = input.getMouseX() + "," + input.getMouseY();
@@ -121,27 +141,15 @@ public class LevelState extends BaseGameState{
 		return Sounds.getLevelMusic();
 	}
 	
-	public String name(){
-		return name;
-	}
-	public List<LevelElement> elements(){
-		return elements;
-	}
-	public Player player(){
-		return player;
-	}
-	public void setScheme(int scheme){
-		this.scheme = scheme % schemes.length;
-	}
-	public int getScheme(){
-		return scheme;
-	}
-	public void cycleScheme(){
-		setScheme(scheme + 1);
-	}
-	public Color background(){
-		return schemes[scheme];
-	}
+	public String name(){return name;}
+	public int width(){return width;}
+	public int height(){return height;}
+	public List<LevelElement> elements(){return elements;}
+	public Player player(){return player;}
+	public void setScheme(int scheme){this.scheme = scheme % schemes.length;}
+	public int getScheme(){return scheme;}
+	public void cycleScheme(){setScheme(scheme + 1);}
+	public Color background(){return schemes[scheme];}
 	public Color foreground(){
 		Color bg = background();
 		float avg = (bg.r + bg.g + bg.b) / 3;

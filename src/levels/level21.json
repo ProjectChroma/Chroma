@@ -1,0 +1,52 @@
+{
+	"name": "Up Close And Personal",
+	"player": {
+		"x": 50,
+		"y": 250
+	},
+	"width": 1600,
+	"height": 1200,
+	"camera": {
+		"width": 720,
+		"height": 540
+	},
+	"blocks": [
+		{"x": 800, "y": 0, "width": 15, "height": 1100},
+		{"x": 15, "y": 300, "width": 685, "height": 15, "color": "orange", "props": {"speed": 3}},
+		{"x": 115, "y": 400, "width": 685, "height": 15, "color": "orange", "props": {"speed": 3}},
+		{"x": 15, "y": 500, "width": 685, "height": 15, "color": "orange", "props": {"speed": 3}},
+		{"x": 115, "y": 600, "width": 685, "height": 15, "color": "orange", "props": {"speed": 3}},
+		{"x": 15, "y": 700, "width": 685, "height": 15, "color": "orange", "props": {"speed": 3}},
+		{"x": 115, "y": 800, "width": 685, "height": 15, "color": "orange", "props": {"speed": 3}},
+		{"x": 15, "y": 900, "width": 685, "height": 15, "color": "orange", "props": {"speed": 3}},
+		{"x": 115, "y": 1000, "width": 685, "height": 15, "color": "orange", "props": {"speed": 3}},
+		{"x": 15, "y": 1100, "width": 685, "height": 85, "color": "orange", "props": {"speed": 3}},
+		
+		{"x": 905, "y": 115, "width": 15, "height": 1070},
+		{"x": 815, "y": 1085, "width": 20, "height": 15},
+		{"x": 885, "y": 985, "width": 20, "height": 15},
+		{"x": 815, "y": 885, "width": 20, "height": 15},
+		{"x": 885, "y": 785, "width": 20, "height": 15},
+		{"x": 815, "y": 685, "width": 20, "height": 15},
+		{"x": 885, "y": 585, "width": 20, "height": 15},
+		{"x": 815, "y": 485, "width": 20, "height": 15},
+		{"x": 885, "y": 385, "width": 20, "height": 15},
+		{"x": 815, "y": 285, "width": 20, "height": 15},
+		{"x": 885, "y": 185, "width": 20, "height": 15},
+		
+		{"x": 815, "y": 0, "width": 795, "height": 15},
+		{"x": 1535, "y": 0, "width": 50, "height": 50},
+		{"x": 920, "y": 115, "width": 580, "height": 15, "color": "green", "scheme": "white"},
+		{"x": 920, "y": 115, "width": 580, "height": 15, "color": "purple", "scheme": "black"},
+		{"x": 1500, "y": 205, "width": 100, "height": 980},
+		{"x": 1410, "y": 130, "width": 15, "height": 980},
+		{"x": 1320, "y": 205, "width": 15, "height": 980},
+		{"x": 1220, "y": 130, "width": 15, "height": 980},
+		{"x": 1120, "y": 205, "width": 15, "height": 980},
+		{"x": 1020, "y": 130, "width": 15, "height": 980},
+		{"x": 920, "y": 130, "width": 100, "height": 15, "color": "gold"}
+	],
+	"hints": [
+		{"x": 150, "y": 100, "text": "This level is larger than usual\n\tand has a tighter camera"}
+	]
+}

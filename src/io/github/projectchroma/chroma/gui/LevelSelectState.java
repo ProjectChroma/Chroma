@@ -92,9 +92,9 @@ public class LevelSelectState extends GUIState{
 				g.setColor(new Color(0.5F, 0.5F, 0.5F, 0.2F));
 				g.fillRect(0, 0, ICON_SIZE, ICON_SIZE);
 			}
-			g.scale(ICON_SIZE / Chroma.WINDOW_WIDTH, ICON_SIZE / Chroma.WINDOW_HEIGHT);//(800, 600) is now (100, 100)
+			g.scale(ICON_SIZE / level.width(), ICON_SIZE / level.height());//(800, 600) is now (100, 100)
 			for(Block block : blocks) block.render(container, level, g);
-			g.scale(Chroma.WINDOW_WIDTH / ICON_SIZE, Chroma.WINDOW_HEIGHT / ICON_SIZE);//Undo scale down
+			g.scale(level.width() / ICON_SIZE, level.height() / ICON_SIZE);//Undo scale down
 			g.translate(-x, -y);//Undo translate
 		}
 		@Override

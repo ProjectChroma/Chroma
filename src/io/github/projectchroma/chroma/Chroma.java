@@ -39,7 +39,7 @@ public class Chroma extends StateBasedGame{
 	 * </ul>
 	 */
 	private static boolean debug = false;
-	public static final int WINDOW_WIDTH = 800, WINDOW_HEIGHT = 600, NUM_LEVELS = 20, FPS = 100;
+	public static final int WINDOW_WIDTH = 800, WINDOW_HEIGHT = 600, NUM_LEVELS = 21, FPS = 100;
 	private static Chroma instance;
 	
 	private Font javaFont;
