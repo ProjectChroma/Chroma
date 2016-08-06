@@ -1,19 +1,24 @@
 #Eclipse stuff
-.classpath
-.project
-.settings
-bin/
+/.classpath
+/.project
+/.settings
+/bin/
 
 #Libraries
-lib/
+/lib/
 
 #Game data
-data/
-screenshots/
-screenshots*
+/data/
+/screenshots/
 
 #Random file storage
-misc/
+/misc/
 
 #Exported libraries
-Chroma_lib/
+/Chroma_lib/
+
+#Source for testing-environment modules
+/moduleSrc/
+
+#Compiled modules/
+/modules/

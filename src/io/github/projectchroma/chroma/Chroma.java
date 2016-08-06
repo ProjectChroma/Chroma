@@ -23,6 +23,7 @@ import io.github.projectchroma.chroma.level.LevelState;
 import io.github.projectchroma.chroma.level.PausedState;
 import io.github.projectchroma.chroma.level.block.BlackBlock;
 import io.github.projectchroma.chroma.level.block.WhiteBlock;
+import io.github.projectchroma.chroma.modules.ModuleLoader;
 import io.github.projectchroma.chroma.settings.Analytics;
 import io.github.projectchroma.chroma.settings.Keybind;
 import io.github.projectchroma.chroma.settings.Settings;
@@ -117,6 +118,16 @@ public class Chroma extends StateBasedGame{
 			app.setIcons(new String[]{Resources.getTexturePath("icon32.png"), Resources.getTexturePath("icon16.png")});
 			app.setForceExit(true);//Call System.exit(0) when game is closed
 			Settings.update(app);
+			
+			ModuleLoader modules = ModuleLoader.instance();
+			System.out.println("Creating modules");
+			modules.createModules();
+			System.out.println("Instantiating modules");
+			modules.instantiateModules();
+			System.out.println("Loading modules");
+			modules.loadModules();
+			System.out.println("Loaded " + modules.getValidModuleCount() + " of " + modules.getModuleCount() + " modules");
+			
 			System.out.println("Starting game at " + fps + "FPS");
 			app.start();
 		}catch(SlickException ex){
