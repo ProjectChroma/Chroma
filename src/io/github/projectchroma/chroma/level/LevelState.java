@@ -82,6 +82,11 @@ public class LevelState extends BaseGameState{
 		g.setColor(foreground());
 		g.setFont(nameFont);
 		g.drawString(name, Block.WALL_WIDTH, 0);
+		if(Chroma.isDebugMode()){
+			Input input = container.getInput();
+			String mouse = input.getMouseX() + "," + input.getMouseY();
+			g.drawString(mouse, Chroma.WINDOW_WIDTH - Block.WALL_WIDTH - g.getFont().getWidth(mouse) - 5, 0);
+		}
 	}
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException{

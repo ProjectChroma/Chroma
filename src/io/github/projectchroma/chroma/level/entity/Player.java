@@ -22,7 +22,7 @@ public class Player extends Entity{
 	/**Sound effects*/
 	private static Sound jump, win, death;
 	/**Keys*/
-	private static Keybind keyLeft, keyRight, keyJump;
+	private static Keybind keyLeft, keyRight, keyJump, keyDismount;
 	
 	/**Color to render the player, regardless of scheme (null uses scheme color)*/
 	private Color renderCol = null;
@@ -40,6 +40,7 @@ public class Player extends Entity{
 		if(keyLeft == null) keyLeft = Keybind.get("player.left", Input.KEY_LEFT);
 		if(keyRight == null) keyRight = Keybind.get("player.right", Input.KEY_RIGHT);
 		if(keyJump == null) keyJump = Keybind.get("player.up", Input.KEY_SPACE);
+		if(keyDismount == null) keyDismount = Keybind.get("player.dismount", Input.KEY_RSHIFT);
 	}
 	
 	@Override
@@ -52,6 +53,7 @@ public class Player extends Entity{
 			v.y = steed == null ? V_JUMP : steed.getJumpVelocity();
 			jump.play();
 		}
+		if(keyDismount.isPressed() && steed != null) dismount();
 	}
 	
 	public void render(GameContainer container, LevelState level, Graphics g) throws SlickException{

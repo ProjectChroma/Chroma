@@ -10,7 +10,8 @@ import io.github.projectchroma.chroma.level.LevelObject.EntityObject;
 public class Entities{
 	private static final Map<String, Class<? extends Entity>> classByType = new HashMap<>();
 	static{
-		register(Llama.TYPE, Llama.class);
+		register(Triangle.TYPE, Triangle.class);
+		register(Circle.TYPE, Circle.class);
 	}
 	public static void register(String type, Class<? extends Entity> entityClass){
 		classByType.put(type, entityClass);

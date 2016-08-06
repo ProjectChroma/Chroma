@@ -1,17 +1,24 @@
 {
-	"name": "Help from Above",
+	"name": "Steeds",
 	"player": {
-		"x": 100,
-		"y": 300
+		"x": 50,
+		"y": 500
 	},
 	"blocks": [
-		{"x": 15, "y": 390, "width": 220, "height": 15},
-		{"x": 565, "y": 390, "width": 220, "height": 15},
-		
-		{"x": 215, "y": 60, "width": 370, "height": 15, "color": "gray"},
-		{"x": 770, "y": 290, "width": 15, "height": 100, "color": "gold"}
+		{"x": 15, "y": 445, "width": 670, "height": 15},
+		{"x": 645, "y": 115, "width": 15, "height": 330},
+		{"x": 760, "y": 270, "width": 25, "height": 15},
+		{"x": 80, "y": 115, "width": 580, "height": 15},
+		{"x": 630, "y": 130, "width": 15, "height": 315, "color": "gold"}
 	],
 	"hints": [
-		{"x": 50, "y": 250, "text": "Gray blocks will fall when you walk under them\nand stop when they land"}
+		{"x": 25, "y": 470, "text": "Walk up to any steed to ride it"},
+		{"x": 25, "y": 495, "text": "Circles make you move faster"},
+		{"x": 350, "y": 470, "text": "{keybind:player.dismount} to dismount"},
+		{"x": 485, "y": 495, "text": "Triangles make you jump higher"}
+	],
+	"entities": [
+		{"x": 200, "y": 500, "type": "circle"},
+		{"x": 630, "y": 500, "type": "triangle"}
 	]
 }

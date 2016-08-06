@@ -106,12 +106,7 @@ public abstract class Entity extends LevelElement{
 		hitboxes[RIGHT.ordinal()] = fromCenter(getCenterX() + (getWidth()+v.x)/2, getCenterY(), v.x, getHeight()-2);
 	}
 	public void onContact(GameContainer container, LevelState level, Entity entity) throws SlickException{
-		if(entity instanceof Steed && steed == null){
-			this.steed = (Steed)entity;
-			this.steed.rider = this;
-			this.setCenterX(steed.getCenterX());
-			this.setBottom(steed.getCenterY());
-		}
+		if(entity instanceof Steed && steed == null) mount((Steed)entity);
 	}
 	public void resetPosition(){
 		moveTo(startX, startY);
@@ -120,5 +115,21 @@ public abstract class Entity extends LevelElement{
 		setLeft(x);
 		setTop(y);
 	}
-	public Entity getSteed(){return steed;}
+	public void mount(Steed steed){
+		if(!canRide(steed) || !steed.canBeRidden(this)) return;
+		if(this.steed != null) dismount();//Backup in case a subclass overrides canRide to ignore current steed
+		this.steed = steed;
+		this.steed.rider = this;
+		this.setCenterX(steed.getCenterX());
+		this.setBottom(steed.getCenterY());
+	}
+	public boolean canRide(Steed steed){return this.steed == null;}
+	public void dismount(){
+		if(steed == null) return;
+		setBottom(steed.getTop());
+		steed.onDismount();
+		steed.rider = null;
+		steed = null;
+	}
+	public Steed getSteed(){return steed;}
 }
