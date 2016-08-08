@@ -1,6 +1,7 @@
 package io.github.projectchroma.chroma;
 
 import java.awt.Font;
+import java.io.File;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,6 +13,8 @@ import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.Transition;
+import org.newdawn.slick.util.FileSystemLocation;
+import org.newdawn.slick.util.ResourceLoader;
 
 import io.github.projectchroma.chroma.level.block.BlackBlock;
 import io.github.projectchroma.chroma.level.block.WhiteBlock;
@@ -88,10 +91,10 @@ public class Chroma extends StateBasedGame{
 		}
 		try{
 			instance = new Chroma();
+			ResourceLoader.addResourceLocation(new FileSystemLocation(new File("resources")));
 			FileIO.init();
 			Settings.read();
 			Keybind.read();
-			Sounds.init();
 			Analytics.init();
 			ChromaContainer app = new ChromaContainer(instance);
 			app.setTargetFrameRate(fps);

@@ -25,9 +25,7 @@ public abstract class BaseGameState implements GameState{
 		return id;
 	}
 	
-	protected Music getMusic(){
-		return Sounds.getMenuMusic();
-	}
+	protected abstract Music getMusic();
 	
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException{

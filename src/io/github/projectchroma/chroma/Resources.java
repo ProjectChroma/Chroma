@@ -45,7 +45,9 @@ public class Resources {
 	}
 	public static String getSoundPath(String name){return SOUND_PATH + name;}
 	public static Music loadMusic(String path) throws SlickException{
-		return new Music(ResourceLoader.getResourceAsStream(path), path);
+		Music music = new Music(ResourceLoader.getResourceAsStream(path), path);
+		Sounds.registerMusic(music);
+		return music;
 	}
 	public static Sound loadSound(String path) throws SlickException{
 		return new Sound(path);

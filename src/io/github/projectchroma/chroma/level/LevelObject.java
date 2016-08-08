@@ -10,12 +10,14 @@ import io.github.projectchroma.chroma.Chroma;
 public class LevelObject{
 	public String name;
 	public int width = Chroma.WINDOW_WIDTH, height = Chroma.WINDOW_HEIGHT;
+	public String levelClass = LevelState.class.getName();
 	public List<String> schemes = Arrays.asList("white", "black");//Default to alternating schemes, starting with white
 	public Camera camera = new Camera();
 	public PlayerObject player;
 	public List<BlockObject> blocks;
 	public List<HintObject> hints = new ArrayList<>();//Initialize to empty list, to prevent null issues if the level has no hints
 	public List<EntityObject> entities = new ArrayList<>();
+	
 	private LevelObject(){}
 	public static class Camera{
 		public int width = Chroma.WINDOW_WIDTH, height = Chroma.WINDOW_HEIGHT;

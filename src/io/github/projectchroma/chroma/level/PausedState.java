@@ -14,7 +14,6 @@ import org.newdawn.slick.state.transition.Transition;
 
 import io.github.projectchroma.chroma.BaseGameState;
 import io.github.projectchroma.chroma.Chroma;
-import io.github.projectchroma.chroma.Sounds;
 import io.github.projectchroma.chroma.SwipeTransition;
 import io.github.projectchroma.chroma.gui.MainMenuState;
 import io.github.projectchroma.chroma.gui.util.Button;
@@ -159,8 +158,5 @@ public class PausedState extends BaseGameState{
 			newState = secondState;
 		}
 	}
-	@Override
-	protected Music getMusic(){
-		return Sounds.getLevelMusic();
-	}
+	@Override protected Music getMusic(){return level.getMusic();}
 }

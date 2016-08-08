@@ -1,5 +1,7 @@
 package io.github.projectchroma.chroma;
 
+import org.newdawn.slick.SlickException;
+
 import io.github.projectchroma.chroma.gui.CreditsState;
 import io.github.projectchroma.chroma.gui.GameEndState;
 import io.github.projectchroma.chroma.gui.KeybindsMenuState;
@@ -26,7 +28,14 @@ public class ChromaContext extends ModuleContext{
 			Chroma.instance().addState(SettingsMenuState.instance);
 			Chroma.instance().addState(KeybindsMenuState.instance);
 			Chroma.instance().addState(CreditsState.instance);
-			for(int i = 1; i <= Chroma.NUM_LEVELS; i++) Chroma.instance().addState(new LevelState(i));
+			for(int i = 1; i <= Chroma.NUM_LEVELS; i++){
+				try{
+					Chroma.instance().addState(LevelState.create(Resources.LEVEL_PATH + "level" + i + ".json"));
+				}catch(SlickException ex){
+					System.err.println("Error creating level " + i);
+					ex.printStackTrace();
+				}
+			}
 			Chroma.instance().addState(GameEndState.instance);
 			Chroma.instance().addState(PausedState.instance);
 		}

@@ -1,5 +1,7 @@
 package io.github.projectchroma.chroma.level;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +21,6 @@ import org.newdawn.slick.state.StateBasedGame;
 import io.github.projectchroma.chroma.BaseGameState;
 import io.github.projectchroma.chroma.Chroma;
 import io.github.projectchroma.chroma.Resources;
-import io.github.projectchroma.chroma.Sounds;
 import io.github.projectchroma.chroma.level.LevelObject.BlockObject;
 import io.github.projectchroma.chroma.level.LevelObject.EntityObject;
 import io.github.projectchroma.chroma.level.LevelObject.HintObject;
@@ -36,11 +37,13 @@ import io.github.projectchroma.chroma.util.Colors;
 public class LevelState extends BaseGameState{
 	private static final Map<ModuleContext, List<LevelState>> levels = new HashMap<>();
 	private static Font nameFont;
+	protected static Music music;
 	private static Sound soundSwitch;
 	private static Keybind keyPause, keySwitch;
 	
 	private ModuleContext module;
-	private String path, name;
+	private LevelObject data;
+	private String name;
 	private boolean allowSwitching;
 	private Player player;
 	private List<LevelElement> elements = new ArrayList<>();
@@ -48,42 +51,42 @@ public class LevelState extends BaseGameState{
 	private int scheme = 0;
 	private int width, height;
 	private Rectangle camera;
-	public LevelState(int number){this(Resources.LEVEL_PATH + "level" + number + ".json");}
-	public LevelState(String path){
+	protected LevelState(LevelObject data){
 		this.module = ModuleLoader.instance().getActiveModule();
-		this.path = path;
 		levels.computeIfAbsent(module, (ctx) -> new ArrayList<>()).add(this);
+		
+		this.data = data;
+		name = data.name;
+		allowSwitching = data.player.allowSwitching;
+		width = data.width;
+		height = data.height;
+		camera = new Rectangle(0, 0, data.camera.width, data.camera.height);
+		
+		schemes = new Color[data.schemes.size()];
+		for(int j = 0; j < schemes.length; ++j){
+			schemes[j] = Colors.byName(data.schemes.get(j));
+		}
 	}
 	@Override
 	public void initialize(GameContainer container, StateBasedGame game) throws SlickException{
 		super.initialize(container, game);
 		if(nameFont == null) nameFont = Chroma.instance().createFont(30F);
+		if(music == null) music = Resources.loadMusic(Resources.getSoundPath("levelMusic.aiff"));
 		if(soundSwitch == null) soundSwitch = Resources.loadSound(Resources.getSoundPath("switch.aif"));
 		if(keyPause == null) keyPause = Keybind.get("level.pause", Input.KEY_P);
 		if(keySwitch == null) keySwitch = Keybind.get("player.switch", Input.KEY_UP);
 		
-		LevelObject level = Resources.loadLevel(path);
-		name = level.name;
-		allowSwitching = level.player.allowSwitching;
-		width = level.width;
-		height = level.height;
-		camera = new Rectangle(0, 0, level.camera.width, level.camera.height);
-		
-		elements.add(Blocks.createBlock(0, level.height - Block.WALL_WIDTH, level.width, Block.WALL_WIDTH, null, null));//Floor
-		elements.add(Blocks.createBlock(0, 0, Block.WALL_WIDTH, level.height, null, null));//Left wall
-		elements.add(Blocks.createBlock(level.width - Block.WALL_WIDTH, 0, Block.WALL_WIDTH, level.height, null, null));//Right wall
-		for(BlockObject block : level.blocks)
+		elements.add(Blocks.createBlock(0, data.height - Block.WALL_WIDTH, data.width, Block.WALL_WIDTH, null, null));//Floor
+		elements.add(Blocks.createBlock(0, 0, Block.WALL_WIDTH, data.height, null, null));//Left wall
+		elements.add(Blocks.createBlock(data.width - Block.WALL_WIDTH, 0, Block.WALL_WIDTH, data.height, null, null));//Right wall
+		for(BlockObject block : data.blocks)
 			elements.add(Blocks.createBlock(block));
-		for(HintObject hint : level.hints)
+		for(HintObject hint : data.hints)
 			elements.add(new Hint(hint.text, hint.x, hint.y, Colors.byName(hint.color), Colors.byName(hint.scheme)));
-		elements.add(player = new Player(level.player));
-		for(EntityObject entity : level.entities)
+		elements.add(player = new Player(data.player));
+		for(EntityObject entity : data.entities)
 			elements.add(Entities.createEntity(entity));
 		
-		schemes = new Color[level.schemes.size()];
-		for(int j = 0; j < schemes.length; ++j){
-			schemes[j] = Colors.byName(level.schemes.get(j));
-		}
 		for(LevelElement element : elements)
 			element.init(container);
 	}
@@ -147,10 +150,7 @@ public class LevelState extends BaseGameState{
 		player.resetPosition();
 		setScheme(0);
 	}
-	@Override
-	protected Music getMusic(){
-		return Sounds.getLevelMusic();
-	}
+	@Override protected Music getMusic(){return music;}
 	
 	public String name(){return name;}
 	public int width(){return width;}
@@ -169,5 +169,28 @@ public class LevelState extends BaseGameState{
 	public ModuleContext getDeclaringModule(){return module;}
 	public static List<LevelState> getLevels(ModuleContext module){
 		return levels.get(module);
+	}
+	public static LevelState create(String path) throws SlickException{return create(Resources.loadLevel(path));}
+	@SuppressWarnings("unchecked")
+	public static LevelState create(LevelObject level) throws SlickException{
+		try{
+			Class<?> clazz = Class.forName(level.levelClass);
+			if(!LevelState.class.isAssignableFrom(clazz))
+				throw new SlickException(String.format("Level class %s for level %s (module %s) does not extend LevelState", level.levelClass, level.name, ModuleLoader.instance().getActiveModule().getID()));
+			Class<? extends LevelState> levelClass = (Class<? extends LevelState>)clazz;
+			Constructor<? extends LevelState> ctr = levelClass.getDeclaredConstructor(LevelObject.class);
+			ctr.setAccessible(true);
+			return ctr.newInstance(level);
+		}catch(ClassNotFoundException ex){
+			throw new SlickException(String.format("Level class %s for level %s (module %s) does not exist", level.levelClass, level.name, ModuleLoader.instance().getActiveModule().getID()), ex);
+		}catch(NoSuchMethodException ex){
+			throw new SlickException(String.format("Level class %s for level %s (module %s) does not have a 1-arg (LevelObject) constructor", level.levelClass, level.name, ModuleLoader.instance().getActiveModule().getID()), ex);
+		} catch (InstantiationException ex) {
+			throw new SlickException(String.format("Level class %s for level %s (module %s) is abstract", level.levelClass, level.name, ModuleLoader.instance().getActiveModule().getID()), ex);
+		} catch (IllegalAccessException ex) {
+			throw new SlickException(String.format("Level class %s for level %s (module %s) is private", level.levelClass, level.name, ModuleLoader.instance().getActiveModule().getID()), ex);
+		} catch (InvocationTargetException ex) {
+			throw new SlickException(String.format("Error constructing class %s for level %s (module %s)", level.levelClass, level.name, ModuleLoader.instance().getActiveModule().getID()), ex.getCause());
+		}
 	}
 }
