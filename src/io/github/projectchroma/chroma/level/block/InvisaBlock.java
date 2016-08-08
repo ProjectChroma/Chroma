@@ -3,9 +3,7 @@ package io.github.projectchroma.chroma.level.block;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.Sound;
 
-import io.github.projectchroma.chroma.Resources;
 import io.github.projectchroma.chroma.level.LevelObject.BlockObject;
 import io.github.projectchroma.chroma.level.LevelState;
 import io.github.projectchroma.chroma.level.entity.Entity;
@@ -13,7 +11,6 @@ import io.github.projectchroma.chroma.level.entity.Entity;
 public class InvisaBlock extends Block{
 	public static final String COLOR_NAME = "clear";
 	public static final Color COLOR = Color.transparent;
-	private static Sound deathSound;
 	private Block impl;
 	public InvisaBlock(BlockObject block) throws SlickException{
 		super(block, COLOR);
@@ -22,7 +19,6 @@ public class InvisaBlock extends Block{
 	}
 	@Override
 	public void init(GameContainer container) throws SlickException{
-		if(deathSound == null) deathSound = Resources.loadSound("death.aif");
 		impl.init(container);
 	}
 	@Override

@@ -1,6 +1,7 @@
 package io.github.projectchroma.chroma;
 
 import java.awt.Font;
+import java.io.File;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,17 +13,12 @@ import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.Transition;
+import org.newdawn.slick.util.FileSystemLocation;
+import org.newdawn.slick.util.ResourceLoader;
 
-import io.github.projectchroma.chroma.gui.CreditsState;
-import io.github.projectchroma.chroma.gui.GameEndState;
-import io.github.projectchroma.chroma.gui.KeybindsMenuState;
-import io.github.projectchroma.chroma.gui.LevelSelectState;
-import io.github.projectchroma.chroma.gui.MainMenuState;
-import io.github.projectchroma.chroma.gui.SettingsMenuState;
-import io.github.projectchroma.chroma.level.LevelState;
-import io.github.projectchroma.chroma.level.PausedState;
 import io.github.projectchroma.chroma.level.block.BlackBlock;
 import io.github.projectchroma.chroma.level.block.WhiteBlock;
+import io.github.projectchroma.chroma.modules.ModuleLoader;
 import io.github.projectchroma.chroma.settings.Analytics;
 import io.github.projectchroma.chroma.settings.Keybind;
 import io.github.projectchroma.chroma.settings.Settings;
@@ -48,21 +44,10 @@ public class Chroma extends StateBasedGame{
 	
 	private Chroma() throws SlickException{
 		super("Chroma");
-		javaFont = Resources.loadFont("mysteron.ttf");
+		javaFont = Resources.loadFont(Resources.getFontPath("mysteron.ttf"));
 	}
 	
-	@Override
-	public void initStatesList(GameContainer container) throws SlickException{
-		addState(new MainMenuState());
-		addState(new LevelSelectState());
-		addState(new SettingsMenuState());
-		addState(new KeybindsMenuState());
-		addState(new CreditsState());
-		for(int i = 1; i <= NUM_LEVELS; i++)
-			addState(new LevelState(i));
-		addState(PausedState.instance);
-		addState(new GameEndState(NUM_LEVELS + 1));//Add game end after all levels
-	}
+	@Override public void initStatesList(GameContainer container) throws SlickException{}//Done by ChromaModule
 	@Override
 	public void addState(GameState state){
 		if(getState(state.getID()) != null)//State with that ID already exists
@@ -106,17 +91,26 @@ public class Chroma extends StateBasedGame{
 		}
 		try{
 			instance = new Chroma();
+			ResourceLoader.addResourceLocation(new FileSystemLocation(new File("resources")));
 			FileIO.init();
 			Settings.read();
 			Keybind.read();
-			Sounds.init();
 			Analytics.init();
 			ChromaContainer app = new ChromaContainer(instance);
 			app.setTargetFrameRate(fps);
 			app.setShowFPS(false);//Hide FPS counter
 			app.setIcons(new String[]{Resources.getTexturePath("icon32.png"), Resources.getTexturePath("icon16.png")});
 			app.setForceExit(true);//Call System.exit(0) when game is closed
-			Settings.update(app);
+			
+			ModuleLoader modules = ModuleLoader.instance();
+			System.out.println("Creating modules");
+			modules.createModules();
+			System.out.println("Instantiating modules");
+			modules.instantiateModules();
+			System.out.println("Loading modules");
+			modules.loadModules();
+			System.out.println("Loaded " + modules.getValidModuleCount() + " of " + modules.getModuleCount() + " modules");
+			
 			System.out.println("Starting game at " + fps + "FPS");
 			app.start();
 		}catch(SlickException ex){

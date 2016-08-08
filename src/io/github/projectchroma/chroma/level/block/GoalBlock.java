@@ -28,13 +28,13 @@ public class GoalBlock extends Block{
 	}
 	@Override
 	public void init(GameContainer container) throws SlickException{
-		if(winSound == null) winSound = Resources.loadSound("win.aif");
+		if(winSound == null) winSound = Resources.loadSound(Resources.getSoundPath("win.aif"));
 	}
 	@Override
 	public void onContact(GameContainer container, LevelState level, Entity entity){
 		if(EntityUtils.isPlayer(entity)){
 			try{
-				if(Progress.setLevelComplete(level.getID())) Progress.write();
+				if(Progress.setLevelComplete(level)) Progress.write();
 			}catch(FileNotFoundException ex){
 				System.err.println("Error writing game progress to file (progress will not be saved)");
 				ex.printStackTrace();

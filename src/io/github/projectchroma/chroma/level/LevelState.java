@@ -1,7 +1,9 @@
 package io.github.projectchroma.chroma.level;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
@@ -17,7 +19,6 @@ import org.newdawn.slick.state.StateBasedGame;
 import io.github.projectchroma.chroma.BaseGameState;
 import io.github.projectchroma.chroma.Chroma;
 import io.github.projectchroma.chroma.Resources;
-import io.github.projectchroma.chroma.Sounds;
 import io.github.projectchroma.chroma.level.LevelObject.BlockObject;
 import io.github.projectchroma.chroma.level.LevelObject.EntityObject;
 import io.github.projectchroma.chroma.level.LevelObject.HintObject;
@@ -26,53 +27,64 @@ import io.github.projectchroma.chroma.level.block.Blocks;
 import io.github.projectchroma.chroma.level.entity.Entities;
 import io.github.projectchroma.chroma.level.entity.Entity;
 import io.github.projectchroma.chroma.level.entity.Player;
+import io.github.projectchroma.chroma.modules.ModuleContext;
+import io.github.projectchroma.chroma.modules.ModuleLoader;
 import io.github.projectchroma.chroma.settings.Keybind;
 import io.github.projectchroma.chroma.util.Colors;
 
 public class LevelState extends BaseGameState{
-	private static Font nameFont;
-	private static Sound soundSwitch;
-	private static Keybind keyPause, keySwitch;
+	private static final Map<ModuleContext, List<LevelState>> levels = new HashMap<>();
+	protected static Font nameFont;
+	protected static Music music;
+	protected static Sound soundSwitch;
+	protected static Keybind keyPause, keySwitch;
 	
-	private String name;
-	private boolean allowSwitching;
-	private Player player;
-	private List<LevelElement> elements = new ArrayList<>();
-	private Color[] schemes;
-	private int scheme = 0;
-	private int width, height;
-	private Rectangle camera;
-	public LevelState(int id){super(id);}
+	private ModuleContext module;
+	protected LevelObject data;
+	protected String name;
+	protected boolean allowSwitching;
+	protected Player player;
+	protected List<LevelElement> elements = new ArrayList<>();
+	protected Color[] schemes;
+	protected int scheme = 0;
+	protected int width, height;
+	protected Rectangle camera;
+	public LevelState(LevelObject data){
+		this.module = ModuleLoader.instance().getActiveModule();
+		levels.computeIfAbsent(module, (ctx) -> new ArrayList<>()).add(this);
+		
+		this.data = data;
+		name = data.name;
+		allowSwitching = data.player.allowSwitching;
+		width = data.width;
+		height = data.height;
+		camera = new Rectangle(0, 0, data.camera.width, data.camera.height);
+		
+		schemes = new Color[data.schemes.size()];
+		for(int j = 0; j < schemes.length; ++j){
+			schemes[j] = Colors.byName(data.schemes.get(j));
+		}
+	}
 	@Override
 	public void initialize(GameContainer container, StateBasedGame game) throws SlickException{
 		super.initialize(container, game);
 		if(nameFont == null) nameFont = Chroma.instance().createFont(30F);
-		if(soundSwitch == null) soundSwitch = Resources.loadSound("switch.aif");
+		if(music == null) music = Resources.loadMusic(Resources.getSoundPath("levelMusic.aiff"));
+		if(soundSwitch == null) soundSwitch = Resources.loadSound(Resources.getSoundPath("switch.aif"));
 		if(keyPause == null) keyPause = Keybind.get("level.pause", Input.KEY_P);
 		if(keySwitch == null) keySwitch = Keybind.get("player.switch", Input.KEY_UP);
 		
-		LevelObject level = Resources.loadLevel(id);
-		name = level.name;
-		allowSwitching = level.player.allowSwitching;
-		width = level.width;
-		height = level.height;
-		camera = new Rectangle(0, 0, level.camera.width, level.camera.height);
-		
-		elements.add(Blocks.createBlock(0, level.height - Block.WALL_WIDTH, level.width, Block.WALL_WIDTH, null, null));//Floor
-		elements.add(Blocks.createBlock(0, 0, Block.WALL_WIDTH, level.height, null, null));//Left wall
-		elements.add(Blocks.createBlock(level.width - Block.WALL_WIDTH, 0, Block.WALL_WIDTH, level.height, null, null));//Right wall
-		for(BlockObject block : level.blocks)
+		elements.add(Blocks.createBlock(0, data.height - Block.WALL_WIDTH, data.width, Block.WALL_WIDTH, null, null));//Floor
+		elements.add(Blocks.createBlock(0, 0, Block.WALL_WIDTH, data.height, null, null));//Left wall
+		elements.add(Blocks.createBlock(data.width - Block.WALL_WIDTH, 0, Block.WALL_WIDTH, data.height, null, null));//Right wall
+		for(BlockObject block : data.blocks)
 			elements.add(Blocks.createBlock(block));
-		for(HintObject hint : level.hints)
+		for(HintObject hint : data.hints)
 			elements.add(new Hint(hint.text, hint.x, hint.y, Colors.byName(hint.color), Colors.byName(hint.scheme)));
-		elements.add(player = new Player(level.player));
-		for(EntityObject entity : level.entities)
+		elements.add(player = new Player(data.player));
+		for(EntityObject entity : data.entities)
 			elements.add(Entities.createEntity(entity));
 		
-		schemes = new Color[level.schemes.size()];
-		for(int j = 0; j < schemes.length; ++j){
-			schemes[j] = Colors.byName(level.schemes.get(j));
-		}
 		for(LevelElement element : elements)
 			element.init(container);
 	}
@@ -111,7 +123,7 @@ public class LevelState extends BaseGameState{
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException{
 		super.update(container, game, delta);
-		if(keyPause.isPressed()) game.enterState(PausedState.ID, null, new PausedState.Enter());
+		if(keyPause.isPressed()) game.enterState(PausedState.instance.getID(), null, new PausedState.Enter());
 		for(LevelElement element : elements)
 			if(element instanceof Entity && element.isTangible(this)) ((Entity)element).setKinematics(container, this);
 		for(LevelElement element : elements)
@@ -136,10 +148,7 @@ public class LevelState extends BaseGameState{
 		player.resetPosition();
 		setScheme(0);
 	}
-	@Override
-	protected Music getMusic(){
-		return Sounds.getLevelMusic();
-	}
+	@Override protected Music getMusic(){return music;}
 	
 	public String name(){return name;}
 	public int width(){return width;}
@@ -154,5 +163,9 @@ public class LevelState extends BaseGameState{
 		Color bg = background();
 		float avg = (bg.r + bg.g + bg.b) / 3;
 		return avg > 0.5 ? Color.black : Color.white;//If the average RGB value is greater than 0.5, this is a bright background, so use a dark foreground.
+	}
+	public ModuleContext getDeclaringModule(){return module;}
+	public static List<LevelState> getLevels(ModuleContext module){
+		return levels.get(module);
 	}
 }

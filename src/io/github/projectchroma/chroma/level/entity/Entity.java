@@ -1,6 +1,9 @@
 package io.github.projectchroma.chroma.level.entity;
 
-import static io.github.projectchroma.chroma.util.Direction.*;
+import static io.github.projectchroma.chroma.util.Direction.DOWN;
+import static io.github.projectchroma.chroma.util.Direction.LEFT;
+import static io.github.projectchroma.chroma.util.Direction.RIGHT;
+import static io.github.projectchroma.chroma.util.Direction.UP;
 import static io.github.projectchroma.chroma.util.MathUtils.sameSign;
 import static io.github.projectchroma.chroma.util.RectangleUtils.fromCenter;
 

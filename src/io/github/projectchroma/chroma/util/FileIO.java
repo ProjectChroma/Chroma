@@ -3,6 +3,8 @@ package io.github.projectchroma.chroma.util;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -33,5 +35,12 @@ public class FileIO{
 			throw new SlickException("Error taking screenshot " + screenshot, ex);
 		}
 		return screenshot;
+	}
+	public static void write(InputStream input, File output) throws IOException{
+		try(InputStream in = input; OutputStream out = new FileOutputStream(output)){
+			byte[] buffer = new byte[4096];
+			int read;
+			while((read = in.read(buffer)) > 0) out.write(buffer, 0, read);
+		}
 	}
 }

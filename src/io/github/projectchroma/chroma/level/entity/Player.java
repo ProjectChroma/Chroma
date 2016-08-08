@@ -20,7 +20,7 @@ public class Player extends Entity{
 	/**Velocities during player-caused motion*/
 	public static final float V_MOVE = 2F, V_JUMP = -3.7F;
 	/**Sound effects*/
-	private static Sound jump, win, death;
+	private static Sound jump;
 	/**Keys*/
 	private static Keybind keyLeft, keyRight, keyJump, keyDismount;
 	
@@ -33,9 +33,7 @@ public class Player extends Entity{
 	
 	@Override
 	public void init(GameContainer container) throws SlickException{
-		if(jump == null) jump = Resources.loadSound("jump.aif");
-		if(win == null) win = Resources.loadSound("win.aif");
-		if(death == null) death = Resources.loadSound("death.aif");
+		if(jump == null) jump = Resources.loadSound(Resources.getSoundPath("jump.aif"));
 		
 		if(keyLeft == null) keyLeft = Keybind.get("player.left", Input.KEY_LEFT);
 		if(keyRight == null) keyRight = Keybind.get("player.right", Input.KEY_RIGHT);

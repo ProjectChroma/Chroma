@@ -1,23 +1,16 @@
 package io.github.projectchroma.chroma;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.newdawn.slick.Music;
-import org.newdawn.slick.SlickException;
 
 public class Sounds{
-	private static Music menuMusic, levelMusic;
-	public static void init() throws SlickException{
-		menuMusic = Resources.loadMusic("menuMusic.aiff");
-		levelMusic = Resources.loadMusic("levelMusic.aiff");
-	}
-	public static Music getMenuMusic(){
-		return menuMusic;
-	}
-	public static Music getLevelMusic(){
-		return levelMusic;
-	}
+	private static List<Music> musics = new ArrayList<>();
+	public static void registerMusic(Music music){musics.add(music);}
 	public static Music getCurrentMusic(){
-		if(menuMusic.playing()) return menuMusic;
-		else if(levelMusic.playing()) return levelMusic;
-		else return null;
+		for(Music music : musics)
+			if(music.playing()) return music;
+		return null;
 	}
 }

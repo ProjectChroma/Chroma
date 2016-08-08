@@ -16,6 +16,7 @@ public class LevelObject{
 	public List<BlockObject> blocks;
 	public List<HintObject> hints = new ArrayList<>();//Initialize to empty list, to prevent null issues if the level has no hints
 	public List<EntityObject> entities = new ArrayList<>();
+	
 	private LevelObject(){}
 	public static class Camera{
 		public int width = Chroma.WINDOW_WIDTH, height = Chroma.WINDOW_HEIGHT;

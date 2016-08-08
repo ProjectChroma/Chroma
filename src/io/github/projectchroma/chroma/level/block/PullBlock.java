@@ -21,9 +21,9 @@ public class PullBlock extends Block{
 		Player player = level.player();
 		if(player.getRight() > this.getLeft() && player.getLeft() < this.getRight()){
 			if(this.getCenterY() > player.getCenterY()){//Block is below player
-				player.a.y += strength - Player.gravity;
+				player.a.y += strength;
 			}else{
-				player.a.y -= strength + Player.gravity;
+				player.a.y -= strength;
 			}
 		}
 	}

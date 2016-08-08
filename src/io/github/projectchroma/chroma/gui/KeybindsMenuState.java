@@ -10,26 +10,22 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import io.github.projectchroma.chroma.Chroma;
 import io.github.projectchroma.chroma.gui.util.BackButton;
+import io.github.projectchroma.chroma.gui.util.BasicGrid;
 import io.github.projectchroma.chroma.gui.util.Button;
 import io.github.projectchroma.chroma.gui.util.GUIState;
-import io.github.projectchroma.chroma.gui.util.BasicGrid;
 import io.github.projectchroma.chroma.gui.util.PaginatedGrid;
 import io.github.projectchroma.chroma.gui.util.RenderedText;
 import io.github.projectchroma.chroma.settings.Keybind;
 import io.github.projectchroma.chroma.util.Direction;
 
 public class KeybindsMenuState extends GUIState{
-	public static final int ID = -3;
+	public static final KeybindsMenuState instance = new KeybindsMenuState();
 	private static final int itemsPerPage = 10;
-	private static KeybindsMenuState instance;
 	private static Font textFont;
 	
 	private KeybindButton activeKeybind = null;
 	private PaginatedGrid grid;
-	public KeybindsMenuState(){
-		super(ID);
-		instance = this;
-	}
+	private KeybindsMenuState(){}
 	@Override
 	public void initialize(GameContainer container, final StateBasedGame game) throws SlickException{
 		super.init(container, game);
@@ -39,7 +35,7 @@ public class KeybindsMenuState extends GUIState{
 		grid = new PaginatedGrid(100, 150, 30);
 		add(grid);
 		
-		add(new BackButton(SettingsMenuState.ID, Direction.UP));
+		add(new BackButton(SettingsMenuState.instance.getID(), Direction.UP));
 	}
 	@Override
 	public void postInit(GameContainer container, StateBasedGame game) throws SlickException{
@@ -95,8 +91,5 @@ public class KeybindsMenuState extends GUIState{
 			if(keybind.isConflicting()) c = c.addToCopy(conflictDelta);
 			return c;
 		}
-	}
-	public static KeybindsMenuState instance(){
-		return instance;
 	}
 }
