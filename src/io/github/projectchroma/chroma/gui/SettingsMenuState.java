@@ -32,6 +32,7 @@ public class SettingsMenuState extends GUIState{
 	@Override
 	public void initialize(GameContainer container, final StateBasedGame game) throws SlickException{
 		super.initialize(container, game);
+		Settings.update(container);
 		add(new RenderedText("Settings", Chroma.instance().createFont(50), Chroma.WINDOW_WIDTH/2, 50));
 		if(textFont == null) textFont = Chroma.instance().createFont(20);
 		

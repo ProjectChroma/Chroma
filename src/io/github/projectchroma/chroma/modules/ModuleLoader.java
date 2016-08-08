@@ -13,10 +13,11 @@ import java.util.jar.JarFile;
 import org.newdawn.slick.SlickException;
 
 import io.github.projectchroma.chroma.ChromaContext;
+import io.github.projectchroma.chroma.util.FileIO;
 
 public class ModuleLoader {
 	private static ModuleLoader instance;
-	private File dir = new File("modules");
+	private File moduleDir = new File("modules"), extractDir = new File("resources");
 	private List<ModuleContext> instances = new ArrayList<>(), validInstances = new ArrayList<>();
 	private ModuleContext activeModule = null;
 	public static ModuleLoader instance(){
@@ -27,7 +28,7 @@ public class ModuleLoader {
 		validInstances.add(ChromaContext.INSTANCE);
 	}
 	public void createModules(){
-		for(File module : dir.listFiles((parent, name) -> name.endsWith(".jar"))){
+		for(File module : moduleDir.listFiles((parent, name) -> name.endsWith(".jar"))){
 			try{
 				createModule(module);
 			}catch(IOException ex){
@@ -38,13 +39,22 @@ public class ModuleLoader {
 	}
 	@SuppressWarnings("unchecked")
 	private void createModule(File module) throws IOException{
-		try(JarFile jar = new JarFile(module); URLClassLoader loader = new URLClassLoader(new URL[]{new URL("jar:file:" + module.toString() + "!/")})){
+		List<String> classNames = new ArrayList<String>();
+		try(JarFile jar = new JarFile(module)){
 			Enumeration<JarEntry> entries = jar.entries();
 			while(entries.hasMoreElements()){
 				JarEntry entry = entries.nextElement();
-				if(entry.isDirectory() || !entry.getName().endsWith(".class")) continue;
-				String className = entry.getName().replace('/', '.');
-				className = className.substring(0, className.length() - 6);//Remove ".class"
+				File file = new File(extractDir, entry.getName());
+				if(!entry.isDirectory()){
+					file.getParentFile().mkdirs();
+					file.createNewFile();
+					FileIO.write(jar.getInputStream(entry), file);
+					if(entry.getName().endsWith(".class")) classNames.add(entry.getName().replace('/', '.').substring(0, entry.getName().length()-6));
+				}
+			}
+		}
+		try(URLClassLoader loader = new URLClassLoader(new URL[]{extractDir.toURI().toURL()})){
+			for(String className : classNames){
 				try{
 					Class<?> clazz = loader.loadClass(className);
 					if(Module.class.isAssignableFrom(clazz)){
@@ -53,7 +63,7 @@ public class ModuleLoader {
 						validInstances.add(context);
 					}
 				}catch(ClassNotFoundException ex){
-					System.err.println("Error loading class ".concat(className));
+					System.err.println("Error loading class " + className);
 					ex.printStackTrace();
 				}
 			}

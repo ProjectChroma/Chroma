@@ -1,7 +1,5 @@
 package io.github.projectchroma.chroma.level;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,22 +34,22 @@ import io.github.projectchroma.chroma.util.Colors;
 
 public class LevelState extends BaseGameState{
 	private static final Map<ModuleContext, List<LevelState>> levels = new HashMap<>();
-	private static Font nameFont;
+	protected static Font nameFont;
 	protected static Music music;
-	private static Sound soundSwitch;
-	private static Keybind keyPause, keySwitch;
+	protected static Sound soundSwitch;
+	protected static Keybind keyPause, keySwitch;
 	
 	private ModuleContext module;
-	private LevelObject data;
-	private String name;
-	private boolean allowSwitching;
-	private Player player;
-	private List<LevelElement> elements = new ArrayList<>();
-	private Color[] schemes;
-	private int scheme = 0;
-	private int width, height;
-	private Rectangle camera;
-	protected LevelState(LevelObject data){
+	protected LevelObject data;
+	protected String name;
+	protected boolean allowSwitching;
+	protected Player player;
+	protected List<LevelElement> elements = new ArrayList<>();
+	protected Color[] schemes;
+	protected int scheme = 0;
+	protected int width, height;
+	protected Rectangle camera;
+	public LevelState(LevelObject data){
 		this.module = ModuleLoader.instance().getActiveModule();
 		levels.computeIfAbsent(module, (ctx) -> new ArrayList<>()).add(this);
 		
@@ -169,28 +167,5 @@ public class LevelState extends BaseGameState{
 	public ModuleContext getDeclaringModule(){return module;}
 	public static List<LevelState> getLevels(ModuleContext module){
 		return levels.get(module);
-	}
-	public static LevelState create(String path) throws SlickException{return create(Resources.loadLevel(path));}
-	@SuppressWarnings("unchecked")
-	public static LevelState create(LevelObject level) throws SlickException{
-		try{
-			Class<?> clazz = Class.forName(level.levelClass);
-			if(!LevelState.class.isAssignableFrom(clazz))
-				throw new SlickException(String.format("Level class %s for level %s (module %s) does not extend LevelState", level.levelClass, level.name, ModuleLoader.instance().getActiveModule().getID()));
-			Class<? extends LevelState> levelClass = (Class<? extends LevelState>)clazz;
-			Constructor<? extends LevelState> ctr = levelClass.getDeclaredConstructor(LevelObject.class);
-			ctr.setAccessible(true);
-			return ctr.newInstance(level);
-		}catch(ClassNotFoundException ex){
-			throw new SlickException(String.format("Level class %s for level %s (module %s) does not exist", level.levelClass, level.name, ModuleLoader.instance().getActiveModule().getID()), ex);
-		}catch(NoSuchMethodException ex){
-			throw new SlickException(String.format("Level class %s for level %s (module %s) does not have a 1-arg (LevelObject) constructor", level.levelClass, level.name, ModuleLoader.instance().getActiveModule().getID()), ex);
-		} catch (InstantiationException ex) {
-			throw new SlickException(String.format("Level class %s for level %s (module %s) is abstract", level.levelClass, level.name, ModuleLoader.instance().getActiveModule().getID()), ex);
-		} catch (IllegalAccessException ex) {
-			throw new SlickException(String.format("Level class %s for level %s (module %s) is private", level.levelClass, level.name, ModuleLoader.instance().getActiveModule().getID()), ex);
-		} catch (InvocationTargetException ex) {
-			throw new SlickException(String.format("Error constructing class %s for level %s (module %s)", level.levelClass, level.name, ModuleLoader.instance().getActiveModule().getID()), ex.getCause());
-		}
 	}
 }

@@ -101,7 +101,6 @@ public class Chroma extends StateBasedGame{
 			app.setShowFPS(false);//Hide FPS counter
 			app.setIcons(new String[]{Resources.getTexturePath("icon32.png"), Resources.getTexturePath("icon16.png")});
 			app.setForceExit(true);//Call System.exit(0) when game is closed
-			Settings.update(app);
 			
 			ModuleLoader modules = ModuleLoader.instance();
 			System.out.println("Creating modules");

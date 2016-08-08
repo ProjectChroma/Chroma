@@ -10,7 +10,6 @@ import io.github.projectchroma.chroma.Chroma;
 public class LevelObject{
 	public String name;
 	public int width = Chroma.WINDOW_WIDTH, height = Chroma.WINDOW_HEIGHT;
-	public String levelClass = LevelState.class.getName();
 	public List<String> schemes = Arrays.asList("white", "black");//Default to alternating schemes, starting with white
 	public Camera camera = new Camera();
 	public PlayerObject player;

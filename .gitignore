@@ -20,5 +20,8 @@
 #Source for testing-environment modules
 /moduleSrc/
 
-#Compiled modules/
+#Compiled modules
 /modules/
+
+#Extracted modules
+/resources/
