@@ -83,6 +83,7 @@ public class Chroma extends StateBasedGame{
 		return instance;
 	}
 	public static void main(String[] args){
+		System.setSecurityManager(new ChromaSecurity());
 		int fps = FPS;
 		for(String arg : args){
 			if(arg.startsWith("fps:")) fps = Integer.parseInt(arg.substring(4));

@@ -10,6 +10,8 @@ public abstract class Module {
 	private final String id, version;
 	protected Module(String id){this(id, "");}
 	protected Module(String id, String version){
+		if(id == null) throw new NullPointerException("Null module id (class=" + getClass().getName() + ")");
+		if(version == null) version = "";
 		this.id = id;
 		this.version = version;
 	}

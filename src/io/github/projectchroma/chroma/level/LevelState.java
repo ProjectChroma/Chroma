@@ -166,6 +166,7 @@ public class LevelState extends BaseGameState{
 	}
 	public ModuleContext getDeclaringModule(){return module;}
 	public static List<LevelState> getLevels(ModuleContext module){
-		return levels.get(module);
+		List<LevelState> ret = levels.get(module);
+		return ret == null ? null : new ArrayList<>(ret);
 	}
 }

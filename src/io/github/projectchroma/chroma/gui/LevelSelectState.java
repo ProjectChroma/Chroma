@@ -57,11 +57,13 @@ public class LevelSelectState extends GUIState{
 			public void onclick() throws SlickException{grid.nextPage();}
 		});
 		List<ModuleContext> modules = ModuleLoader.instance().getLoadedModules();
-		for(int page=0; page<modules.size(); ++page){
-			ModuleContext module = modules.get(page);
+		for(int page=0, moduleInd=0; moduleInd<modules.size(); ++moduleInd){//++page done after chance of continuing past module
+			ModuleContext module = modules.get(moduleInd);
+			List<LevelState> levels = LevelState.getLevels(module);
+			if(levels == null) continue;//No levels for module
 			grid.add(new RenderedText(module.getID(), moduleFont, Chroma.WINDOW_WIDTH/2, (y1 + y2) / 2), page);
 			int row = 0, column = 0;
-			for(LevelState level : LevelState.getLevels(module)){
+			for(LevelState level : levels){
 				grid.add(new LevelIcon(column * (ICON_SIZE + ICON_MARGINS) + SIDE_MARGINS, row * (ICON_SIZE + ICON_MARGINS) + GRID_TOP, level), page);
 				if(column+1 == NUM_COLUMNS){//If this column was the last column
 					row++;//Drop down to a new row
@@ -70,6 +72,7 @@ public class LevelSelectState extends GUIState{
 					column++;//Otherwise, just move to the right
 				}
 			}
+			++page;
 		}
 	}
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException{

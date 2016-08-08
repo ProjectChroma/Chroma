@@ -13,6 +13,7 @@ import java.util.jar.JarFile;
 import org.newdawn.slick.SlickException;
 
 import io.github.projectchroma.chroma.ChromaContext;
+import io.github.projectchroma.chroma.ChromaSecurity;
 import io.github.projectchroma.chroma.util.FileIO;
 
 public class ModuleLoader {
@@ -49,7 +50,16 @@ public class ModuleLoader {
 					file.getParentFile().mkdirs();
 					file.createNewFile();
 					FileIO.write(jar.getInputStream(entry), file);
-					if(entry.getName().endsWith(".class")) classNames.add(entry.getName().replace('/', '.').substring(0, entry.getName().length()-6));
+					if(entry.getName().endsWith(".class")){
+						String className = entry.getName().replace('/', '.');
+						className = className.substring(0, className.length()-6);
+						if(ChromaSecurity.isSecurityExempt(className)){
+							System.err.println("Class " + className + " (module " + module.toString() + ") is attempting to impersonate a security-exempt class.");
+							System.err.println("THIS IS VERY, VERY BAD. This module is almost certainly malware and should be uninstalled immediately.");
+							System.err.println("This module will not be loaded.");
+							return;
+						}else classNames.add(className);
+					}
 				}
 			}
 		}
