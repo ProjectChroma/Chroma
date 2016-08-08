@@ -37,4 +37,9 @@ public class PaginatedGrid extends AbstractGrid{
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException{
 		for(GUIElement element : pages.get(page)) element.update(container, game, delta);
 	}
+	public List<GUIElement> getElements(){
+		List<GUIElement> elements = new ArrayList<>();
+		for(List<GUIElement> page : pages) elements.addAll(page);
+		return elements;
+	}
 }

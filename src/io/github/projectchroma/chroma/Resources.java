@@ -4,6 +4,8 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Music;
@@ -20,6 +22,13 @@ import io.github.projectchroma.chroma.level.LevelObject;
 public class Resources {
 	public static final Gson gson = new Gson();
 	public static final String ASSET_PATH = "assets/", TEXTURE_PATH = ASSET_PATH + "textures/", FONT_PATH = ASSET_PATH + "fonts/", SOUND_PATH = ASSET_PATH + "sounds/", LEVEL_PATH = "levels/";
+	private static final List<Music> musics = new ArrayList<>();
+	public static Music getCurrentMusic(){
+		for(Music music : musics)
+			if(music.playing()) return music;
+		return null;
+	}
+	
 	public static String getFontPath(String name){return FONT_PATH + name;}
 	public static Font loadFont(String path) throws SlickException{
 		try{
@@ -46,7 +55,7 @@ public class Resources {
 	public static String getSoundPath(String name){return SOUND_PATH + name;}
 	public static Music loadMusic(String path) throws SlickException{
 		Music music = new Music(ResourceLoader.getResourceAsStream(path), path);
-		Sounds.registerMusic(music);
+		musics.add(music);
 		return music;
 	}
 	public static Sound loadSound(String path) throws SlickException{

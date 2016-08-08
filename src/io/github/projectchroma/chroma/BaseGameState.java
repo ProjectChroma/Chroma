@@ -30,13 +30,13 @@ public abstract class BaseGameState implements GameState{
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException{
 		if(getMusic() != null){
-			if(!getMusic().equals(Sounds.getCurrentMusic())){
-				if(Sounds.getCurrentMusic() != null) Sounds.getCurrentMusic().stop();
+			if(!getMusic().equals(Resources.getCurrentMusic())){
+				if(Resources.getCurrentMusic() != null) Resources.getCurrentMusic().stop();
 				getMusic().play();
 			}
 		}else{
-			if(Sounds.getCurrentMusic() != null)
-				Sounds.getCurrentMusic().stop();
+			if(Resources.getCurrentMusic() != null)
+				Resources.getCurrentMusic().stop();
 		}
 		if(keyScreenshot.isPressed() || keyVidcap.isDown()){
 			try{

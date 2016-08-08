@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.newdawn.slick.Color;
+import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -13,6 +14,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import io.github.projectchroma.chroma.Chroma;
 import io.github.projectchroma.chroma.SwipeTransition;
 import io.github.projectchroma.chroma.gui.util.BackButton;
+import io.github.projectchroma.chroma.gui.util.Button;
 import io.github.projectchroma.chroma.gui.util.GUIElement;
 import io.github.projectchroma.chroma.gui.util.GUIState;
 import io.github.projectchroma.chroma.gui.util.PaginatedGrid;
@@ -24,10 +26,11 @@ import io.github.projectchroma.chroma.modules.ModuleContext;
 import io.github.projectchroma.chroma.modules.ModuleLoader;
 import io.github.projectchroma.chroma.settings.Progress;
 import io.github.projectchroma.chroma.util.Direction;
+import io.github.projectchroma.chroma.util.RectangleUtils;
 
 public class LevelSelectState extends GUIState{
 	public static final LevelSelectState instance = new LevelSelectState();
-	private static final float GRID_WIDTH = 700, GRID_TOP = 100, ICON_SIZE = 85, NUM_COLUMNS = 7;
+	private static final float GRID_WIDTH = 700, GRID_TOP = 110, ICON_SIZE = 85, NUM_COLUMNS = 7;
 	private static final float SIDE_MARGINS = (Chroma.WINDOW_WIDTH - GRID_WIDTH) / 2,
 			ICON_MARGINS = (GRID_WIDTH - (NUM_COLUMNS * ICON_SIZE)) / (NUM_COLUMNS - 1);//Width of grid minus the width taken up by the icons, divided by the number of margins
 	private PaginatedGrid grid;
@@ -43,10 +46,22 @@ public class LevelSelectState extends GUIState{
 		super.postInit(container, game);
 		grid = new PaginatedGrid();
 		add(grid);
+		Font moduleFont = Chroma.instance().createFont(40);
+		float y2 = GRID_TOP - 10, y1 = y2 - moduleFont.getLineHeight();
+		float x = SIDE_MARGINS;
+		add(new Button(RectangleUtils.fromVertices(x, y1, x + 100, y2), "<<"){
+			public void onclick() throws SlickException{grid.prevPage();}
+		});
+		x = Chroma.WINDOW_WIDTH - x;
+		add(new Button(RectangleUtils.fromVertices(x - 100, y1, x, y2), ">>"){
+			public void onclick() throws SlickException{grid.nextPage();}
+		});
 		List<ModuleContext> modules = ModuleLoader.instance().getLoadedModules();
 		for(int page=0; page<modules.size(); ++page){
+			ModuleContext module = modules.get(page);
+			grid.add(new RenderedText(module.getID(), moduleFont, Chroma.WINDOW_WIDTH/2, (y1 + y2) / 2), page);
 			int row = 0, column = 0;
-			for(LevelState level : LevelState.getLevels(modules.get(page))){
+			for(LevelState level : LevelState.getLevels(module)){
 				grid.add(new LevelIcon(column * (ICON_SIZE + ICON_MARGINS) + SIDE_MARGINS, row * (ICON_SIZE + ICON_MARGINS) + GRID_TOP, level), page);
 				if(column+1 == NUM_COLUMNS){//If this column was the last column
 					row++;//Drop down to a new row
@@ -59,9 +74,9 @@ public class LevelSelectState extends GUIState{
 	}
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException{
 		Progress.read();
-		for(GUIElement element : elements){
+		grid.setPage(0);
+		for(GUIElement element : grid.getElements())
 			if(element instanceof LevelIcon) ((LevelIcon)element).level.setScheme(0);
-		}
 	}
 	@Override
 	public void keyPressed(int key, char c){
