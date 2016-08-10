@@ -53,11 +53,7 @@ public class Keybind{
 		return bindings.get(name);
 	}
 	public static Keybind get(String name, int defaultKey){
-		Keybind keybind = bindings.get(name);
-		if(keybind != null) return keybind;
-		keybind = new Keybind(name, defaultKey);
-		bindings.put(name, keybind);
-		return keybind;
+		return bindings.computeIfAbsent(name, (key) -> new Keybind(name, defaultKey));
 	}
 	public static Collection<Keybind> bindings(){
 		return bindings.values();

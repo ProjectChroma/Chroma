@@ -96,7 +96,6 @@ public class Chroma extends StateBasedGame{
 			FileIO.init();
 			Settings.read();
 			Keybind.read();
-			Analytics.init();
 			ChromaContainer app = new ChromaContainer(instance);
 			app.setTargetFrameRate(fps);
 			app.setShowFPS(false);//Hide FPS counter

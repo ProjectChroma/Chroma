@@ -16,6 +16,7 @@ import io.github.projectchroma.chroma.level.LevelState;
 import io.github.projectchroma.chroma.level.entity.Entity;
 import io.github.projectchroma.chroma.settings.Analytics;
 import io.github.projectchroma.chroma.settings.Progress;
+import io.github.projectchroma.chroma.settings.Analytics.EventData;
 import io.github.projectchroma.chroma.util.Direction;
 import io.github.projectchroma.chroma.util.EntityUtils;
 
@@ -39,7 +40,7 @@ public class GoalBlock extends Block{
 				System.err.println("Error writing game progress to file (progress will not be saved)");
 				ex.printStackTrace();
 			}
-			Analytics.levelWon(level);
+			Analytics.write(new EventData("LevelWin").putData("module", level.getDeclaringModule().getID()).putData("level", level.name()));
 			Chroma.instance().enterState(level.getID()+1, new LevelExitTransition(true, winSound), new SwipeTransition(Direction.RIGHT));
 		}
 	}
